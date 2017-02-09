@@ -52,12 +52,23 @@
         
     <!-- Файлы конфигураций YAML -->
     <bean id="yamlProperties" class="org.springframework.beans.factory.config.YamlPropertiesFactoryBean">
-        <property name="resources" value="classpath:config/oauth.yml"/>
+        <property name="resources" value="classpath:config/config.yml"/>
     </bean>
     <context:property-placeholder properties-ref="yamlProperties"/>
-    
+        
     <!-- Бин предназначенный для сопоставления java-объектов json-конструктору  -->
     <bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper"/>
+    
+    <!-- Настройки БД -->
+    <bean id="dataSource" destroy-method="close" class="org.apache.commons.dbcp.BasicDataSource">
+        <property name="driverClassName" value="${db.site.dev.driver}"/>
+        <property name="url" value="${db.site.dev.url}"/>
+        <property name="username" value="${db.site.dev.username}"/>
+        <property name="password" value="${db.site.dev.password}"/>
+        <property name="initialSize" value="${db.site.dev.initialSize}"/>
+        <property name="maxActive" value="${db.site.dev.maxActive}"/>
+        <property name="maxIdle" value="${db.site.dev.maxIdle}"/>
+    </bean>
     
     <!-- Включение сканирования пакетов для поиска аннотаций -->  
     <context:component-scan base-package="com.rhhcc.common"/>  
