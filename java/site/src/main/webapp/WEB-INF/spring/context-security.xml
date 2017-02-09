@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<b:beans xmlns="http://www.springframework.org/schema/security"
+         xmlns:b="http://www.springframework.org/schema/beans"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
+                             http://www.springframework.org/schema/beans    http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--global-method-security pre-post-annotations="enabled">
+        <expression-handler ref="expressionHandler"/>
+    </global-method-security-->
+
+    <!--http pattern="/resources/**" security="none"/-->
+
+    <http use-expressions="true" auto-config="true">
+        <!--intercept-url pattern="/users/**" access="hasRole('ROLE_ADMIN')"/>
+        <intercept-url pattern="/sessions/**" access="hasRole('ROLE_ADMIN')"/>
+        <intercept-url pattern="/signup*" access="permitAll"/>
+        <intercept-url pattern="/login*" access="permitAll"/>
+        <intercept-url pattern="/logout*" access="permitAll"/-->
+        <intercept-url pattern="/**" access="permitAll"/>
+        <!--form-login login-page="/login" authentication-failure-url="/login?error" default-target-url="/index"/-->
+        <logout logout-url="/logout" logout-success-url="/user/auth/success-logout" delete-cookies="JSESSIONID" invalidate-session="true"/>
+        <!--logout logout-url="/logout" logout-success-url="/login?logout"/-->
+        <!--remember-me user-service-ref="mailUserDetailsService"/-->
+        <!--session-management>
+            <concurrency-control error-if-maximum-exceeded="true" expired-url="/login?expired" max-sessions="1"/>
+        </session-management-->
+        <!--csrf disabled="true"/-->
+	<csrf token-repository-ref="tokenRepository"/>
+    </http>
+
+    <authentication-manager>
+        <authentication-provider>
+            <user-service><user name="user" password="user" authorities="ROLE_USER"/></user-service>
+        </authentication-provider>
+        <!--authentication-provider user-service-ref="mailUserDetailsService"/-->
+        <!--authentication-provider ref="mailUserAuthenticationProvider"/-->
+        <!--authentication-provider>
+            <jdbc-user-service data-source-ref="dataSource"
+            users-by-username-query="select email, password, true from message_user where email = ?"
+            authorities-by-username-query="select email, 'ROLE_USER' from message_user where email = ?"/>
+        </authentication-provider-->
+    </authentication-manager>
+
+    <b:bean id="tokenRepository" class="org.springframework.security.web.csrf.CookieCsrfTokenRepository">        
+        <b:property name="cookieHttpOnly" value="false"/>
+    </b:bean>
+
+</b:beans>

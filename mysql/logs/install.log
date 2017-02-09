@@ -1,0 +1,164 @@
+--------------
+set @GP_AUTHOR = 'EMararu'
+--------------
+
+--------------
+set @GP_NUMBER = '00000.00'
+--------------
+
+--------------
+set @GP_DESC   = 'Installation'
+--------------
+
+--------------
+set @DBHOST = 'localhost'
+--------------
+
+--------------
+set @SCHEMA_NAME = 'rhhcc_db'
+--------------
+
+--------------
+set @DB_USER_NAME = 'rhhcc'
+--------------
+
+--------------
+set @DB_USER_PWD = 'rhhcc1'
+--------------
+
+--------------
+set @APP_USER_NAME = 'rhhcc_app'
+--------------
+
+--------------
+set @APP_USER_PWD = 'rhhcc_app1'
+--------------
+
+--------------
+set @sql_drop_schema = concat('drop schema if exists ', @SCHEMA_NAME)
+--------------
+
+--------------
+prepare stmt_drop_schema from @sql_drop_schema
+--------------
+
+--------------
+execute stmt_drop_schema
+--------------
+
+--------------
+deallocate prepare stmt_drop_schema
+--------------
+
+--------------
+set @sql_drop_db_user = concat('drop user if exists ', @DB_USER_NAME, '@', @DBHOST)
+--------------
+
+--------------
+prepare stmt_drop_db_user from @sql_drop_db_user
+--------------
+
+--------------
+execute stmt_drop_db_user
+--------------
+
+--------------
+deallocate prepare stmt_drop_db_user
+--------------
+
+--------------
+set @sql_drop_app_user = concat('drop user if exists ', @APP_USER_NAME, '@', @DBHOST)
+--------------
+
+--------------
+prepare stmt_drop_app_user from @sql_drop_app_user
+--------------
+
+--------------
+execute stmt_drop_app_user
+--------------
+
+--------------
+deallocate prepare stmt_drop_app_user
+--------------
+
+--------------
+set @sql_create_schema = concat('create schema ', @SCHEMA_NAME, ' character set utf8 collate utf8_general_ci')
+--------------
+
+--------------
+prepare stmt_create_schema from @sql_create_schema
+--------------
+
+--------------
+execute stmt_create_schema
+--------------
+
+--------------
+deallocate prepare stmt_create_schema
+--------------
+
+--------------
+set @sql_create_db_user = concat('create user if not exists ', @DB_USER_NAME, '@', @DBHOST, ' identified by ''', @DB_USER_PWD, '''')
+--------------
+
+--------------
+prepare stmt_create_db_user from @sql_create_db_user
+--------------
+
+--------------
+execute stmt_create_db_user
+--------------
+
+--------------
+deallocate prepare stmt_create_db_user
+--------------
+
+--------------
+set @sql_create_app_user = concat('create user if not exists ', @APP_USER_NAME, '@', @DBHOST, ' identified by ''', @APP_USER_PWD, '''')
+--------------
+
+--------------
+prepare stmt_create_app_user from @sql_create_app_user
+--------------
+
+--------------
+execute stmt_create_app_user
+--------------
+
+--------------
+deallocate prepare stmt_create_app_user
+--------------
+
+--------------
+set @sql_grant_db_user = concat('grant alter, alter routine, create, create routine, create view, delete, drop, event, execute, index, insert, lock tables, references, select, trigger, update on ', @SCHEMA_NAME, '.', '* to ', @DB_USER_NAME, '@', @DBHOST)
+--------------
+
+--------------
+prepare stmt_grant_db_user from @sql_grant_db_user
+--------------
+
+--------------
+execute stmt_grant_db_user
+--------------
+
+--------------
+deallocate prepare stmt_grant_db_user
+--------------
+
+--------------
+set @sql_grant_app_user = concat('grant execute, select on ', @SCHEMA_NAME, '.', '* to ', @APP_USER_NAME, '@', @DBHOST)
+--------------
+
+--------------
+prepare stmt_grant_app_user from @sql_grant_app_user
+--------------
+
+--------------
+execute stmt_grant_app_user
+--------------
+
+--------------
+deallocate prepare stmt_grant_app_user
+--------------
+

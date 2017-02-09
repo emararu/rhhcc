@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    Document   : Тело страницы основного шаблона приложения
+    Created on : Jan 13, 2017, 3:57:58 PM
+    Author     : EMararu
+-->
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" 
+          xmlns:tiles="http://tiles.apache.org/tags-tiles" 
+          version="2.0">
+
+    <jsp:directive.page contentType="text/html" pageEncoding="UTF-8"/>
+    <jsp:output omit-xml-declaration="yes" />
+
+    <div id="message"><jsp:text/></div>
+    <div class="main">
+        <div id="header"><tiles:insertAttribute name="page.body.header" ignore="true"/></div>
+        <div id="content"><tiles:insertAttribute name="page.body.content"/></div>
+        <div id="footer"><tiles:insertAttribute name="page.body.footer" ignore="true"/></div>
+    </div>
+    
+</jsp:root>

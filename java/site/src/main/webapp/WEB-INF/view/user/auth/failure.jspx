@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+    Document   : Страница обработки ошибки возникшей во время внешней аутентификация пользователя
+    Created on : Jan 13, 2017, 2:10:31 PM
+    Author     : EMararu
+-->
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+    
+    <jsp:directive.page contentType="text/html;charset=UTF-8" />
+    <jsp:output omit-xml-declaration="yes" />
+        
+    <input type="hidden" value="${message}"/>
+    
+</jsp:root>
+
