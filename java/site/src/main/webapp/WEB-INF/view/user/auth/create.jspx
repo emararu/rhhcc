@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    Document   : Страница регистрации пользователя в системе
+    Created on : Feb 7, 2017, 6:34:52 PM
+    Author     : EMararu
+-->
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+
+    <jsp:directive.page contentType="text/html;charset=UTF-8" />
+    <jsp:output omit-xml-declaration="yes" />
+
+    <jsp:text>Create</jsp:text>
+
+</jsp:root>

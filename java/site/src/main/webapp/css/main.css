@@ -1,0 +1,327 @@
+/* 
+    Created on : Jan 12, 2017, 6:01:17 PM
+    Author     : EMararu
+*/
+
+html, body {
+    padding: 0px;
+    margin: 0px;
+    border: none;
+    outline: none;
+    font: 12px sans-serif;
+}
+
+ul {
+    list-style: none;
+    margin: 0;
+    padding-left: 0;
+}
+
+a {
+    text-decoration: none;
+    color: #666666;
+}
+
+input {
+    border: 1px solid #aaaaaa;
+    font-size: 12px;
+    padding: 3px;
+    box-sizing: border-box;
+}
+
+div.submit {
+    position: relative;
+    display: inline-block;
+    height: 22px;
+    line-height: 16px;
+    border: 1px solid #aaaaaa;    
+    padding: 3px;
+    box-sizing: border-box;
+    color: #666666;
+    background-color: #dedede;
+    text-align: center;
+}
+div.submit:hover {
+    cursor: pointer;  
+    color: #555555;
+    background-color: #ccc;  
+}
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/* Область всей страницы                                                     */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+#message {
+    position: fixed;
+    display: none;
+    z-index: 10000;
+    overflow: hidden;
+    left: 0px;
+    top: 0px;
+    max-height: 400px;
+    width: 25%;
+    min-width: 300px;
+    max-width: 600px;
+    padding: 10px 10px 10px 10px;
+    box-sizing: border-box;
+    color: #000000;
+    opacity: 0.9;    
+}
+#message.error {
+    border: 1px solid #ff8b60;
+    background-color: #ffc7b2;
+}
+#message.ok {
+    border: 1px solid #86ca83;
+    background-color: #cee9cd;
+}
+
+div.main {
+    position: absolute;
+    overflow: auto;
+    top: 0;
+    left: 0;
+    height: 100%;
+    min-height: 150px;
+    width: 100%;
+}
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/* Верхняя область страницы в которой находится главное меню                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+#header {  
+    position: absolute;
+    z-index: 200;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 60px;
+    width: 100%;
+    min-width: 320px;
+    max-width: 900px;
+    margin: auto;
+    background-color: #fafafa;
+}
+
+/* Главное меню */
+#header>div.menu {
+    position: relative;
+    height: 60px;    
+    width: 100%;
+    min-width: 320px;
+    overflow: hidden;
+}
+
+/* Главное меню: лого */
+#header>div.menu li:first-child {
+    width: 100%;
+}
+#header>div.menu li:first-child:hover {
+    cursor: default;
+    background-color: #fafafa;
+}
+#header>div.menu li:first-child img {
+    position: relative;
+    height: 18px;
+    width: 92px;
+}
+#header>div.menu li:first-child img:hover  {
+    cursor: pointer;
+}
+
+/* Главное меню: элементы меню */
+#header>div.menu li {
+    position: relative;
+    display: table-cell; 
+    height: 60px;
+    min-width: 32px;
+    line-height: 12px;
+    color: #888888;
+    vertical-align: middle;
+    padding: 1px 10px 0px 10px;
+    box-sizing: border-box;
+}
+#header>div.menu li:hover{
+    cursor: pointer;
+    color: #333333;
+}
+#header>div.menu li.selected{
+    color: #333333;
+    background-color: #eeeeee;
+}
+#header>div.menu li img {
+    position: relative;
+    height: 32px;
+    width: 32px;
+}
+
+/* Главное меню: подменю */
+#header>div.submenu {
+    position: absolute;
+    display: none;
+    height: 480px;
+    width: 240px;
+    color: #aaaaaa;
+    background-color: #eeeeee;
+}
+#header>div.submenu>div {
+    position: relative;
+    display: block;
+    padding: 5px 4px 5px 4px;
+    box-sizing: border-box;
+}
+#header>div.submenu>div>div {
+    position: relative;
+    display: block; 
+    margin: 10px;
+}
+
+/* Главное меню: подменю авторизации */
+/* OAuth */
+#header>div.submenu>div.login>div {
+    text-align: center;
+}
+#header>div.submenu>div.login>div>div.oauth {
+    display: inline-block;
+}
+#header>div.submenu>div.login>div>div.oauth>div.oauth-button {    
+    position: relative;
+    float: left;
+    cursor: pointer;  
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    margin: 0px 3px 0px 3px;
+}
+#header>div.submenu>div.login>div>div.oauth>div.oauth-button:hover {
+    box-shadow: 1px 2px 5px #888888;
+}
+
+#header>div.submenu>div.login>div>div.oauth>div.fb {    
+    background-color: #3a569d;
+}
+#header>div.submenu>div.login>div>div.oauth>div.google {    
+    background-color: #4285f4;
+}
+#header>div.submenu>div.login>div>div.oauth>div.vk {    
+    background-color: #00669a;
+}
+#header>div.submenu>div.login>div>div.oauth>div.mailru {    
+    background-color: #168de2;
+}
+
+#header>div.submenu>div.login>div>div.oauth>div.oauth-button>div.icon {
+    position: relative;
+    left: 6px;
+    top: 6px;
+    width: 16px;
+    height: 16px;
+}
+#header>div.submenu>div.login>div>div.oauth>div.oauth-button>div.fb {
+    background-image: url("../img/auth/fb.svg"); 
+    background-position: -18px 0;
+}
+#header>div.submenu>div.login>div>div.oauth>div.oauth-button>div.google {
+    background-image: url("../img/auth/google.svg"); 
+    background-position: -18px 0;
+}
+#header>div.submenu>div.login>div>div.oauth>div.oauth-button>div.vk {
+    background-image: url("../img/auth/vk.svg"); 
+    background-position: -18px 0;
+}
+#header>div.submenu>div.login>div>div.oauth>div.oauth-button>div.mailru {
+    background-image: url("../img/auth/mailru.svg"); 
+    background-position: -18px 0;
+}
+
+/* DBAuth */   
+#header>div.submenu>div.login>div>div.dbauth {
+    padding: 4px 0px 0px 0px;
+    box-sizing: border-box;
+}
+#header>div.submenu>div.login>div>div.dbauth input {
+    position: relative;
+    display: block;
+    width: 100%;
+    margin-bottom: 3px;
+}
+#header>div.submenu>div.login>div>div.dbauth div.submit {
+    width: 100%;
+    margin: 10px 0px 17px 0px;
+}
+#header>div.submenu>div.login>div>div.dbauth ul {
+    width: 100%;
+}
+#header>div.submenu>div.login>div>div.dbauth ul li{
+    position: relative;
+    display: inline-block; 
+    width: 50%;
+    text-align: left;
+}
+#header>div.submenu>div.login>div>div.dbauth ul li:last-child {
+    text-align: right;
+}
+
+/* Главное меню: подменю авторизации после авторизации */
+#menu-main-auth-item>img {
+    border-radius: 50%;
+}
+#header>div.submenu>div.logout>div>div.user-icon {
+    position: relative;
+    display: inline-block;
+}
+#header>div.submenu>div.logout>div>div.user-icon>img {
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
+}
+#header>div.submenu>div.logout>div>div.user-data {
+    display: inline-block;
+    vertical-align: top;
+}
+#header>div.submenu>div.logout>div>div.user-data>div {
+    padding: 0px 4px 0px 14px;
+    box-sizing: border-box;
+}
+#header>div.submenu>div.logout>div>div.user-data>div.name {
+    font-weight: bold;
+    color: #333333;
+}
+#header>div.submenu>div.logout>div>div.user-data>div.account {
+    padding-top: 6px;
+}
+#header>div.submenu>div.logout>div:last-child {
+    text-align: right;
+}
+#header>div.submenu>div.logout>div:last-child div.submit {
+    width: 50%;
+}
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/* Область страницы содержащая основной контент                              */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+#content{
+    position: absolute;
+    z-index: 100;
+    top: 0;
+    right: 0;
+    left: 0;
+    width: 100%;
+    min-width: 320px;
+    margin: auto;
+} 
+    
+#footer {  
+    position: absolute;
+    z-index: 100;
+    right: 0;
+    left: 0;
+    bottom:0;
+    width: 100%;
+    min-width: 320px;
+    max-width: 900px;
+    margin: auto;
+    background-color: #ddd;
+}
+

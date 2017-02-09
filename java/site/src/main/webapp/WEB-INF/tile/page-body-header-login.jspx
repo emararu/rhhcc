@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    Document   : Часть основного шаблона используемая для входа пользователя в систему
+    Created on : Jan 14, 2017, 9:39:56 PM
+    Author     : EMararu
+-->
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:spring="http://www.springframework.org/tags"
+          version="2.0">
+    
+    <spring:url value="/user/auth/create" var="url_create"/>
+
+    <jsp:directive.page contentType="text/html" pageEncoding="UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+
+    <div class="login">
+        <div>Войти с помощью</div>
+        <div>
+            <div class="oauth">
+                <div id="menu-main-auth-fb" class="oauth-button fb" title="Facebook">
+                    <div class="icon fb"><jsp:text/></div>
+                </div>  
+                <div id="menu-main-auth-google" class="oauth-button google" title="Google+">
+                    <div class="icon google"><jsp:text/></div>
+                </div>  
+                <div class="oauth-button vk" title="ВКонтакте">
+                    <div class="icon vk"><jsp:text/></div>
+                </div> 
+                <div class="oauth-button mailru" title="Мой Мир@mail.ru">
+                    <div class="icon mailru"><jsp:text/></div>
+                </div>
+            </div>
+        </div>
+        <div>или</div>
+        <div>
+            <div class="dbauth">
+                <div><input type="text" placeholder="Логин"/></div>
+                <div><input type="password" placeholder="Пароль"/></div>
+                <div class="submit">Войти</div>
+                <div>
+                    <ul>
+                        <li><a href="${url_create}">Регистрация</a></li><li><a href="">Забыли пароль?</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</jsp:root>

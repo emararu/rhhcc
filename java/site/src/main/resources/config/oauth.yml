@@ -1,0 +1,42 @@
+auth:
+  facebook:
+    id: 1
+    url: https://developers.facebook.com/apps/560679804123261/dashboard/
+    client:
+      clientId: 560679804123261
+      clientSecret: deb467c2460820dabc407dda1130e312
+      clientScope: public_profile,user_birthday,email
+    resource:
+      userInfoUri: https://graph.facebook.com/v2.8/me?fields=id,name,email,birthday,first_name,last_name,gender,picture
+      field:
+        oauthId: /id
+        firstname: /first_name
+        lastname: /last_name
+        gender: /gender
+        birthday: /birthday
+        email: /email
+        icon: /picture/data/url
+      format:
+        birthday: MM/dd/yyyy
+                       
+  google:
+    id: 2
+    url: https://console.developers.google.com/apis/dashboard?project=oauth-rhhcc-ru&duration=PT1H      
+    client:
+      clientId: 1296914637-ovoklq6ktiun2lsmmpsbgrt289dto8td.apps.googleusercontent.com
+      clientSecret: KmfY78VMwxY6kPpVXZ8gagfG
+      clientScope: https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile
+    resource:
+      userInfoUri: https://www.googleapis.com/plus/v1/people/me?fields=birthday,emails,gender,id,image,name
+      field:
+        oauthId: /id
+        firstname: /name/givenName
+        lastname: /name/familyName
+        gender: /gender
+        birthday: /birthday
+        email: /emails/0/value
+        icon: /image/url
+      format:
+        birthday: yyyy-MM-dd
+        
+ 

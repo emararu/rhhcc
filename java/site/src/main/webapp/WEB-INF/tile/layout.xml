@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" "http://tiles.apache.org/dtds/tiles-config_З_O.dtd">
+<tiles-definitions>
+ 
+    <!-- Части страниц зависящие от действий пользователя -->
+    <definition name="page.body.header.icon.login" template="/WEB-INF/tile/page-body-header-icon-login.jspx"></definition>
+    <definition name="page.body.header.icon.logout" template="/WEB-INF/tile/page-body-header-icon-logout.jspx"></definition>
+    <definition name="page.body.header.login" template="/WEB-INF/tile/page-body-header-login.jspx"></definition>
+    <definition name="page.body.header.logout" template="/WEB-INF/tile/page-body-header-logout.jspx"></definition>
+   
+    <!-- Шаблоны -->
+    <definition name="simple" template="/WEB-INF/tile/page.jspx"></definition>
+        
+    <definition name="main" template="/WEB-INF/tile/page.jspx">
+        <put-attribute name="page.head.js.main" value="/js/rhhcc/main.jspx"/>
+        <put-attribute name="page.body">            
+            <definition template="/WEB-INF/tile/page-body.jspx">
+                <put-attribute name="page.body.header" value="/WEB-INF/tile/page-body-header.jspx"/>
+                <put-attribute name="page.body.header.icon.login" value="page.body.header.icon.login" cascade="true"/>
+                <put-attribute name="page.body.header.icon.logout" value="page.body.header.icon.logout" cascade="true"/>
+                <put-attribute name="page.body.header.login" value="page.body.header.login" cascade="true"/>
+                <put-attribute name="page.body.header.logout" value="page.body.header.logout" cascade="true"/>
+                <put-attribute name="page.body.footer" value="/WEB-INF/tile/page-body-footer.jspx"/>
+            </definition>
+        </put-attribute>        
+    </definition>
+        
+    <!-- Страницы -->     
+    <!-- Тестовая страница -->
+    <definition extends="simple" name="test.test">
+        <put-attribute name="page.head.js.main" value="/js/rhhcc/main.jspx"/>
+        <put-attribute name="page.body" value="/WEB-INF/view/test/test.jspx"/>
+    </definition>
+    
+    <!-- Страница обрабатывающая ответ от сервера предоставляющего внешнюю аутентификацию в случае успешной аутентификации -->
+    <definition extends="simple" name="user.auth.success">
+        <put-attribute name="page.head.js.main" value="/js/rhhcc/user/auth/success.js"/>
+        <put-attribute name="page.body" value="/WEB-INF/view/user/auth/success.jspx"/>
+    </definition>
+    
+    <!-- Страница обрабатывающая ответ от сервера предоставляющего внешнюю аутентификацию в случае отказа в аутентификации -->
+    <definition extends="simple" name="user.auth.failure">
+        <put-attribute name="page.head.js.main" value="/js/rhhcc/user/auth/failure.js"/>
+        <put-attribute name="page.body" value="/WEB-INF/view/user/auth/failure.jspx"/>
+    </definition> 
+    
+    <!-- Главная страница -->   
+    <definition name="page.body.content.index" template="/WEB-INF/view/index.jspx"></definition>
+    <definition extends="main" name="index">
+        <put-attribute name="page.body.content" value="page.body.content.index" cascade="true"/>
+    </definition>
+    
+    <!-- Регистрация нового пользователя -->
+    <definition name="page.body.content.user.auth.create" template="/WEB-INF/view/user/auth/create.jspx"></definition>
+    <definition extends="main" name="user.auth.create">
+        <put-attribute name="page.body.content" value="page.body.content.user.auth.create" cascade="true"/>
+    </definition>
+    
+</tiles-definitions>
