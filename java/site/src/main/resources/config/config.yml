@@ -4,7 +4,7 @@ auth:
     url: https://developers.facebook.com/apps/560679804123261/dashboard/
     client:
       clientId: 560679804123261
-      clientSecret: deb467c2460820dabc407dda1130e312
+      clientSecret: ***
       clientScope: public_profile,user_birthday,email
     resource:
       userInfoUri: https://graph.facebook.com/v2.8/me?fields=id,name,email,birthday,first_name,last_name,gender,picture
@@ -24,7 +24,7 @@ auth:
     url: https://console.developers.google.com/apis/dashboard?project=oauth-rhhcc-ru&duration=PT1H      
     client:
       clientId: 1296914637-ovoklq6ktiun2lsmmpsbgrt289dto8td.apps.googleusercontent.com
-      clientSecret: KmfY78VMwxY6kPpVXZ8gagfG
+      clientSecret: ***
       clientScope: https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile
     resource:
       userInfoUri: https://www.googleapis.com/plus/v1/people/me?fields=birthday,emails,gender,id,image,name
@@ -38,5 +38,14 @@ auth:
         icon: /image/url
       format:
         birthday: yyyy-MM-dd
-        
- 
+
+db:
+  site:
+    dev:
+      driver: com.mysql.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/rhhcc_db
+      initialSize: 1
+      maxActive: 5
+      maxIdle: 2
+      username: ***
+      password: ***
