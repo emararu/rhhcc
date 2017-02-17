@@ -83,7 +83,7 @@ deallocate prepare stmt_drop_app_user
 --------------
 
 --------------
-set @sql_create_schema = concat('create schema ', @SCHEMA_NAME, ' character set utf8 collate utf8_general_ci')
+set @sql_create_schema = concat('create schema ', @SCHEMA_NAME, ' character set utf8mb4 collate utf8mb4_unicode_ci')
 --------------
 
 --------------
