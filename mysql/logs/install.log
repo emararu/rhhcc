@@ -35,6 +35,10 @@ set @APP_USER_PWD = 'rhhcc_app1'
 --------------
 
 --------------
+set global event_scheduler = on
+--------------
+
+--------------
 set @sql_drop_schema = concat('drop schema if exists ', @SCHEMA_NAME)
 --------------
 
