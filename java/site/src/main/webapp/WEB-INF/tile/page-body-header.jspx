@@ -11,24 +11,28 @@
           xmlns:tiles="http://tiles.apache.org/tags-tiles"
           version="2.0">
     
+    <spring:url value="/index" var="url_index"/>
+    
     <jsp:directive.page contentType="text/html;charset=UTF-8" />
     <jsp:output omit-xml-declaration="yes" />
-         
-    <div id="menu-main" class="menu">
-        <ul>
-            <li id="menu-main-logo-item"><img src="/x/img/logo.png"/></li>
-            <li id="menu-main-news-item">НОВОСТИ</li>
-            <li id="menu-main-champ-item">ЧЕМПИОНАТ</li>
-            <li id="menu-main-result-item">РЕЗУЛЬТАТЫ</li>
-            <li id="menu-main-auth-item">
-                <sec:authorize access="!isAuthenticated()"><tiles:insertAttribute name="page.body.header.icon.login"/></sec:authorize>
-                <sec:authorize access="isAuthenticated()"><tiles:insertAttribute name="page.body.header.icon.logout"/></sec:authorize>
-            </li>
-        </ul>
-    </div>
-    <div id="menu-main-auth" class="submenu">
-        <sec:authorize access="!isAuthenticated()"><tiles:insertAttribute name="page.body.header.login"/></sec:authorize>
-        <sec:authorize access="isAuthenticated()"><tiles:insertAttribute name="page.body.header.logout"/></sec:authorize>
+    
+    <div id="menu-box">
+        <div id="menu-main" class="menu">
+            <ul>
+                <li id="menu-main-logo-item"><a href="${url_index}"><img src="/x/img/logo.png"/></a></li>
+                <li id="menu-main-news-item">НОВОСТИ</li>
+                <li id="menu-main-champ-item">ЧЕМПИОНАТ</li>
+                <li id="menu-main-partner-item">ПАРТНЕРЫ</li>
+                <li id="menu-main-auth-item">
+                    <sec:authorize access="!isAuthenticated()"><tiles:insertAttribute name="page.body.header.icon.login"/></sec:authorize>
+                    <sec:authorize access="isAuthenticated()"><tiles:insertAttribute name="page.body.header.icon.logout"/></sec:authorize>
+                </li>
+            </ul>
+        </div>
+        <div id="menu-main-auth" class="submenu">
+            <sec:authorize access="!isAuthenticated()"><tiles:insertAttribute name="page.body.header.login"/></sec:authorize>
+            <sec:authorize access="isAuthenticated()"><tiles:insertAttribute name="page.body.header.logout"/></sec:authorize>
+        </div>
     </div>
             
 </jsp:root>

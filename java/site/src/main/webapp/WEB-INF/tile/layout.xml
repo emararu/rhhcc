@@ -47,6 +47,7 @@
     <!-- Главная страница -->   
     <definition name="page.body.content.index" template="/WEB-INF/view/index.jspx"></definition>
     <definition extends="main" name="index">
+        <put-attribute name="page.body.header.style" value="tall" cascade="true"/>
         <put-attribute name="page.body.content" value="page.body.content.index" cascade="true"/>
     </definition>
     

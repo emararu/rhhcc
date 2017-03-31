@@ -11,7 +11,7 @@
     <jsp:directive.page contentType="application/javascript" pageEncoding="UTF-8"/>
     <jsp:output omit-xml-declaration="yes" />
     
-    <spring:url value="/" var="url_index"/>
+    <spring:url value="/index" var="url_index"/>
     <spring:url value="/user/auth/facebook/login" var="url_login_facebook"/>
     <spring:url value="/user/auth/google/login" var="url_login_google"/>
     <spring:url value="/user/auth/tile-icon-auth" var="url_menu_auth_icon"/>

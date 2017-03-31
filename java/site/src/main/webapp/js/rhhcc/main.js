@@ -8,14 +8,19 @@ $(function() {
                 method: "POST",
                 url: State.url
             }).done(function(data) {
-                $("#content").html(data);
+                if (State.url.indexOf("${url_index}") > -1) {
+                    $("#header").removeClass("header").addClass("header-tall");
+                } else {                    
+                    $("#header").removeClass("header-tall").addClass("header");
+                }     
                 $("div.main").scrollTop(0);
+                $("#content").html(data);
             });
         });
         $("a").click(function(event) {
-            event.preventDefault();
+            event.preventDefault();           
             History.pushState(null, $(this).text(), $(this).attr("href"));
-            hideMenuAuth();
+            hideMenuAuth();    
         });         
     }
     
@@ -23,6 +28,10 @@ $(function() {
         var header = "X-XSRF-TOKEN";
         var token  = $.cookie("XSRF-TOKEN"); 
         xhr.setRequestHeader(header, token);
+    });
+    
+    $(window).resize(function() {
+        hideMenuAuth();    
     });
 });
 
@@ -71,26 +80,17 @@ function hideMenuAuth() {
     $("#menu-main-auth-item").removeClass("selected");
     $("#menu-main-auth").hide();
 }
-/*
- $( window ).resize(function() {
-  $( "#log" ).append( "<div>Handler for .resize() called.</div>" );
-});
- */
 
 $(document).ready(function() {
     
     $("#message").click(function(){ 
         $(this).hide();
     });
-
-    $("#menu-main-logo-item>img").click(function(){ 
-        document.location = "${url_index}";
-    });
     
     $("#menu-main-auth-item").click(function(){ 
-        var top = $("#menu-main").height();
-        var left = $("#menu-main").width()-$("#menu-main-auth").width();
-
+        var top = $("#menu-box").outerHeight();
+        var left = $("#menu-box").outerWidth()-$("#menu-main-auth").outerWidth(true);//-($("#menu-box").outerWidth()-$("#menu-main").outerWidth())/2;
+        
         $("#menu-main-auth").css({"top": top, "left": left});
         $("#menu-main-auth").toggle();                
         $(this).toggleClass("selected");
