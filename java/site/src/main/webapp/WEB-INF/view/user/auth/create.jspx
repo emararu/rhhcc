@@ -22,43 +22,35 @@
     
     <div class="page-form">
         
-        <div class="header1"><span>РЕГИСТРАЦИОННЫЕ ДАННЫЕ</span></div>
-        <div>
-            <div><input type="text" name="login" placeholder="Логин"/></div>
-            <div><span><jsp:text/></span></div>
-        </div>
-        <div>
-            <div><input type="password" name="password" placeholder="Пароль"/></div>
-            <div><span><jsp:text/></span></div>
-        </div>
-        <div>
-            <div><input type="password" name="password_repeat" placeholder="Повтор пароля"/></div>
-            <div><span><jsp:text/></span></div>
-        </div>
-        <div>
-            <div><input type="text" name="firstname" placeholder="Имя"/></div>
-            <div><span><jsp:text/></span></div>
-        </div>
-        <div>
-            <div><input type="text" name="lastname" placeholder="Фамилия"/></div>
-            <div><span><jsp:text/></span></div>
-        </div>
-        <div>
-            <div><input type="text" name="birthday" placeholder="Дата рождения"/></div>
-            <div><span><jsp:text/></span></div>
-        </div>
-        <div>
-            <div><input type="text" name="email" placeholder="E-Mail"/></div>
-            <div><span><jsp:text/></span></div>
-        </div>
-        <div>
-            <div><input type="text" name="phone" placeholder="Телефон"/></div>
-            <div><span><jsp:text/></span></div>
-        </div>
+        <div class="page-header"><span>РЕГИСТРАЦИОННЫЕ ДАННЫЕ</span></div>
+        <div class="description"><span>Регистрация позволит отправлять заявки на участие в этапах чемпионата, участвовать в обсуждении новостей и событий, быть своевременно информированным о непредвиденных изменениях в чемпионате.</span></div>
         
-        <div>
-            <div><div class="submit">Регистрация</div></div>
-            <div><span><jsp:text/></span></div>
+        <div class="center">
+            <div>
+                <div><input type="text" name="login" placeholder="Логин"/></div>
+                <div><jsp:text/></div>
+            </div>
+            <div>
+                <div><input type="password" name="password" placeholder="Пароль"/></div>
+                <div><input type="password" name="password_repeat" placeholder="Повтор пароля"/></div>
+            </div>
+            <div>
+                <div><input type="text" name="firstname" placeholder="Имя"/></div>
+                <div><input type="text" name="lastname" placeholder="Фамилия"/></div>
+            </div>
+            <div>
+                <div><input type="text" name="birthday" placeholder="Дата рождения"/></div>
+                <div><jsp:text/></div>
+            </div>
+            <div>
+                <div><input type="text" name="email" placeholder="E-Mail"/></div>
+                <div><input type="text" name="phone" placeholder="Телефон"/></div>
+            </div>         
+
+            <div>
+                <div><div class="submit">Регистрация</div></div>
+                <div><jsp:text/></div>
+            </div>          
         </div>        
     </div>
 

@@ -118,5 +118,6 @@ $(document).ready(function() {
         });  
         hideMenuAuth();
     });
-    
+            
+    $("[placeholder]").placeholder({ color: 'green' });
 });
