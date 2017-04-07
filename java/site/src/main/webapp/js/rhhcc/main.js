@@ -7,8 +7,8 @@ $(function() {
                 dataType: "html", 
                 method: "POST",
                 url: State.url
-            }).done(function(data) {
-                if (State.url.indexOf(url("/user/auth/tile-menu-auth")) > -1) {
+            }).done(function(data) { 
+                if (State.url.indexOf(cjs.url("/index")) > -1) {
                     $("#header").removeClass("header").addClass("header-tall");
                 } else {                    
                     $("#header").removeClass("header-tall").addClass("header");
@@ -18,7 +18,7 @@ $(function() {
             });
         });
         $("a").click(function(event) {
-            event.preventDefault();           
+            event.preventDefault();
             History.pushState(null, $(this).text(), $(this).attr("href"));
             cjs.hideMenuAuth();    
         });         
