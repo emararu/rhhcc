@@ -8,7 +8,7 @@ $(function() {
                 method: "POST",
                 url: State.url
             }).done(function(data) {
-                if (State.url.indexOf("${url_index}") > -1) {
+                if (State.url.indexOf(url("/user/auth/tile-menu-auth")) > -1) {
                     $("#header").removeClass("header").addClass("header-tall");
                 } else {                    
                     $("#header").removeClass("header-tall").addClass("header");
@@ -20,7 +20,7 @@ $(function() {
         $("a").click(function(event) {
             event.preventDefault();           
             History.pushState(null, $(this).text(), $(this).attr("href"));
-            hideMenuAuth();    
+            cjs.hideMenuAuth();    
         });         
     }
     
@@ -31,57 +31,8 @@ $(function() {
     });
     
     $(window).resize(function() {
-        hideMenuAuth();    
-    });
-});
-
-function windowOpen(url, height, width) {
-    window.open(url, '', 'width='+width+',height='+height+',left='+((window.innerWidth-width)/2)+',top='+((window.innerHeight-height)/2)+',menubar=no,toolbar=no,location=no');
-};
-
-function showMessage(style, text) {    
-    if (text != "") {
-        var message = $("#message");
-        message.removeClass("error ok").addClass(style);
-        message.show();
-        message.html(text); 
-        setTimeout(function(){ message.fadeOut('fast'); }, 2000);    
-    }              
-}
-
-function swapMenuAuth(text) {    
-    $.ajax({
-        dataType: "html", 
-        method: "POST",
-        url: "${url_menu_auth_icon}"
-    }).done(function(icon) {
-        $("#menu-main-auth-item").html(icon);
-    }).fail(function(jqXHR, textStatus, errorThrown) {
-        showMessage("error", jqXHR.status + ": " + errorThrown);
-    }).then(
-        function() {
-            $.ajax({
-                dataType: "html", 
-                method: "POST", 
-                url: "${url_menu_auth}"
-            }).done(function(menu) {
-                $("#menu-main-auth").html(menu); 
-                showMessage("ok", text);
-            }).fail(function(jqXHR, textStatus, errorThrown) {
-                showMessage("error", jqXHR.status + ": " + errorThrown);
-            });
-        },
-        function() {
-        }
-    );    
-}
-
-function hideMenuAuth() {
-    $("#menu-main-auth-item").removeClass("selected");
-    $("#menu-main-auth").hide();
-}
-
-$(document).ready(function() {
+        cjs.hideMenuAuth();    
+    });    
     
     $("#message").click(function(){ 
         $(this).hide();
@@ -97,27 +48,27 @@ $(document).ready(function() {
     });
     
     $("#menu-main-auth").on("click", "#menu-main-auth-fb", function() {
-        windowOpen("${url_login_facebook}", 750, 650);
-        hideMenuAuth();
+        cjs.windowOpen(cjs.url("/user/auth/facebook/login"), 750, 650);
+        cjs.hideMenuAuth();
     });
         
     $("#menu-main-auth").on("click", "#menu-main-auth-google", function() {
-        windowOpen("${url_login_google}", 750, 650);
-        hideMenuAuth();
+        cjs.windowOpen(cjs.url("/user/auth/google/login"), 750, 650);
+        cjs.hideMenuAuth();
     });     
         
     $("#menu-main-auth").on("click", "#menu-main-auth-logout", function() {     
         $.ajax({
             dataType: "html", 
             method: "POST",
-            url: "${url_logout}"
+            url: cjs.url("/logout")
         }).done(function() {
-            swapMenuAuth("Пока!");
+            cjs.swapMenuAuth("Пока!");
         }).fail(function(jqXHR, textStatus, errorThrown) {
-            showMessage("error", jqXHR.status + ": " + errorThrown);
+            cjs.showMessage("error", jqXHR.status + ": " + errorThrown);
         });  
-        hideMenuAuth();
+        cjs.hideMenuAuth();
     });
             
-    $("[placeholder]").placeholder({ color: 'green' });
+    $("[placeholder]").placeholder();
 });

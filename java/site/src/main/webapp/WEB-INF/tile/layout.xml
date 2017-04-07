@@ -12,8 +12,8 @@
     <definition name="simple" template="/WEB-INF/tile/page.jspx"></definition>
         
     <definition name="main" template="/WEB-INF/tile/page.jspx">
-        <put-attribute name="page.head.js.main" value="/js/rhhcc/main.jspx"/>
-        <put-attribute name="page.body">            
+        <put-attribute name="page.head.js.main" value="/js/rhhcc/main.js"/>
+        <put-attribute name="page.body">
             <definition template="/WEB-INF/tile/page-body.jspx">
                 <put-attribute name="page.body.header" value="/WEB-INF/tile/page-body-header.jspx"/>
                 <put-attribute name="page.body.header.icon.login" value="page.body.header.icon.login" cascade="true"/>
@@ -28,7 +28,7 @@
     <!-- Страницы -->     
     <!-- Тестовая страница -->
     <definition extends="simple" name="test.test">
-        <put-attribute name="page.head.js.main" value="/js/rhhcc/main.jspx"/>
+        <put-attribute name="page.head.js.main" value="/js/rhhcc/main.js"/>
         <put-attribute name="page.body" value="/WEB-INF/view/test/test.jspx"/>
     </definition>
     

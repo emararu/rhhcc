@@ -15,14 +15,14 @@
     
     <c:set var="path_js_main"><tiles:getAsString name="page.head.js.main"/></c:set>
     
+    <spring:url value="/" var="url"/>
     <spring:url value="/js/jquery/jquery-3.1.1.min.js" var="url_js_jquery"/>
     <spring:url value="/js/jquery/jquery.cookie-1.4.1.js" var="url_js_jquery_cookie"/>
     <spring:url value="/js/jquery/jquery.history-1.8.20.min.js" var="url_js_jquery_history"/> 
-    <spring:url value="/js/jquery/jquery.placeholder-2.3.1.min.js" var="url_js_jquery_placeholder"/>   
+    <spring:url value="/js/jquery/jquery.placeholder-2.3.1.min.js" var="url_js_jquery_placeholder"/>  
+    <spring:url value="/js/rhhcc/common/commonJS.js" var="url_js_common"/>  
     <spring:url value="${path_js_main}" var="url_js_main"/>
     <spring:url value="/css/main.css" var="url_css_main"/>
-    <spring:url value="/user/auth/facebook/login" var="url_login_facebook"/>
-    <spring:url value="/user/auth/google/login" var="url_login_google"/>
     
     <head>
         <title>Title</title>
@@ -30,7 +30,9 @@
         <script src="${url_js_jquery_cookie}" type="text/javascript"><jsp:text/></script> 
         <script src="${url_js_jquery_history}" type="text/javascript"><jsp:text/></script> 
         <script src="${url_js_jquery_placeholder}" type="text/javascript"><jsp:text/></script> 
-        <script src="${url_js_main}" type="text/javascript"><jsp:text/></script>     
+        <script src="${url_js_common}" type="text/javascript"><jsp:text/></script>
+        <script src="${url_js_main}" type="text/javascript"><jsp:text/></script>
+        <script type="text/javascript">var cjs = CommonJS("${url}");</script>
         <link rel="stylesheet" href="${url_css_main}"/>
     </head>
     

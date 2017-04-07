@@ -9,9 +9,10 @@
           version="2.0">
     
     <spring:url value="/index" var="url_index"/>
+    <spring:url value="/js/rhhcc/user/auth/create.js" var="url_js_auth_create"/>
     
     <jsp:directive.page contentType="text/html;charset=UTF-8" />
-    <jsp:output omit-xml-declaration="yes" />
+    <jsp:output omit-xml-declaration="yes" /> 
 
     <div id="page-path">
         <ul>
@@ -27,31 +28,33 @@
         
         <div class="center">
             <div>
-                <div><input type="text" name="login" placeholder="Логин"/></div>
+                <div><input type="text" id="login" placeholder="Логин"/></div>
                 <div><jsp:text/></div>
             </div>
             <div>
-                <div><input type="password" name="password" placeholder="Пароль"/></div>
-                <div><input type="password" name="password_repeat" placeholder="Повтор пароля"/></div>
+                <div><input type="password" id="password" placeholder="Пароль"/></div>
+                <div><input type="password" id="password_repeat" placeholder="Повтор пароля"/></div>
             </div>
             <div>
-                <div><input type="text" name="firstname" placeholder="Имя"/></div>
-                <div><input type="text" name="lastname" placeholder="Фамилия"/></div>
+                <div><input type="text" id="firstname" placeholder="Имя"/></div>
+                <div><input type="text" id="lastname" placeholder="Фамилия"/></div>
             </div>
             <div>
-                <div><input type="text" name="birthday" placeholder="Дата рождения"/></div>
+                <div><input type="text" id="birthday" placeholder="Дата рождения"/></div>
                 <div><jsp:text/></div>
             </div>
             <div>
-                <div><input type="text" name="email" placeholder="E-Mail"/></div>
-                <div><input type="text" name="phone" placeholder="Телефон"/></div>
+                <div><input type="text" id="email" placeholder="E-Mail"/></div>
+                <div><input type="text" id="phone" placeholder="Телефон"/></div>
             </div>         
 
             <div>
-                <div><div class="submit">Регистрация</div></div>
+                <div><div id="create" class="submit">Регистрация</div></div>
                 <div><jsp:text/></div>
             </div>          
         </div>        
     </div>
+    
+    <script src="${url_js_auth_create}" type="text/javascript"><jsp:text/></script> 
 
 </jsp:root>

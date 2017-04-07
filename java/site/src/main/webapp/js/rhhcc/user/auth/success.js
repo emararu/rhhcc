@@ -1,4 +1,4 @@
 $(document).ready(function() {
-    window.opener.swapMenuAuth($("input[type=hidden]").val());
+    window.opener.cjs.swapMenuAuth($("input[type=hidden]").val());
     window.close();
 });
