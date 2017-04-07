@@ -17,7 +17,8 @@ $(function() {
                 $("#content").html(data);
             });
         });
-        $("a").click(function(event) {
+        
+        $(document).on("click", "a", function(event) {
             event.preventDefault();
             History.pushState(null, $(this).text(), $(this).attr("href"));
             cjs.hideMenuAuth();    
