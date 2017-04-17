@@ -51,10 +51,16 @@
         <put-attribute name="page.body.content" value="page.body.content.index" cascade="true"/>
     </definition>
     
+    <!-- Универсальная страница результата обработки запроса пользователя -->
+    <definition name="page.body.content.complete" template="/WEB-INF/view/complete.jspx"></definition>
+    <definition extends="main" name="complete">
+        <put-attribute name="page.body.content" value="page.body.content.complete" cascade="true"/>
+    </definition>
+    
     <!-- Регистрация нового пользователя -->
-    <definition name="page.body.content.user.auth.create" template="/WEB-INF/view/user/auth/create.jspx"></definition>
-    <definition extends="main" name="user.auth.create">
-        <put-attribute name="page.body.content" value="page.body.content.user.auth.create" cascade="true"/>
+    <definition name="page.body.content.user.register" template="/WEB-INF/view/user/register.jspx"></definition>
+    <definition extends="main" name="user.register">
+        <put-attribute name="page.body.content" value="page.body.content.user.register" cascade="true"/>
     </definition>
     
 </tiles-definitions>

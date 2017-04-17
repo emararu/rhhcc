@@ -18,7 +18,7 @@ var commonJSPrototype = {
         window.open(url, '', 'width='+width+',height='+height+',left='+((window.innerWidth-width)/2)+',top='+((window.innerHeight-height)/2)+',menubar=no,toolbar=no,location=no');
     },
         
-    showMessage: function(style, text) {    
+    showMessage: function(style, text) {
         if (text != "") {
             var message = $("#message");
             message.removeClass("error ok").addClass(style);
@@ -29,26 +29,27 @@ var commonJSPrototype = {
     },
     
 
-    swapMenuAuth: function(text) {    
+    swapMenuAuth: function(text) {   
+        var m = this;
         $.ajax({
             dataType: "html", 
             method: "POST",
-            url: this.url("/user/auth/tile-icon-auth")
+            url: m.url("/user/auth/tile-icon-auth")
         }).done(function(icon) {
             $("#menu-main-auth-item").html(icon);
         }).fail(function(jqXHR, textStatus, errorThrown) {
-            this.showMessage("error", jqXHR.status + ": " + errorThrown);
+            m.showMessage("error", jqXHR.status + ": " + errorThrown);
         }).then(
             function() {
                 $.ajax({
                     dataType: "html", 
                     method: "POST", 
-                    url: cjs.url("/user/auth/tile-menu-auth")
+                    url: m.url("/user/auth/tile-menu-auth")
                 }).done(function(menu) {
                     $("#menu-main-auth").html(menu); 
-                    this.showMessage("ok", text);
+                    m.showMessage("ok", text);
                 }).fail(function(jqXHR, textStatus, errorThrown) {
-                    this.showMessage("error", jqXHR.status + ": " + errorThrown);
+                    m.showMessage("error", jqXHR.status + ": " + errorThrown);
                 });
             },
             function() {
@@ -61,22 +62,54 @@ var commonJSPrototype = {
         $("#menu-main-auth").hide();
     },
     
-    getFormData: function(url, field, mandatory) {
+    checkFormMandatory: function(field) {
         var check = 0;
-        for (var m = 0; m < mandatory.length; m++) {
-            var f = $("#"+mandatory[m]);
-            alert(mandatory[m] + "=" + f.val() + ", " + f.attr("placeholder"));
+        for (var i = 0; i < field.length; i++) {
+                var f = $("[name='" + field[i] + "']");
             if (f.val() == "") {
                 f.addClass("red");
                 check++;
             }
-        }    
+        }
         if (check == 0) {
-
+            return true;
         } else {
             this.showMessage("error", "Не все обязательные поля заполнены!");
+            return false;
+        } 
+    },
+    
+    sendFormData: function(form, field, text) { 
+        var a = form.attr("action");
+        var m = this;
+        
+        if (History.enabled) {
+            var d = {}; 
+            for (var i = 0; i < field.length; i++) {
+                var f = $("[name='" + field[i] + "']");
+                if (f.val() != "") {
+                    d[field[i]] = f.val();
+                }
+            }            
+            console.log(JSON.stringify(d));            
+            $.ajax({
+                contentType: "application/json; charset=utf-8",
+                dataType: "html",
+                mimeType: "application/json",
+                data: JSON.stringify(d),
+                method: "POST", 
+                url: a
+            }).done(function(data) {
+                History.pushState(null, text, m.url("/complete"));
+                $("div.main").scrollTop(0);
+                $("#content").html(data);
+            }).fail(function(jqXHR, textStatus, errorThrown) {
+                m.showMessage("error", jqXHR.status + ": " + errorThrown);
+            });
+        } else {
+            form.attr("action", a+"/submit?_csrf=" + $.cookie("XSRF-TOKEN")).submit();
         }
-    }    
+    }   
 };
 
 function CommonJS(path) {

@@ -28,4 +28,13 @@ public class CommonController {
         return "page.body.content.index";
     }
     
+    @RequestMapping(value = "/complete", method = { RequestMethod.GET })
+    public String complete() {
+        return "complete";
+    }
+    
+    @RequestMapping(value = "/complete", method = { RequestMethod.POST })
+    public String completeTile() {
+        return "page.body.content.complete";
+    }
 }

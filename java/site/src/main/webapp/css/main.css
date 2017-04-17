@@ -35,6 +35,7 @@ input {
     border: none;
     font-size: 12px;
     line-height: 16px;
+    height: 26px;
     padding: 5px;
     box-sizing: border-box;
     background-color: #e9e9e9;
@@ -348,22 +349,12 @@ div.header-tall{
     margin: auto;
 } 
 
-div.page-header{
-    display: inline-block;
-    padding: 40px 0px 45px 0px;
-    box-sizing: border-box;
-}    
-div.page-header>span{
+#page-path {
     position: relative;
-    font-size: 14px;
-    font-weight: bold;
-}
-   
-div.description {
-    padding: 0px 0px 30px 0px;
+    width: 100%;
+    padding: 15px 15px 15px 15px;
     box-sizing: border-box;
 }
-
 #page-path li {
     position: relative;
     display: table-cell; 
@@ -380,29 +371,41 @@ div.description {
     color: #aaaaaa;
 }
 
-#content>div,
-#content>div>div {
+div.page-header{ 
     position: relative;
-    width: 100%;
+    width: 100%; 
+    display: inline-block;
+    padding: 55px 15px 45px 15px;
+    box-sizing: border-box;
+}    
+div.page-header>span{
+    position: relative;
+    font-size: 14px;
+    font-weight: bold;
 }
-#content>div {
-    padding: 15px 15px 15px 15px;
+   
+div.description { 
+    position: relative;
+    width: 100%; 
+    padding: 0px 15px 30px 15px;
     box-sizing: border-box;
 }
 
-#content>div.page-form>div.center {
+div.page-form>div.center {
+    position: relative;
+    width: 100%;
     min-width: 290px;
     max-width: 660px;
     margin: auto;
     text-align: center;
 }
 
-#content>div.page-form>div.center>div {
+div.page-form>div.center>div {
     font-size: 0px;
     margin-right: -5px;
 }
 
-#content>div.page-form>div.center>div>div {
+div.page-form>div.center>div>div {
     position: relative;
     display: inline-block;
     font-size: 12px;
@@ -413,15 +416,15 @@ div.description {
     padding-right: 5px;
     box-sizing: border-box;
 }
-#content>div.page-form>div.center>div>div:not(:empty) {
+div.page-form>div.center>div>div:not(:empty) {
     padding-bottom: 5px;
 }
 
-#content>div.page-form>div.center>div>div>input {
+div.page-form>div.center>div>div>input {
     width: 100%;
 }
 
-#content>div.page-form>div.center>div>div>div.submit {
+div.page-form>div.center>div>div>div.submit {
     width: 100%;
     margin: 30px 0px 10px 0px;
 }

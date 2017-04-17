@@ -8,7 +8,7 @@
           xmlns:spring="http://www.springframework.org/tags"
           version="2.0">
     
-    <spring:url value="/user/auth/create" var="url_create"/>
+    <spring:url value="/user/register" var="url_register"/>
 
     <jsp:directive.page contentType="text/html" pageEncoding="UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
@@ -39,7 +39,7 @@
                 <div class="submit">Войти</div>
                 <div>
                     <ul>
-                        <li><a href="${url_create}">Регистрация</a></li><li><a href="">Забыли пароль?</a></li>
+                        <li><a href="${url_register}">Регистрация</a></li><li><a href="">Забыли пароль?</a></li>
                     </ul>
                 </div>
             </div>
