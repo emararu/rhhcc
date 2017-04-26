@@ -1,7 +1,6 @@
 package com.rhhcc.user.data;
 
 import com.rhhcc.user.data.type.Gender;
-import com.rhhcc.user.data.type.Visibility;
 
 import org.joda.time.DateTime;
 
@@ -19,7 +18,21 @@ public interface User {
      * @return Текущий пользователь
      */
     public User setId(long id);
-        
+    
+    /**
+     * Устанавливает логин пользователя
+     * @param login Логин пользователя
+     * @return Текущий пользователь
+     */
+    public User setLogin(String login);
+    
+    /**
+     * Устанавливает пароль пользователя
+     * @param password Пароль пользователя
+     * @return Текущий пользователь
+     */
+    public User setPassword(String password);
+    
     /**
      * Устанавливает уникальный ID пользователя предоставленный внешней аутентификацией
      * @param id Уникальный идентификатор пользователя
@@ -61,43 +74,23 @@ public interface User {
      * @param format   Формат даты
      * @return Текущий пользователь
      */
-    public User setBirthday(String birthday, String format);
-    
-    /**
-     * Устанавливает видимость даты рождения пользователя другим пользователям
-     * @param visibility {@see UserDataVisibilityState}
-     * @return Текущий пользователь
-     */
-    public User setIsBirthday(Visibility visibility);
-    
+    public User setBirthday(String birthday);
+    public User setBirthdayF(String birthday, String format);
+        
     /**
      * Устанавливает EMail пользователя
      * @param email EMail пользователя
      * @return Текущий пользователь
      */
     public User setEmail(String email);
-    
-    /**
-     * Устанавливает видимость EMail пользователя другим пользователям
-     * @param visibility {@see UserDataVisibilityState}
-     * @return Текущий пользователь
-     */
-    public User setIsEmail(Visibility visibility);
-    
+        
     /**
      * Устанавливает контактный телефон пользователя
      * @param phone Контактный телефон пользователя
      * @return Текущий пользователь
      */
     public User setPhone(String phone);
-    
-    /**
-     * Устанавливает видимость телефона пользователя другим пользователям
-     * @param visibility {@see UserDataVisibilityState}
-     * @return Текущий пользователь
-     */
-    public User setIsPhone(Visibility visibility);
-    
+        
     /**
      * Устанавливает путь к аватарке пользователя
      * @param path Путь к аватарке пользователя
@@ -111,6 +104,18 @@ public interface User {
      * @return Уникальный идентификатор пользователя
      */
     public long getId();
+    
+    /**
+     * Возвращает логин пользователя
+     * @return Логин пользователя
+     */
+    public String getLogin();
+    
+    /**
+     * Возвращает пароль пользователя
+     * @return Пароль пользователя
+     */
+    public String getPassword();
             
     /**
      * Возвращает уникальный ID пользователя предоставленный внешней аутентификацией
@@ -147,37 +152,19 @@ public interface User {
      * @return Дата рождения пользователя
      */
     public DateTime getBirthday();
-    
-    /**
-     * Возвращает видимость даты рождения пользователя другим пользователям
-     * @return {@see UserDataVisibilityState}
-     */
-    public Visibility getIsBirthday();
-    
+        
     /**
      * Возвращает EMail пользователя
      * @return EMail пользователя
      */
     public String getEmail();
-    
-    /**
-     * Возвращает видимость EMail пользователя другим пользователям
-     * @return {@see UserDataVisibilityState}
-     */
-    public Visibility getIsEmail();
-    
+        
     /**
      * Возвращает контактный телефон пользователя
      * @return Контактный телефон пользователя
      */
     public String getPhone();
-    
-    /**
-     * Возвращает видимость телефона пользователя другим пользователям
-     * @return {@see UserDataVisibilityState}
-     */
-    public Visibility getIsPhone();
-    
+        
     /**
      * Возвращает путь к аватарке пользователя
      * @return Путь к аватарке пользователя

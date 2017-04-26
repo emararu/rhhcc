@@ -42,6 +42,13 @@
                     <div><input type="text" name="lastname" placeholder="Фамилия"/></div>
                 </div>
                 <div>
+                    <div>
+                        <label><input type="radio" name="gender" value="male"/><span>Мужской</span></label>
+                        <label><input type="radio" name="gender" value="female"/><span>Женский</span></label>
+                    </div>
+                    <div><jsp:text/></div>
+                </div>
+                <div>
                     <div><input type="text" name="birthday" placeholder="Дата рождения"/></div>
                     <div><jsp:text/></div>
                 </div>

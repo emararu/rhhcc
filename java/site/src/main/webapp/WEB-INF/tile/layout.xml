@@ -28,6 +28,7 @@
     <!-- Страницы -->     
     <!-- Тестовая страница -->
     <definition extends="simple" name="test.test">
+        <put-attribute name="page.head.title" value="RHHCC | Тест"/>
         <put-attribute name="page.head.js.main" value="/js/rhhcc/main.js"/>
         <put-attribute name="page.body" value="/WEB-INF/view/test/test.jspx"/>
     </definition>
@@ -47,6 +48,7 @@
     <!-- Главная страница -->   
     <definition name="page.body.content.index" template="/WEB-INF/view/index.jspx"></definition>
     <definition extends="main" name="index">
+        <put-attribute name="page.head.title" value="RHHCC | Главная"/>
         <put-attribute name="page.body.header.style" value="tall" cascade="true"/>
         <put-attribute name="page.body.content" value="page.body.content.index" cascade="true"/>
     </definition>
@@ -54,12 +56,14 @@
     <!-- Универсальная страница результата обработки запроса пользователя -->
     <definition name="page.body.content.complete" template="/WEB-INF/view/complete.jspx"></definition>
     <definition extends="main" name="complete">
+        <put-attribute name="page.head.title" value="RHHCC | Выполнено"/>
         <put-attribute name="page.body.content" value="page.body.content.complete" cascade="true"/>
     </definition>
     
     <!-- Регистрация нового пользователя -->
     <definition name="page.body.content.user.register" template="/WEB-INF/view/user/register.jspx"></definition>
     <definition extends="main" name="user.register">
+        <put-attribute name="page.head.title" value="RHHCC | Регистрация"/>
         <put-attribute name="page.body.content" value="page.body.content.user.register" cascade="true"/>
     </definition>
     

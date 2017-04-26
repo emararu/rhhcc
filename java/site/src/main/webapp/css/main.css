@@ -31,7 +31,8 @@ img {
     border: none;
 }
 
-input {
+input[type=text],
+input[type=password]{
     border: none;
     font-size: 12px;
     line-height: 16px;
@@ -39,6 +40,17 @@ input {
     padding: 5px;
     box-sizing: border-box;
     background-color: #e9e9e9;
+}
+
+input[type=radio] {
+    width: 13px;
+    height: 13px;
+    vertical-align: middle;
+    position: relative;
+    padding: 0px;
+    margin: 0px;
+    top: -2px;
+    overflow: hidden;    
 }
 
 div.submit {
@@ -402,7 +414,9 @@ div.page-form>div.center {
 
 div.page-form>div.center>div {
     font-size: 0px;
-    margin-right: -5px;
+    margin-left: -5px;  
+    padding: 0px 15px 0px 15px;
+    box-sizing: border-box;
 }
 
 div.page-form>div.center>div>div {
@@ -411,17 +425,26 @@ div.page-form>div.center>div>div {
     font-size: 12px;
     width: 100%;
     min-width: 290px;
-    max-width: 320px;
-    vertical-align: top;
-    padding-right: 5px;
+    max-width: 310px;
+    vertical-align: top;    
+    padding-left: 5px;
     box-sizing: border-box;
 }
 div.page-form>div.center>div>div:not(:empty) {
     padding-bottom: 5px;
 }
 
-div.page-form>div.center>div>div>input {
+div.page-form>div.center>div>div>input:not([type=radio]) {
     width: 100%;
+}
+
+div.page-form>div.center>div>div>label {
+    display: inline-block;
+    padding: 5px;
+}
+
+div.page-form>div.center>div>div>label>span {
+    padding-left: 5px;
 }
 
 div.page-form>div.center>div>div>div.submit {

@@ -79,7 +79,7 @@ var commonJSPrototype = {
         } 
     },
     
-    sendFormData: function(form, field, text) { 
+    sendFormData: function(form, field) { 
         var a = form.attr("action");
         var m = this;
         
@@ -94,15 +94,17 @@ var commonJSPrototype = {
             console.log(JSON.stringify(d));            
             $.ajax({
                 contentType: "application/json; charset=utf-8",
-                dataType: "html",
+                dataType: "json",
                 mimeType: "application/json",
                 data: JSON.stringify(d),
                 method: "POST", 
                 url: a
             }).done(function(data) {
-                History.pushState(null, text, m.url("/complete"));
-                $("div.main").scrollTop(0);
-                $("#content").html(data);
+                if (data.result >= 0) {
+                    History.pushState(null, "RHHCC | Выполнено", m.url("/complete/"+data.complete));
+                } else {
+                    m.showMessage("error", data.error);
+                }
             }).fail(function(jqXHR, textStatus, errorThrown) {
                 m.showMessage("error", jqXHR.status + ": " + errorThrown);
             });

@@ -19,7 +19,7 @@
     <div id="menu-box">
         <div id="menu-main" class="menu">
             <ul>
-                <li id="menu-main-logo-item"><a href="${url_index}"><img src="/x/img/logo.png"/></a></li>
+                <li id="menu-main-logo-item"><a href="${url_index}" title="Главная"><img src="/x/img/logo.png"/></a></li>
                 <li id="menu-main-news-item">НОВОСТИ</li>
                 <li id="menu-main-champ-item">ЧЕМПИОНАТ</li>
                 <li id="menu-main-partner-item">ПАРТНЕРЫ</li>

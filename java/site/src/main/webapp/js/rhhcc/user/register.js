@@ -9,10 +9,8 @@ $(function() {
     $("#create").click(function() {   
         if (cjs.checkFormMandatory(["login", "password"])) {
             cjs.sendFormData(
-                $("#register_do"), 
-                ["firstname", "lastname", "email", "phone"], 
-                //["login", "password", "firstname", "lastname", "birthday", "email", "phone"], 
-                "textMessage"
+                $("#register_do"),
+                ["login", "password", "firstname", "lastname", "gender", "birthday", "email", "phone"]
             );
         }
     });  

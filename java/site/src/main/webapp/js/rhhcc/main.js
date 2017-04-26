@@ -1,8 +1,9 @@
 $(function() {
-
+alert("load");
     if (History.enabled) {        
         History.Adapter.bind(window, "statechange", function() { 
             var State = History.getState();
+            //alert(State.data.);        
             $.ajax({
                 dataType: "html", 
                 method: "POST",
@@ -12,17 +13,18 @@ $(function() {
                     $("#header").removeClass("header").addClass("header-tall");
                 } else {                    
                     $("#header").removeClass("header-tall").addClass("header");
-                }     
+                }
                 $("div.main").scrollTop(0);
-                $("#content").html(data);
+                $("#content").html(data);        
             });
         });
         
         $(document).on("click", "a", function(event) {
             event.preventDefault();
-            History.pushState(null, $(this).text(), $(this).attr("href"));
+            var h = ($(this).text() ? $(this).text() : $(this).attr("title")).toLowerCase();
+            History.pushState(null, "RHHCC | " + h.charAt(0).toUpperCase() + h.substr(1), $(this).attr("href"));
             cjs.hideMenuAuth();    
-        });         
+        });
     }
     
     $(document).ajaxSend(function(e, xhr, options) {

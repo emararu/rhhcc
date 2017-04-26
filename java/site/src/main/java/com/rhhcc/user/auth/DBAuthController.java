@@ -4,6 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.rhhcc.user.data.UserData;
 
@@ -35,9 +36,10 @@ public class DBAuthController {
      * Запрос на регистрацию в системе при полной поддержке браузером html5
      */
     @RequestMapping(value = { "/register/do" }, method = { RequestMethod.POST } )
+    @ResponseBody
     public String doRegister(@RequestBody final UserData user) {
         log.info("[Register]" + user.toString());
-        return "page.body.content.complete";
+        return "{ \"result\": \"0\", \"complete\": \"register\", \"error\": \"\" }";
     }
     
     /**
@@ -46,7 +48,7 @@ public class DBAuthController {
     @RequestMapping(value = { "/register/do/submit" }, method = { RequestMethod.POST } )
     public String doSubmitRegister(final UserData user) {
         log.info("[Register]" + user.toString());
-        return "complete";
+        return "forward:/complete/register/submit";
     }
     
 }

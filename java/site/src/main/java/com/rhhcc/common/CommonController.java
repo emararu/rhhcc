@@ -1,6 +1,10 @@
 package com.rhhcc.common;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -28,13 +32,9 @@ public class CommonController {
         return "page.body.content.index";
     }
     
-    @RequestMapping(value = "/complete", method = { RequestMethod.GET })
-    public String complete() {
-        return "complete";
-    }
-    
-    @RequestMapping(value = "/complete", method = { RequestMethod.POST })
-    public String completeTile() {
-        return "page.body.content.complete";
+    @RequestMapping(value = { "/complete/{type}", "/complete/{type}/{submit}" }, method = { RequestMethod.POST })
+    public String complete(@PathVariable String type, @PathVariable Optional<String> submit, Model uiModel) {
+        uiModel.addAttribute("complete_type", type);
+        return (submit.isPresent() ? "complete" : "page.body.content.complete");
     }
 }

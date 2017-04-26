@@ -111,7 +111,7 @@ public class OAuthSocialFacebook extends OAuthSocial implements OAuth {
                        .setFirstname(jn.at(this.userFirstname).asText())
                        .setLastname (jn.at(this.userLastname ).asText())
                        .setGender   (jn.at(this.userGender   ).asText())
-                       .setBirthday (jn.at(this.userBirthday ).asText(), this.userFormatBirthday)
+                       .setBirthdayF(jn.at(this.userBirthday ).asText(), this.userFormatBirthday)
                        .setEmail    (jn.at(this.userEMail    ).asText())
                        .setIcon     (jn.at(this.userIcon     ).asText());
     
