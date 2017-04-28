@@ -21,8 +21,8 @@ alert("load");
         
         $(document).on("click", "a", function(event) {
             event.preventDefault();
-            var h = ($(this).text() ? $(this).text() : $(this).attr("title")).toLowerCase();
-            History.pushState(null, "RHHCC | " + h.charAt(0).toUpperCase() + h.substr(1), $(this).attr("href"));
+            var h = ($(this).text() ? $(this).text() : $(this).prop("title")).toLowerCase();
+            History.pushState(null, "RHHCC | " + h.charAt(0).toUpperCase() + h.substr(1), $(this).prop("href"));
             cjs.hideMenuAuth();    
         });
     }

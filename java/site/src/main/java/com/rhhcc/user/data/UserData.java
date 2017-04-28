@@ -62,7 +62,7 @@ public class UserData implements Serializable, User{
     }
     @Override 
     public User setBirthday(String birthday){ 
-        setBirthdayF(birthday, "DD.MM.YYYY");
+        setBirthdayF(birthday, "dd.MM.yyyy");
         return this; 
     }
     

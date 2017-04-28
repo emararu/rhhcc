@@ -24,7 +24,7 @@ var commonJSPrototype = {
             message.removeClass("error ok").addClass(style);
             message.show();
             message.html(text); 
-            setTimeout(function(){ message.fadeOut('fast'); }, 2000);    
+            setTimeout(function(){ message.fadeOut('fast'); }, 5000);    
         }              
     },
     
@@ -62,13 +62,50 @@ var commonJSPrototype = {
         $("#menu-main-auth").hide();
     },
     
-    checkFormMandatory: function(field) {
+    checkFormatDate: function(fields) {
         var check = 0;
-        for (var i = 0; i < field.length; i++) {
-                var f = $("[name='" + field[i] + "']");
-            if (f.val() == "") {
-                f.addClass("red");
-                check++;
+        for (var i = 0; i < fields.length; i++) {   
+            var f = $("[name='" + fields[i] + "']");
+            var v = f.val();
+            if (v != "") {
+                if (/^(\d{2}\.){2}\d{4}$/i.test(v)) {            
+                    var p = v.split(".");        
+                    var d = Date.parse(p[2] + "-" + p[1] + "-" + p[0]);   
+                    if (isNaN(d)) {
+                        f.addClass("red");
+                        check++;
+                    }
+                } else {
+                    f.addClass("red");
+                    check++;
+                }
+            }
+        }        
+        if (check == 0) {
+            return true;
+        } else {
+            this.showMessage("error", "Неправильный формат даты(используйте ДД.MM.ГГГГ).");
+            return false;
+        } 
+    },
+    
+    checkFormMandatory: function(fields) {
+        var check = 0;
+        for (var i = 0; i < fields.length; i++) {
+            var f = $("[name='" + fields[i] + "']");
+            if (f.prop("type").toLowerCase() != "radio") {
+                f.removeClass("red");
+                if (f.val() == "") {
+                    f.addClass("red");
+                    check++;
+                }
+            } else {
+                var r = f.parent().find("span");
+                r.removeClass("red");
+                if (!f.is(":checked")) {
+                    r.addClass("red")
+                    check++;
+                }
             }
         }
         if (check == 0) {
@@ -79,16 +116,19 @@ var commonJSPrototype = {
         } 
     },
     
-    sendFormData: function(form, field) { 
-        var a = form.attr("action");
+    sendFormData: function(form, fields) { 
+        var a = form.prop("action");
         var m = this;
         
         if (History.enabled) {
             var d = {}; 
-            for (var i = 0; i < field.length; i++) {
-                var f = $("[name='" + field[i] + "']");
+            for (var i = 0; i < fields.length; i++) {
+                var f = $("[name='" + fields[i] + "']");
+                if (f.prop("type").toLowerCase() == "radio") {
+                   f = f.filter(":checked");
+                }
                 if (f.val() != "") {
-                    d[field[i]] = f.val();
+                    d[fields[i]] = f.val();
                 }
             }            
             console.log(JSON.stringify(d));            
@@ -109,7 +149,7 @@ var commonJSPrototype = {
                 m.showMessage("error", jqXHR.status + ": " + errorThrown);
             });
         } else {
-            form.attr("action", a+"/submit?_csrf=" + $.cookie("XSRF-TOKEN")).submit();
+            form.prop("action", a+"/submit?_csrf=" + $.cookie("XSRF-TOKEN")).submit();
         }
     }   
 };
