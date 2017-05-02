@@ -1,12 +1,18 @@
 package com.rhhcc.user.auth;
 
+import java.sql.SQLException;
+
+import com.rhhcc.user.data.UserData;
+import com.rhhcc.user.data.Manage;
+import com.rhhcc.user.data.ManageUser;
+        
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.rhhcc.user.data.UserData;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,8 +25,11 @@ import org.slf4j.LoggerFactory;
 @Controller
 public class DBAuthController {
     
-    private final Logger log = LoggerFactory.getLogger(DBAuthController.class);
-     
+    private final Logger log = LoggerFactory.getLogger(DBAuthController.class);    
+    
+    @Autowired
+    @Qualifier("manageUser")
+    Manage mUser;
     
     @RequestMapping(value = "/register", method = { RequestMethod.GET })
     public String register() {
@@ -39,6 +48,11 @@ public class DBAuthController {
     @ResponseBody
     public String doRegister(@RequestBody final UserData user) {
         log.info("[Register]" + user.toString());
+        try {
+            long r = mUser.create(user);
+        } catch (SQLException e) {
+            log.info("Error:"+e.getMessage());
+        }
         return "{ \"result\": \"0\", \"complete\": \"register\", \"error\": \"\" }";
     }
     

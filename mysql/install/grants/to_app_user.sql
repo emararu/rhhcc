@@ -6,3 +6,8 @@ set @sql_grant_app_user = concat('grant execute, select on ', @SCHEMA_NAME, '.',
 prepare stmt_grant_app_user from @sql_grant_app_user;
 execute stmt_grant_app_user;
 deallocate prepare stmt_grant_app_user;
+
+set @sql_grant_app_user = concat('grant select on mysql.proc to ', @APP_USER_NAME, '@', @DBHOST);
+prepare stmt_grant_app_user from @sql_grant_app_user;
+execute stmt_grant_app_user;
+deallocate prepare stmt_grant_app_user;

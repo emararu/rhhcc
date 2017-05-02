@@ -1,5 +1,7 @@
 package com.rhhcc.user.data;
 
+import java.sql.SQLException;
+
 /**
  * Интерфейс управления данными аккаунта пользователя
  * 
@@ -13,9 +15,9 @@ public interface Manage {
      * @param user Данные пользователя
      * @return Результат создания пользователя
      */
-    public long create(User user);
+    public long create(User user) throws SQLException;
     
     
-    public User get();
+    // public User get();
     
 }

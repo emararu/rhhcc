@@ -73,6 +73,7 @@
     <!-- Включение сканирования пакетов для поиска аннотаций -->  
     <context:component-scan base-package="com.rhhcc.common"/>  
     <context:component-scan base-package="com.rhhcc.user.auth"/> 
+    <context:component-scan base-package="com.rhhcc.user.data"/> 
     <context:component-scan base-package="com.rhhcc.test"/>
     
 </beans>

@@ -1,5 +1,5 @@
 $(function() {
-alert("load");
+// alert("load");
     if (History.enabled) {        
         History.Adapter.bind(window, "statechange", function() { 
             var State = History.getState();
