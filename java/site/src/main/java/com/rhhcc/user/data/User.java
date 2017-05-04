@@ -1,8 +1,7 @@
 package com.rhhcc.user.data;
 
 import com.rhhcc.user.data.type.Gender;
-
-import org.joda.time.DateTime;
+import java.time.LocalDate;
 
 /**
  * Интерфейс описывающий пользователя в системе
@@ -74,7 +73,7 @@ public interface User {
      * @param format   Формат даты
      * @return Текущий пользователь
      */
-    public User setBirthday(String birthday);
+    public User setBirthday(LocalDate birthday);
     public User setBirthdayF(String birthday, String format);
         
     /**
@@ -151,7 +150,7 @@ public interface User {
      * Возвращает число, месяц, год рождения пользователя
      * @return Дата рождения пользователя
      */
-    public DateTime getBirthday();
+    public LocalDate getBirthday();
         
     /**
      * Возвращает EMail пользователя

@@ -1,10 +1,10 @@
 package com.rhhcc.user.data;
 
 import java.io.Serializable;
-
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.*;
 
 import org.apache.commons.dbcp.BasicDataSource;
 
@@ -36,27 +36,40 @@ public class ManageUser implements Serializable, Manage {
     public long create(User user) throws SQLException {
         
         Connection con = ds.getConnection();   
-        
+
         // Регистрация пользователя в системе
-        // String sql = "{ call usr_register(:p_login, :p_password, :p_firstname, :p_lastname, :p_logo_url, :p_gender, :p_birthday, :p_email, :p_phone, :p_actor_id, :p_result, :p_result_secret, :p_result_text) }";
         String sql = "{ call usr_register(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) }";
         CallableStatement prep = con.prepareCall(sql);
         
         // IN
-        prep.setString(1, user.getLogin());               // Логин пользователя
-        prep.setString(2, user.getPassword());            // Пароль пользователя
-        prep.setString(3, user.getFirstname());           // Имя пользователя
-        prep.setString(4, user.getLastname());            // Фамилия пользователя
-        prep.setString(5, user.getIcon());                // Аватар пользователя
-        prep.setString(6, user.getGender().toString());   // Пол
-        prep.setDate(7, new java.sql.Date(user.getBirthday().getMillis()));  // Дата рождения
-        prep.setString(8, user.getEmail());               // EMail пользователя
-        prep.setString(9, user.getPhone());               // Телефон пользователя
-        prep.setInt(10, 1);                               // Пользователь выполняющий действие
+        // * Логин пользователя
+        prep.setString(1, user.getLogin());
+        // * Пароль пользователя
+        prep.setString(2, user.getPassword());
+        // * Имя пользователя
+        prep.setString(3, user.getFirstname());
+        // * Фамилия пользователя
+        prep.setString(4, user.getLastname());
+        // * Аватар пользователя
+        prep.setString(5, user.getIcon());
+        // * Пол
+        prep.setString(6, user.getGender().toString());
+        // * Дата рождения
+        prep.setDate(7, java.sql.Date.valueOf(user.getBirthday()));
+        // * EMail пользователя
+        prep.setString(8, user.getEmail());
+        // * Телефон пользователя
+        prep.setString(9, user.getPhone());
+        // * Пользователь выполняющий действие
+        prep.setInt(10, 1);
+        
         // OUT
-        prep.registerOutParameter(11, java.sql.Types.INTEGER);  // Результат работы: >0 - ID созданной записи; <0 - Ошибка
-        prep.registerOutParameter(12, java.sql.Types.VARCHAR);  // Секретный ключ
-        prep.registerOutParameter(13, java.sql.Types.VARCHAR);  // Текстовое описание результата работы        
+        // * Результат работы: >0 - ID созданной записи; <0 - Ошибка
+        prep.registerOutParameter(11, java.sql.Types.INTEGER);  
+        // * Секретный ключ
+        prep.registerOutParameter(12, java.sql.Types.VARCHAR);  
+        // * Текстовое описание результата работы        
+        prep.registerOutParameter(13, java.sql.Types.VARCHAR);  
         
         prep.execute();
         
@@ -65,23 +78,6 @@ public class ManageUser implements Serializable, Manage {
         log.info("*p_result_text=" + prep.getString(13));
         
         con.close();
-        /*
-create procedure usr_register
-( in p_login           varchar(30)
-, in p_password        varchar(32)
-, in p_firstname       varchar(30)
-, in p_lastname        varchar(30)
-, in p_logo_url        varchar(128)
-, in p_gender          varchar(6)
-, in p_birthday        date
-, in p_email           varchar(50)
-, in p_phone           varchar(25)
-, in p_actor_id        int
-, out p_result         int
-, out p_result_secret  varchar(32)
-, out p_result_text    varchar(400)
-)        
-        */
         
         return 1;
     }

@@ -1,11 +1,13 @@
 package com.rhhcc.user.data;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
 import com.rhhcc.user.data.type.Gender;
 
@@ -36,7 +38,8 @@ public class UserData implements Serializable, User{
     /* 8. Пол */
     private Gender gender;
     /* 9. Дата рождения пользователя */
-    private DateTime birthday;
+    @JsonFormat(shape = Shape.STRING, pattern = "dd.MM.yyyy")
+    private LocalDate birthday;
     /* 10. EMail пользователя */
     private String email;
     /* 11. Контактный телефон пользователя */
@@ -56,28 +59,24 @@ public class UserData implements Serializable, User{
     @Override 
     public User setBirthdayF(String birthday, String format) { 
         if (!birthday.equals("")) {
-            DateTimeFormatter f = DateTimeFormat.forPattern(format);
-            this.birthday = f.parseDateTime(birthday); 
+            DateTimeFormatter f = DateTimeFormatter.ofPattern(format);
+            this.birthday = LocalDate.parse(birthday, f); 
         }
         return this;
     }
-    @Override 
-    public User setBirthday(String birthday){ 
-        setBirthdayF(birthday, "dd.MM.yyyy");
-        return this; 
-    }
     
     /* Setters */
-    @Override public User setId(long id)                       { this.id = id;                                 return this; }
-    @Override public User setLogin(String login)               { this.login = login;                           return this; }
-    @Override public User setPassword(String password)         { this.password = DigestUtils.md5Hex(password); return this; }
-    @Override public User setOauth(String id)                  { this.oauth = id;                              return this; }
-    @Override public User setProvider(int id)                  { this.provider = id;                           return this; }
-    @Override public User setFirstname(String firstname)       { this.firstname = firstname;                   return this; }
-    @Override public User setLastname(String lastname)         { this.lastname = lastname;                     return this; }
-    @Override public User setEmail(String email)               { this.email = email;                           return this; }
-    @Override public User setPhone(String phone)               { this.phone = phone;                           return this; }
-    @Override public User setIcon(String path)                 { this.icon = path;                             return this; } 
+    @Override public User setId(long id)                  { this.id = id;                                 return this; }
+    @Override public User setLogin(String login)          { this.login = login;                           return this; }
+    @Override public User setPassword(String password)    { this.password = DigestUtils.md5Hex(password); return this; }
+    @Override public User setOauth(String id)             { this.oauth = id;                              return this; }
+    @Override public User setProvider(int id)             { this.provider = id;                           return this; }
+    @Override public User setFirstname(String firstname)  { this.firstname = firstname;                   return this; }
+    @Override public User setLastname(String lastname)    { this.lastname = lastname;                     return this; }
+    @Override public User setBirthday(LocalDate birthday) { this.birthday = birthday;                     return this; }
+    @Override public User setEmail(String email)          { this.email = email;                           return this; }
+    @Override public User setPhone(String phone)          { this.phone = phone;                           return this; }
+    @Override public User setIcon(String path)            { this.icon = path;                             return this; } 
         
     /* Getters */
     @Override public long       getId()         { return this.id;        }
@@ -91,7 +90,7 @@ public class UserData implements Serializable, User{
     @Override public String     getPhone()      { return this.phone;     }
     @Override public String     getIcon()       { return this.icon;      } 
     @Override public Gender     getGender()     { return this.gender;    }
-    @Override public DateTime   getBirthday()   { return this.birthday;  }
+    @Override public LocalDate  getBirthday()   { return this.birthday;  }
            
     
     @Override
