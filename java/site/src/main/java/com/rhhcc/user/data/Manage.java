@@ -1,6 +1,6 @@
 package com.rhhcc.user.data;
 
-import java.sql.SQLException;
+import com.rhhcc.common.type.DBResult;
 
 /**
  * Интерфейс управления данными аккаунта пользователя
@@ -13,9 +13,9 @@ public interface Manage {
     /**
      * Создание пользователя
      * @param user Данные пользователя
-     * @return Результат создания пользователя
+     * @return Результат создания пользователя @see DBResultCreate
      */
-    public long create(User user) throws SQLException;
+    public DBResult create(User user);
     
     
     // public User get();

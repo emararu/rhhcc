@@ -1,4 +1,4 @@
-package com.rhhcc.user.data.type;
+package com.rhhcc.common.type;
 
 /**
  * Видимость полей текущего пользователя другим пользователям: 

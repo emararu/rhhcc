@@ -2,7 +2,7 @@ package com.rhhcc.user.data;
 
 import java.io.Serializable;
 
-import com.rhhcc.user.data.type.Visibility;
+import com.rhhcc.common.type.Visibility;
 
 /**
  * Класс описывающий настройки пользователя в системе

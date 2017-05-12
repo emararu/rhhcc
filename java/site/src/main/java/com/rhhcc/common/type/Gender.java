@@ -1,4 +1,4 @@
-package com.rhhcc.user.data.type;
+package com.rhhcc.common.type;
 
 /**
  * Пол пользователя: 

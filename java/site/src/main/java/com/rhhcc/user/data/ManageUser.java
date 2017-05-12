@@ -4,13 +4,15 @@ import java.io.Serializable;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.time.*;
 
 import org.apache.commons.dbcp.BasicDataSource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+
+import com.rhhcc.common.type.DBComplete;
+import com.rhhcc.common.type.DBResult;
+import com.rhhcc.user.type.DBResultCreate;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,54 +35,66 @@ public class ManageUser implements Serializable, Manage {
     BasicDataSource ds;
         
     @Override
-    public long create(User user) throws SQLException {
-        
-        Connection con = ds.getConnection();   
+    public DBResult create(User user) {
 
-        // Регистрация пользователя в системе
-        String sql = "{ call usr_register(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) }";
-        CallableStatement prep = con.prepareCall(sql);
+        log.info(user.toString());
+        DBResult result;
         
-        // IN
-        // * Логин пользователя
-        prep.setString(1, user.getLogin());
-        // * Пароль пользователя
-        prep.setString(2, user.getPassword());
-        // * Имя пользователя
-        prep.setString(3, user.getFirstname());
-        // * Фамилия пользователя
-        prep.setString(4, user.getLastname());
-        // * Аватар пользователя
-        prep.setString(5, user.getIcon());
-        // * Пол
-        prep.setString(6, user.getGender().toString());
-        // * Дата рождения
-        prep.setDate(7, java.sql.Date.valueOf(user.getBirthday()));
-        // * EMail пользователя
-        prep.setString(8, user.getEmail());
-        // * Телефон пользователя
-        prep.setString(9, user.getPhone());
-        // * Пользователь выполняющий действие
-        prep.setInt(10, 1);
+        try {
+
+            Connection con = ds.getConnection();
         
-        // OUT
-        // * Результат работы: >0 - ID созданной записи; <0 - Ошибка
-        prep.registerOutParameter(11, java.sql.Types.INTEGER);  
-        // * Секретный ключ
-        prep.registerOutParameter(12, java.sql.Types.VARCHAR);  
-        // * Текстовое описание результата работы        
-        prep.registerOutParameter(13, java.sql.Types.VARCHAR);  
+            // Регистрация пользователя в системе
+            String sql = "{ call usr_register(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) }";
+            CallableStatement prep = con.prepareCall(sql);
+
+            // IN
+            // * Логин пользователя
+            prep.setString(1, user.getLogin());
+            // * Пароль пользователя
+            prep.setString(2, user.getPassword());
+            // * Имя пользователя
+            prep.setString(3, user.getFirstname());
+            // * Фамилия пользователя
+            prep.setString(4, user.getLastname());
+            // * Аватар пользователя
+            prep.setString(5, user.getIcon());
+            // * Пол
+            prep.setString(6, user.getGender().toString());
+            // * Дата рождения
+            prep.setDate(7, (user.getBirthday() != null ? java.sql.Date.valueOf(user.getBirthday()) : null));
+            // * EMail пользователя
+            prep.setString(8, user.getEmail());
+            // * Телефон пользователя
+            prep.setString(9, user.getPhone());
+            // * Пользователь выполняющий действие
+            prep.setInt(10, 1);
+
+            // OUT
+            // * Результат работы: >0 - ID созданной записи; <0 - Ошибка
+            prep.registerOutParameter(11, java.sql.Types.INTEGER);  
+            // * Секретный ключ
+            prep.registerOutParameter(12, java.sql.Types.VARCHAR);  
+            // * Текстовое описание результата работы        
+            prep.registerOutParameter(13, java.sql.Types.VARCHAR);  
+
+            prep.execute();
+
+            result = new DBResultCreate(DBComplete.register, prep.getInt(11), prep.getString(12), prep.getString(13));
+
+            con.close();        
+            
+        } catch (SQLException e) {
+            log.info("SQL:"+e.getMessage());
+            result = new DBResult(DBComplete.register, -600, e.getMessage());
+        } catch (Exception e) {
+            log.info("Error:" + e.toString());
+            result = new DBResult(DBComplete.register, -600, e.toString());
+        }
         
-        prep.execute();
-        
-        log.info("*p_result=" + prep.getInt(11));
-        log.info("*p_result_secret=" + prep.getString(12));
-        log.info("*p_result_text=" + prep.getString(13));
-        
-        con.close();
-        
-        return 1;
+        log.info(result.toString());
+            
+        return result;
     }
-    
-    
+        
 }

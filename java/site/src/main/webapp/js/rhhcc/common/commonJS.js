@@ -62,31 +62,74 @@ var commonJSPrototype = {
         $("#menu-main-auth").hide();
     },
     
+    checkResultReturn: function(check, text) {        
+        if (check == 0) {
+            return true;
+        } else {
+            this.showMessage("error", text);
+            return false;
+        }
+    },
+    
+    unmarkRedText: function(field) {
+        field.removeClass("red");
+        field.siblings("input").removeClass("red");
+        field.off("keypress");        
+    },
+    
+    unmarkRedRadio: function(field) {
+        field.parent().find("span").removeClass("red");
+        field.off("change");       
+    },
+    
+    markRedText: function(field) {
+        var m = this;
+        field.addClass("red");
+        field.siblings("input").addClass("red");
+        field.on("keypress", function() { m.unmarkRedText($("[name='" + this.name + "']")); });
+    },
+    
+    markRedRadio: function(field) {
+        var m = this;
+        field.parent().find("span").addClass("red")
+        field.on("change", function() { m.unmarkRedRadio($("[name='" + this.name + "']")); });
+    },
+    
     checkFormatDate: function(fields) {
         var check = 0;
         for (var i = 0; i < fields.length; i++) {   
             var f = $("[name='" + fields[i] + "']");
             var v = f.val();
+            this.unmarkRedText(f);
             if (v != "") {
                 if (/^(\d{2}\.){2}\d{4}$/i.test(v)) {            
                     var p = v.split(".");        
                     var d = Date.parse(p[2] + "-" + p[1] + "-" + p[0]);   
                     if (isNaN(d)) {
-                        f.addClass("red");
+                        this.markRedText(f);
                         check++;
                     }
                 } else {
-                    f.addClass("red");
+                    this.markRedText(f);
                     check++;
                 }
             }
         }        
-        if (check == 0) {
-            return true;
-        } else {
-            this.showMessage("error", "Неправильный формат даты(используйте ДД.MM.ГГГГ).");
-            return false;
-        } 
+        return this.checkResultReturn(check, "Неправильный формат даты(используйте ДД.MM.ГГГГ).");
+    },
+    
+    checkEqualPair: function(left, right) {
+        var check = 0;
+        var l = $("[name='" + left + "']");
+        var r = $("[name='" + right + "']");
+        this.unmarkRedText(l);
+        this.unmarkRedText(r);
+        if (l.val() != r.val()) {
+            this.markRedText(l);
+            this.markRedText(r);
+            check++;
+        }
+        return this.checkResultReturn(check, "Значения полей \"" + l.prop("placeholder") + "\" и \"" + r.prop("placeholder") + "\" не совпадают!");
     },
     
     checkFormMandatory: function(fields) {
@@ -94,26 +137,20 @@ var commonJSPrototype = {
         for (var i = 0; i < fields.length; i++) {
             var f = $("[name='" + fields[i] + "']");
             if (f.prop("type").toLowerCase() != "radio") {
-                f.removeClass("red");
+                this.unmarkRedText(f);
                 if (f.val() == "") {
-                    f.addClass("red");
+                    this.markRedText(f);
                     check++;
                 }
             } else {
-                var r = f.parent().find("span");
-                r.removeClass("red");
+                this.unmarkRedRadio(f);
                 if (!f.is(":checked")) {
-                    r.addClass("red")
+                    this.markRedRadio(f);
                     check++;
                 }
             }
         }
-        if (check == 0) {
-            return true;
-        } else {
-            this.showMessage("error", "Не все обязательные поля заполнены!");
-            return false;
-        } 
+        return this.checkResultReturn(check, "Не все обязательные поля заполнены!");
     },
     
     sendFormData: function(form, fields) { 
@@ -140,10 +177,10 @@ var commonJSPrototype = {
                 method: "POST", 
                 url: a
             }).done(function(data) {
-                if (data.result >= 0) {
-                    History.pushState(null, "RHHCC | Выполнено", m.url("/complete/"+data.complete));
+                if (data.id >= 0) {
+                    History.pushState(null, "RHHCC | Выполнено", m.url(data.path));
                 } else {
-                    m.showMessage("error", data.error);
+                    m.showMessage("error", data.text);
                 }
             }).fail(function(jqXHR, textStatus, errorThrown) {
                 m.showMessage("error", jqXHR.status + ": " + errorThrown);

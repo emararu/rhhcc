@@ -1,6 +1,6 @@
 package com.rhhcc.user.data;
 
-import com.rhhcc.user.data.type.Visibility;
+import com.rhhcc.common.type.Visibility;
 
 /**
  * Интерфейс описывающий настройки пользователя в системе

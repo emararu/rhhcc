@@ -31,10 +31,18 @@ public class CommonController {
     public String indexTile() {
         return "page.body.content.index";
     }
+
     
-    @RequestMapping(value = { "/complete/{type}", "/complete/{type}/{submit}" }, method = { RequestMethod.POST })
-    public String complete(@PathVariable String type, @PathVariable Optional<String> submit, Model uiModel) {
+    @RequestMapping(value = { "/complete/{type}" }, method = { RequestMethod.GET })
+    public String complete(@PathVariable String type, Model uiModel) {
         uiModel.addAttribute("complete_type", type);
-        return (submit.isPresent() ? "complete" : "page.body.content.complete");
+        return "complete";
     }
+
+    @RequestMapping(value = { "/complete/{type}" }, method = { RequestMethod.POST })
+    public String completeTile(@PathVariable String type, Model uiModel) {
+        uiModel.addAttribute("complete_type", type);
+        return "page.body.content.complete";
+    }
+    
 }

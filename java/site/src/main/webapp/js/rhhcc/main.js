@@ -73,5 +73,5 @@ $(function() {
         cjs.hideMenuAuth();
     });
             
-    $("[placeholder]").placeholder();
+    $("[placeholder]").placeholder();    
 });

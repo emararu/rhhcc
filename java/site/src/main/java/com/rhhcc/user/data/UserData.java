@@ -4,12 +4,14 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
-import com.rhhcc.user.data.type.Gender;
+import com.rhhcc.common.type.Gender;
 
 /**
  * Класс описывающий пользователя в системе
@@ -39,6 +41,7 @@ public class UserData implements Serializable, User{
     private Gender gender;
     /* 9. Дата рождения пользователя */
     @JsonFormat(shape = Shape.STRING, pattern = "dd.MM.yyyy")
+    @DateTimeFormat(pattern = "dd.MM.yyyy") 
     private LocalDate birthday;
     /* 10. EMail пользователя */
     private String email;
@@ -66,17 +69,17 @@ public class UserData implements Serializable, User{
     }
     
     /* Setters */
-    @Override public User setId(long id)                  { this.id = id;                                 return this; }
-    @Override public User setLogin(String login)          { this.login = login;                           return this; }
-    @Override public User setPassword(String password)    { this.password = DigestUtils.md5Hex(password); return this; }
-    @Override public User setOauth(String id)             { this.oauth = id;                              return this; }
-    @Override public User setProvider(int id)             { this.provider = id;                           return this; }
-    @Override public User setFirstname(String firstname)  { this.firstname = firstname;                   return this; }
-    @Override public User setLastname(String lastname)    { this.lastname = lastname;                     return this; }
-    @Override public User setBirthday(LocalDate birthday) { this.birthday = birthday;                     return this; }
-    @Override public User setEmail(String email)          { this.email = email;                           return this; }
-    @Override public User setPhone(String phone)          { this.phone = phone;                           return this; }
-    @Override public User setIcon(String path)            { this.icon = path;                             return this; } 
+    @Override public User setId(long id)                  { this.id        = id;                                                         return this; }
+    @Override public User setLogin(String login)          { this.login     = login.equals("")     ? null : login;                        return this; }
+    @Override public User setPassword(String password)    { this.password  = password.equals("")  ? null : DigestUtils.md5Hex(password); return this; }
+    @Override public User setOauth(String id)             { this.oauth     = id.equals("")        ? null : id;                           return this; }
+    @Override public User setProvider(int id)             { this.provider  = id;                                                         return this; }
+    @Override public User setFirstname(String firstname)  { this.firstname = firstname.equals("") ? null : firstname;                    return this; }
+    @Override public User setLastname(String lastname)    { this.lastname  = lastname.equals("")  ? null : lastname;                     return this; }
+    @Override public User setBirthday(LocalDate birthday) { this.birthday  = birthday;                                                   return this; }
+    @Override public User setEmail(String email)          { this.email     = email.equals("")     ? null : email;                        return this; }
+    @Override public User setPhone(String phone)          { this.phone     = phone.equals("")     ? null : phone;                        return this; }
+    @Override public User setIcon(String path)            { this.icon      = path.equals("")      ? null : path;                         return this; } 
         
     /* Getters */
     @Override public long       getId()         { return this.id;        }

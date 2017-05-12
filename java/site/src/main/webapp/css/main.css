@@ -32,7 +32,7 @@ img {
 }
 
 input[type=text],
-input[type=password]{
+input[type=password] {
     border: none;
     font-size: 12px;
     line-height: 16px;

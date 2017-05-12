@@ -1,6 +1,6 @@
 package com.rhhcc.user.data;
 
-import com.rhhcc.user.data.type.Gender;
+import com.rhhcc.common.type.Gender;
 import java.time.LocalDate;
 
 /**
