@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,20 +33,33 @@ public class ManageUser implements Serializable, Manage {
     
     @Autowired
     @Qualifier("dataSource")
-    BasicDataSource ds;
+    private BasicDataSource ds;
         
-    @Override
-    public DBResult create(User user) {
-
-        log.info(user.toString());
+    @Autowired
+    @Qualifier("manageUserNotify")
+    private ManageUserNotify notify;
+        
+    @Autowired
+    private HttpServletRequest context;
+    
+    
+    /**
+     * Отправляет в БД запрос на создание пользователя
+     * @param user Данные пользователя
+     * @return Результат ответа БД на отправленный запрос
+     */
+    private DBResult createUser(User user) {
+        
         DBResult result;
         
-        try {
-
-            Connection con = ds.getConnection();
-        
+        try (Connection con = ds.getConnection()) {
+            
+            // Начало транзакции
+            con.setAutoCommit(false);
+            
             // Регистрация пользователя в системе
             String sql = "{ call usr_register(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) }";
+            log.info(sql);
             CallableStatement prep = con.prepareCall(sql);
 
             // IN
@@ -81,8 +95,8 @@ public class ManageUser implements Serializable, Manage {
             prep.execute();
 
             result = new DBResultCreate(DBComplete.register, prep.getInt(11), prep.getString(12), prep.getString(13));
-
-            con.close();        
+            
+            if (result.getId() >= 0) con.commit(); else con.rollback();
             
         } catch (SQLException e) {
             log.info("SQL:"+e.getMessage());
@@ -92,8 +106,25 @@ public class ManageUser implements Serializable, Manage {
             result = new DBResult(DBComplete.register, -600, e.toString());
         }
         
+        return result;
+    }
+    
+    
+    @Override
+    public DBResult create(User user) {
+        
+        log.info(user.toString());
+        
+        // Создание пользователя в БД            
+        DBResultCreate result = (DBResultCreate)createUser(user);
+        // Если пользователь успешно создан
+        if (result.getId() >= 0) {
+            // Отправка уведомления на почту и установка в БД флага подтверждения
+            notify.sendMail(result.getId(), user.getFirstname(), user.getEmail(), result.getSecret(), result.secretConfirmURL(context, "/user/register/"));
+        }
+        
         log.info(result.toString());
-            
+        
         return result;
     }
         

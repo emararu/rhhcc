@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    
+    <!-- Настройки БД -->
+    <bean id="dataSource" destroy-method="close" class="org.apache.commons.dbcp.BasicDataSource">
+        <property name="driverClassName" value="${db.site.dev.driver}"/>
+        <property name="url" value="${db.site.dev.url}"/>
+        <property name="username" value="${db.site.dev.username}"/>
+        <property name="password" value="${db.site.dev.password}"/>
+        <property name="initialSize" value="${db.site.dev.initialSize}"/>
+        <property name="maxActive" value="${db.site.dev.maxActive}"/>
+        <property name="maxIdle" value="${db.site.dev.maxIdle}"/>
+    </bean>
+    
+</beans>

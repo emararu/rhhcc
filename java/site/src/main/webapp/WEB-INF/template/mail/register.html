@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <body>
+        <h3>Здравствуйте<span th:if="${userFirstname}" th:text="', ' + ${userFirstname}"></span>!</h3>
+        <div>
+            <p>Вы получили данное письмо, так как Ваш адрес электронной почты был указан при регистрации на сайте RHHCC. 
+            Для завершения регистрации, пожалуйста, перейдите по ссылке <span th:text="${urlConfirm}"></span>.</p>
+            <p>Если письмо является ошибочным, просто проигнорируйте его.</p>
+        </div>
+        <hr/>
+        <img height="18px" width="92px" src="cid:logo" alt="RHHCC"/>
+    </body>
+</html>

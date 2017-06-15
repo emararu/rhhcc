@@ -11,6 +11,7 @@
           xmlns:tiles="http://tiles.apache.org/tags-tiles"
           version="2.0">
     
+    <spring:url value="/img/logo.png" var="url_png_logo"/>
     <spring:url value="/index" var="url_index"/>
     
     <jsp:directive.page contentType="text/html;charset=UTF-8" />
@@ -19,7 +20,7 @@
     <div id="menu-box">
         <div id="menu-main" class="menu">
             <ul>
-                <li id="menu-main-logo-item"><a href="${url_index}" title="Главная"><img src="/x/img/logo.png"/></a></li>
+                <li id="menu-main-logo-item"><a href="${url_index}" title="Главная"><img src="${url_png_logo}"/></a></li>
                 <li id="menu-main-news-item">НОВОСТИ</li>
                 <li id="menu-main-champ-item">ЧЕМПИОНАТ</li>
                 <li id="menu-main-partner-item">ПАРТНЕРЫ</li>

@@ -5,19 +5,30 @@
        xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:tx="http://www.springframework.org/schema/tx"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:task="http://www.springframework.org/schema/task"
        xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+       http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
-
+    
     <!-- Импорт настроек spring-security -->    
-    <import resource="context-security.xml"/>
+    <import resource="context-security.xml"/>    
+    <!-- Импорт настроек mail -->    
+    <import resource="context-mail.xml"/>    
+    <!-- Импорт настроек БД -->    
+    <import resource="context-db.xml"/>
     
     <!-- Включение аннотаций MVC -->
     <mvc:annotation-driven/>
     
+    <!-- Планировщик заданий -->
+    <task:annotation-driven executor="taskExecutor" scheduler="taskScheduler"/>
+    <task:executor id="taskExecutor" pool-size="5"/>
+    <task:scheduler id="taskScheduler" pool-size="10"/>
+
     <!-- Определение шаблона соответствия пути(mapping) и физического разменения ресурса на диске(location) -->
     <mvc:resources mapping="/resources/**" location="/resources/, /МETA-INF/web-resources/"/>
     <mvc:resources mapping="/css/**" location="/css/"/>
@@ -58,17 +69,6 @@
         
     <!-- Бин предназначенный для сопоставления java-объектов json-конструктору  -->
     <bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper"/>
-    
-    <!-- Настройки БД -->
-    <bean id="dataSource" destroy-method="close" class="org.apache.commons.dbcp.BasicDataSource">
-        <property name="driverClassName" value="${db.site.dev.driver}"/>
-        <property name="url" value="${db.site.dev.url}"/>
-        <property name="username" value="${db.site.dev.username}"/>
-        <property name="password" value="${db.site.dev.password}"/>
-        <property name="initialSize" value="${db.site.dev.initialSize}"/>
-        <property name="maxActive" value="${db.site.dev.maxActive}"/>
-        <property name="maxIdle" value="${db.site.dev.maxIdle}"/>
-    </bean>
     
     <!-- Включение сканирования пакетов для поиска аннотаций -->  
     <context:component-scan base-package="com.rhhcc.common"/>  
