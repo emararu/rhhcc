@@ -82,7 +82,7 @@ public class ManageUser implements Serializable, Manage {
             // * Телефон пользователя
             prep.setString(9, user.getPhone());
             // * Пользователь выполняющий действие
-            prep.setInt(10, 1);
+            prep.setLong(10, 1);
 
             // OUT
             // * Результат работы: >0 - ID созданной записи; <0 - Ошибка
@@ -94,7 +94,7 @@ public class ManageUser implements Serializable, Manage {
 
             prep.execute();
 
-            result = new DBResultCreate(DBComplete.register, prep.getInt(11), prep.getString(12), prep.getString(13));
+            result = new DBResultCreate(DBComplete.register, prep.getLong(11), prep.getString(12), prep.getString(13));
             
             if (result.getId() >= 0) con.commit(); else con.rollback();
             
@@ -107,8 +107,58 @@ public class ManageUser implements Serializable, Manage {
         }
         
         return result;
-    }
+    }    
     
+    /**
+     * Отправляет в БД запрос на подтверждение регистрации пользователя
+     * @param user_id ID пользователя
+     * @param secret  Секретный ключ
+     * @return Результат ответа БД на отправленный запрос
+     */
+    private DBResult confirmUser(long user_id, String secret) {
+        
+        DBResult result;
+        
+        try (Connection con = ds.getConnection()) {
+            
+            // Начало транзакции
+            con.setAutoCommit(false);
+            
+            // Регистрация пользователя в системе
+            String sql = "{ call usr_confirm_accept(?, ?, ?, ?, ?) }";
+            log.info(sql);
+            CallableStatement prep = con.prepareCall(sql);
+
+            // IN
+            // * ID пользователя
+            prep.setLong(1, user_id);
+            // * Секретный ключ
+            prep.setString(2, secret);
+            // * Пользователь выполняющий действие
+            prep.setLong(3, user_id);
+
+            // OUT
+            // * Результат работы: >0 - ID созданной записи; <0 - Ошибка
+            prep.registerOutParameter(4, java.sql.Types.INTEGER);    
+            // * Текстовое описание результата работы        
+            prep.registerOutParameter(5, java.sql.Types.VARCHAR);  
+
+            prep.execute();
+
+            result = new DBResult(DBComplete.register_confirm, prep.getLong(4), prep.getString(5));
+            
+            if (result.getId() >= 0) con.commit(); else con.rollback();
+            
+        } catch (SQLException e) {
+            log.info("SQL:"+e.getMessage());
+            result = new DBResult(DBComplete.register_confirm, -600, e.getMessage());
+        } catch (Exception e) {
+            log.info("Error:" + e.toString());
+            result = new DBResult(DBComplete.register_confirm, -600, e.toString());
+        }
+        
+        return result;
+    }        
     
     @Override
     public DBResult create(User user) {
@@ -119,13 +169,26 @@ public class ManageUser implements Serializable, Manage {
         DBResultCreate result = (DBResultCreate)createUser(user);
         // Если пользователь успешно создан
         if (result.getId() >= 0) {
-            // Отправка уведомления на почту и установка в БД флага подтверждения
-            notify.sendMail(result.getId(), user.getFirstname(), user.getEmail(), result.getSecret(), result.secretConfirmURL(context, "/user/register/"));
+            // Отправка уведомления о регистрации пользователя на почту и установка в БД флага подтверждения
+            notify.create(result.getId(), user.getFirstname(), user.getEmail(), result.getSecret(), result.secretConfirmURL(context, "/user/register/"));
         }
         
         log.info(result.toString());
         
         return result;
     }
+       
+    @Override
+    public DBResult confirm(long user_id, String secret) {
         
+        log.info("user_id="+user_id+", secret="+secret);
+        
+        // Подтверждение регистрации пользователя в системе
+        DBResult result = confirmUser(user_id, secret);
+        
+        log.info(result.toString());
+        
+        return result;
+    }
+    
 }

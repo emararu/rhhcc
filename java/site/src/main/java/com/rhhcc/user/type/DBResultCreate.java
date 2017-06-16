@@ -45,8 +45,8 @@ public class DBResultCreate extends DBResult {
     public String secretConfirmURL(final HttpServletRequest context, String path) {    
         StringBuffer u = context.getRequestURL();
         String p = context.getContextPath();        
-        return u.substring(7, u.indexOf(p)+p.length())+path+this.getSecret()+"/";
-    }    
+        return u.substring(7, u.indexOf(p)+p.length())+path+this.getId()+"/"+this.getSecret()+"/";
+    }
     
     @Override
     public String toString() {

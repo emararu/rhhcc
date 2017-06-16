@@ -74,7 +74,7 @@ public class ManageUserNotify implements Serializable {
 
             prep.execute();
 
-            DBResult result = new DBResult(prep.getInt(4), prep.getString(5));
+            DBResult result = new DBResult(prep.getLong(4), prep.getString(5));
             
             if (result.getId() >= 0) con.commit(); else con.rollback();            
             log.info(result.toString());
@@ -87,7 +87,7 @@ public class ManageUserNotify implements Serializable {
     }
     
     /**
-     * Отправка уведомления на почту и установка в БД флага подтверждения
+     * Отправка уведомления орегистрации пользователя на почту и установка в БД флага подтверждения
      * @param id        ID пользователя
      * @param firstname Имя пользователя
      * @param email     EMail пользователя
@@ -95,7 +95,7 @@ public class ManageUserNotify implements Serializable {
      * @param url       Путь для подтверждения секретного ключа
      */
     @Async
-    public void sendMail(long id, String firstname, String email, String secret, String url) {
+    public void create(long id, String firstname, String email, String secret, String url) {
         
         log.info("Send email:" + email + ", " + secret);
         

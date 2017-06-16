@@ -11,12 +11,19 @@ import com.rhhcc.common.type.DBResult;
 public interface Manage {
 
     /**
-     * Создание пользователя
+     * Регистрация пользователя
      * @param user Данные пользователя
-     * @return Результат создания пользователя @see DBResultCreate
+     * @return Результат создания пользователя DBResultCreate
      */
     public DBResult create(User user);
     
+    /**
+     * Подтверждение регистрации пользователя в системе
+     * @param user_id ID пользователя
+     * @param secret  Секретный ключ
+     * @return Результат создания пользователя DBResultCreate
+     */
+    public DBResult confirm(long user_id, String secret);
     
     // public User get();
     
