@@ -170,7 +170,7 @@ public class ManageUser implements Serializable, Manage {
         // Если пользователь успешно создан
         if (result.getId() >= 0) {
             // Отправка уведомления о регистрации пользователя на почту и установка в БД флага подтверждения
-            notify.create(result.getId(), user.getFirstname(), user.getEmail(), result.getSecret(), result.secretConfirmURL(context, "/user/register/"));
+            notify.create(result.getId(), user.getFirstname(), user.getEmail(), result.getSecret(), result.secretConfirmURL(context, "/user/confirm/"));
         }
         
         log.info(result.toString());
@@ -185,6 +185,22 @@ public class ManageUser implements Serializable, Manage {
         
         // Подтверждение регистрации пользователя в системе
         DBResult result = confirmUser(user_id, secret);
+        
+        /*
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+        
+                // Сохранение данных пользователя на время существования сессии
+                session.setAttribute("user", user);
+
+                // Принудительная аутентификация пользователя в spring-security
+                Authentication authentication = new UsernamePasswordAuthenticationToken(username, user.getId()-password, AuthorityUtils.createAuthorityList("ROLE_USER"));
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+
+                model.addAttribute("message", "Добро пожаловать!");
+        */
         
         log.info(result.toString());
         

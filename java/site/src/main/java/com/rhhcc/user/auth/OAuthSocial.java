@@ -87,7 +87,7 @@ public abstract class OAuthSocial {
      * @return URL на который необходимо перенаправить пользователя для аутентификации
      * @throws IOException 
      */
-    protected String response(HttpSession session, Model model, String code, String state, String error, String userInfoUri) throws IOException {
+    protected String response(final HttpSession session, Model model, String code, String state, String error, String userInfoUri) throws IOException {
         
         log.info("code=" + code + ", state=" + state + ", error=" + error + ", userInfoUri=" + userInfoUri);
         

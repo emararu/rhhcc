@@ -1,5 +1,7 @@
 package com.rhhcc.common.type;
 
+import org.springframework.ui.Model;
+
 /**
  * Стандартный результат ответа БД на отправленный запрос
  * 
@@ -70,8 +72,24 @@ public class DBResult {
         return this.text;
     }
     
+    /**
+     * Возвращает строку для перехода на страницу с результатом действия
+     * @param model Параметры jsp-страницы
+     * @return Путь к странице с результатом обработки
+     */
+    public String doReturn(Model model) {    
+        if (this.getId() >= 0) {
+            return "forward:"+this.getPath();
+        } else {
+            model.addAttribute("complete_type", this.getComplete().name());
+            model.addAttribute("error_descr", this.getText());
+            return "complete";
+        }
+    }
+    
     @Override
     public String toString() {
-        return "path=" + getPath() + ", id=" + getId() + ", text=" + getText();
+        return "path=" + this.getPath() + ", id=" + this.getId() + ", text=" + this.getText();
     }
+    
 }

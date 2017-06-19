@@ -63,31 +63,17 @@ public class DBAuthController {
      * Выполнение регистрации пользователя петем передачи данных со страницы с полной перезагрузкой
      */
     @RequestMapping(value = { "/register/do/submit" }, method = { RequestMethod.POST } )
-    public String doSubmitRegister(final UserData user, Model uiModel) {
-        DBResult result = mUser.create(user);
-        if (result.getId() >= 0) {
-            return "forward:"+result.getPath();
-        } else {
-            uiModel.addAttribute("complete_type", result.getComplete().name());
-            uiModel.addAttribute("error_descr", result.getText());
-            return "complete";
-        }
+    public String doSubmitRegister(final UserData user, Model model) {
+        return mUser.create(user).doReturn(model);
     }
     
     
     /**
      * Подтверждение регистрации пользователя
      */
-    @RequestMapping(value = { "/register/{user_id}/{secret}/" }, method = { RequestMethod.GET } )
-    public String doRegisterCоnfirm(@PathVariable final long user_id, @PathVariable final String secret, Model uiModel) {
-        DBResult result = mUser.confirm(user_id, secret);
-        if (result.getId() >= 0) {
-            return "forward:"+result.getPath();
-        } else {
-            uiModel.addAttribute("complete_type", result.getComplete().name());
-            uiModel.addAttribute("error_descr", result.getText());
-            return "complete";
-        }
+    @RequestMapping(value = { "/confirm/{user_id}/{secret}/" }, method = { RequestMethod.GET } )
+    public String doCоnfirm(@PathVariable final long user_id, @PathVariable final String secret, Model model) {
+        return mUser.confirm(user_id, secret).doReturn(model);
     }
     
 }

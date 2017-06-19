@@ -1,7 +1,5 @@
 package com.rhhcc.common;
 
-import java.util.Optional;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,14 +32,14 @@ public class CommonController {
 
     
     @RequestMapping(value = { "/complete/{type}" }, method = { RequestMethod.GET })
-    public String complete(@PathVariable String type, Model uiModel) {
-        uiModel.addAttribute("complete_type", type);
+    public String complete(@PathVariable String type, Model model) {
+        model.addAttribute("complete_type", type);
         return "complete";
     }
 
     @RequestMapping(value = { "/complete/{type}" }, method = { RequestMethod.POST })
-    public String completeTile(@PathVariable String type, Model uiModel) {
-        uiModel.addAttribute("complete_type", type);
+    public String completeTile(@PathVariable String type, Model model) {
+        model.addAttribute("complete_type", type);
         return "page.body.content.complete";
     }
     
