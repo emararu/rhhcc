@@ -39,7 +39,6 @@ public class ManageUserNotify implements Serializable {
     @Qualifier("messageMail")
     private Message mail;
         
-    
     /**
      * Установка в БД флага подтверждения об успешной отправке уведомления на почту пользователя
      * @param id        ID пользователя

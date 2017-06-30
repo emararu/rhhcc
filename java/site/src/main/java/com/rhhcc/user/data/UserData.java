@@ -49,7 +49,25 @@ public class UserData implements Serializable, User{
     private String phone;
     /* 12. Путь к аватарке пользователя */
     private String icon;
-        
+     
+    /**
+     * Обрабатывает и возвращает строковое значение
+     * @param value Исходное строковое значение
+     * @return Обрабатанное строковое значение
+     */
+    private String processString(String value) {
+        return (value == null || value.equals("")) ? null : value;
+    }  
+    
+    /**
+     * Обрабатывает и возвращает пароль
+     * @param value Исходный пароль
+     * @return Обрабатанный пароль
+     */
+    private String processPassword(String value) {
+        return (value == null || value.equals("")) ? null : DigestUtils.md5Hex(value);
+    }    
+    
     @Override 
     public User setGender(String gender) { 
         if (gender.equals("male"))
@@ -69,31 +87,32 @@ public class UserData implements Serializable, User{
     }
     
     /* Setters */
-    @Override public User setId(long id)                  { this.id        = id;                                                         return this; }
-    @Override public User setLogin(String login)          { this.login     = login.equals("")     ? null : login;                        return this; }
-    @Override public User setPassword(String password)    { this.password  = password.equals("")  ? null : DigestUtils.md5Hex(password); return this; }
-    @Override public User setOauth(String id)             { this.oauth     = id.equals("")        ? null : id;                           return this; }
-    @Override public User setProvider(int id)             { this.provider  = id;                                                         return this; }
-    @Override public User setFirstname(String firstname)  { this.firstname = firstname.equals("") ? null : firstname;                    return this; }
-    @Override public User setLastname(String lastname)    { this.lastname  = lastname.equals("")  ? null : lastname;                     return this; }
-    @Override public User setBirthday(LocalDate birthday) { this.birthday  = birthday;                                                   return this; }
-    @Override public User setEmail(String email)          { this.email     = email.equals("")     ? null : email;                        return this; }
-    @Override public User setPhone(String phone)          { this.phone     = phone.equals("")     ? null : phone;                        return this; }
-    @Override public User setIcon(String path)            { this.icon      = path.equals("")      ? null : path;                         return this; } 
+    @Override public User setId(long id)                  { this.id        = id;                        return this; }
+    @Override public User setLogin(String login)          { this.login     = processString(login);      return this; }
+    @Override public User setPassword(String password)    { this.password  = processPassword(password); return this; }
+    @Override public User setOauth(String id)             { this.oauth     = processString(id);         return this; }
+    @Override public User setProvider(int id)             { this.provider  = id;                        return this; }
+    @Override public User setFirstname(String firstname)  { this.firstname = processString(firstname);  return this; }
+    @Override public User setLastname(String lastname)    { this.lastname  = processString(lastname);   return this; }
+    @Override public User setBirthday(LocalDate birthday) { this.birthday  = birthday;                  return this; }
+    @Override public User setEmail(String email)          { this.email     = processString(email);      return this; }
+    @Override public User setPhone(String phone)          { this.phone     = processString(phone);      return this; }
+    @Override public User setIcon(String path)            { this.icon      = processString(path);       return this; } 
         
     /* Getters */
-    @Override public long       getId()         { return this.id;        }
-    @Override public String     getLogin()      { return this.login;     }
-    @Override public String     getPassword()   { return this.password;  }
-    @Override public String     getOauth()      { return this.oauth;     }
-    @Override public int        getProvider()   { return this.provider;  }
-    @Override public String     getFirstname()  { return this.firstname; }
-    @Override public String     getLastname()   { return this.lastname;  }
-    @Override public String     getEmail()      { return this.email;     }
-    @Override public String     getPhone()      { return this.phone;     }
-    @Override public String     getIcon()       { return this.icon;      } 
-    @Override public Gender     getGender()     { return this.gender;    }
-    @Override public LocalDate  getBirthday()   { return this.birthday;  }
+    @Override public long       getId()         { return this.id;                              }
+    @Override public String     getLogin()      { return this.login;                           }
+    @Override public String     getPassword()   { return this.password;                        }
+    @Override public String     getOauth()      { return this.oauth;                           }
+    @Override public int        getProvider()   { return this.provider;                        }
+    @Override public String     getFirstname()  { return this.firstname;                       }
+    @Override public String     getLastname()   { return this.lastname;                        }
+    @Override public String     getName()       { return this.firstname + " " + this.lastname; }
+    @Override public String     getEmail()      { return this.email;                           }
+    @Override public String     getPhone()      { return this.phone;                           }
+    @Override public String     getIcon()       { return this.icon;                            } 
+    @Override public Gender     getGender()     { return this.gender;                          }
+    @Override public LocalDate  getBirthday()   { return this.birthday;                        }
            
     
     @Override

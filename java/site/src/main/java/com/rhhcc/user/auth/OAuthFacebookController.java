@@ -1,7 +1,6 @@
 package com.rhhcc.user.auth;
 
 import java.io.IOException;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -36,8 +35,8 @@ public class OAuthFacebookController {
     }
         
     @RequestMapping(value = "/data", method = RequestMethod.GET)
-    public String data(HttpSession session, Model model, @RequestParam(value = "code", required = false) String code, @RequestParam(value = "state", required = false) String state, @RequestParam(value = "error", required = false) String error) throws IOException {
-        return auth.data(session, model, code, state, error);
+    public String data(Model model, @RequestParam(value = "code", required = false) String code, @RequestParam(value = "state", required = false) String state, @RequestParam(value = "error", required = false) String error) throws IOException {
+        return auth.data(model, code, state, error);
     }
     
 }

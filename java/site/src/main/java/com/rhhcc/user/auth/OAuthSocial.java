@@ -2,15 +2,12 @@ package com.rhhcc.user.auth;
 
 import java.io.IOException;
 import java.util.Random;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
  
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.ui.Model;
         
 import com.github.scribejava.core.builder.api.BaseApi;
@@ -36,6 +33,10 @@ import org.slf4j.LoggerFactory;
 public abstract class OAuthSocial {    
 
     private final Logger log = LoggerFactory.getLogger(OAuthSocial.class);
+    
+    @Autowired
+    @Qualifier("authService")
+    private Auth auth; 
     
     // Сервис предоставляющий внешнюю аутентификацию
     private OAuth20Service service;
@@ -78,7 +79,6 @@ public abstract class OAuthSocial {
     
     /**
      * Отправляет запрос данных пользователя и принимает ответ от сервиса предоставляющего внешнюю аутентификацию
-     * @param session     Объект запроса для хранения сессионных данных пользователя
      * @param model       Объект для хранения данных пользователя на время запроса
      * @param code        Токен присланный сервисом предоставляющего внешнюю аутентификацию для запроса данных пользователя
      * @param state       Секретный ключ возвращенный сервисом предоставляющим внешнюю аутентификацию для предотвращения межсайтовых атак
@@ -87,7 +87,7 @@ public abstract class OAuthSocial {
      * @return URL на который необходимо перенаправить пользователя для аутентификации
      * @throws IOException 
      */
-    protected String response(final HttpSession session, Model model, String code, String state, String error, String userInfoUri) throws IOException {
+    protected String response(Model model, String code, String state, String error, String userInfoUri) throws IOException {
         
         log.info("code=" + code + ", state=" + state + ", error=" + error + ", userInfoUri=" + userInfoUri);
         
@@ -116,12 +116,8 @@ public abstract class OAuthSocial {
                 // Поиск и обновление данных пользователя в БД
                 // to-do...
 
-                // Сохранение данных пользователя на время существования сессии
-                session.setAttribute("user", user);
-
-                // Принудительная аутентификация пользователя в spring-security
-                Authentication authentication = new UsernamePasswordAuthenticationToken(user/*name*/, user.getId()/*password*/, AuthorityUtils.createAuthorityList("ROLE_USER"));
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+                // Аутентификация пользователя в spring security
+                auth.process(user);
 
                 model.addAttribute("message", "Добро пожаловать!");
                 urlAuth = "user.auth.success";

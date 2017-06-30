@@ -1,7 +1,6 @@
 package com.rhhcc.user.auth;
 
 import java.io.IOException;
-import javax.servlet.http.HttpSession;
 import org.springframework.ui.Model;
 
 /**
@@ -21,7 +20,6 @@ public interface OAuth {
     
     /**
      * Отправляет запрос данных пользователя и принимает ответ от сервиса предоставляющего внешнюю аутентификацию
-     * @param session     Объект запроса для хранения сессионных данных пользователя
      * @param model       Объект для хранения данных пользователя на время запроса
      * @param code        Токен присланный сервисом предоставляющего внешнюю аутентификацию для запроса данных пользователя
      * @param state       Секретный ключ возвращенный сервисом предоставляющим внешнюю аутентификацию для предотвращения межсайтовых атак
@@ -29,6 +27,6 @@ public interface OAuth {
      * @return URL на который необходимо перенаправить пользователя для аутентификации
      * @throws IOException 
      */
-    public String data(HttpSession session, Model model, String code, String state, String error) throws IOException;
+    public String data(Model model, String code, String state, String error) throws IOException;
     
 }

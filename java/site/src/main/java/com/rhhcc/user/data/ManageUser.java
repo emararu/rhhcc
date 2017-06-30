@@ -2,6 +2,8 @@ package com.rhhcc.user.data;
 
 import java.io.Serializable;
 import java.sql.CallableStatement;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.Connection;
 import java.sql.SQLException;
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import com.rhhcc.common.type.DBComplete;
 import com.rhhcc.common.type.DBResult;
+import com.rhhcc.user.auth.Auth;
 import com.rhhcc.user.type.DBResultCreate;
 
 import org.slf4j.Logger;
@@ -32,17 +35,20 @@ public class ManageUser implements Serializable, Manage {
     private final Logger log = LoggerFactory.getLogger(ManageUser.class);
     
     @Autowired
+    @Qualifier("authService")
+    private Auth auth; 
+    
+    @Autowired
     @Qualifier("dataSource")
     private BasicDataSource ds;
-        
+    
     @Autowired
     @Qualifier("manageUserNotify")
     private ManageUserNotify notify;
-        
+    
     @Autowired
     private HttpServletRequest context;
-    
-    
+        
     /**
      * Отправляет в БД запрос на создание пользователя
      * @param user Данные пользователя
@@ -184,27 +190,65 @@ public class ManageUser implements Serializable, Manage {
         log.info("user_id="+user_id+", secret="+secret);
         
         // Подтверждение регистрации пользователя в системе
-        DBResult result = confirmUser(user_id, secret);
-        
-        /*
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-        
-                // Сохранение данных пользователя на время существования сессии
-                session.setAttribute("user", user);
-
-                // Принудительная аутентификация пользователя в spring-security
-                Authentication authentication = new UsernamePasswordAuthenticationToken(username, user.getId()-password, AuthorityUtils.createAuthorityList("ROLE_USER"));
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-
-                model.addAttribute("message", "Добро пожаловать!");
-        */
-        
+        DBResult result = confirmUser(user_id, secret);        
         log.info(result.toString());
         
+        // Если подтверждение данных выполнено успешно
+        if (result.getId() >= 0) {
+            // Данные пользователя
+            User user = this.get(user_id);
+            // Аутентификация пользователя в spring security
+            if (user != null) { auth.process(user); }
+        }
+        
         return result;
+    }
+    
+    @Override
+    public User get(long user_id) {
+        
+        User user = null;
+        
+        try (Connection con = ds.getConnection()) {
+            
+            // Запрос для выборки данных пользователя
+            String sql = "select a.login, u.out_id, u.provider_id, u.firstname, u.lastname, u.gender, u.birthday, u.email, u.phone, u.logo_url\n" +
+                         "from usr_user u left join usr_auth a on u.sys_status = 1 and a.sys_status = 1 and u.id = a.user_id\n" +
+                         "where u.id = ?";
+            log.info(sql);
+            // Разбор запроса
+            PreparedStatement prep = con.prepareStatement(sql);
+            // Связывание переменных
+            prep.setLong(1, user_id);
+            // Выполнение
+            ResultSet rs = prep.executeQuery();
+            // Выборка данных 
+            if (rs.next()) {
+                // Заполнение данными пользователя
+                user = new UserData()
+                           .setId(user_id)
+                           .setLogin(rs.getString("login"))
+                           .setOauth(rs.getString("out_id"))
+                           .setProvider(rs.getShort("provider_id"))
+                           .setFirstname(rs.getString("firstname"))
+                           .setLastname(rs.getString("lastname"))
+                           .setGender(rs.getString("gender"))
+                           .setBirthday(rs.getDate("birthday").toLocalDate())
+                           .setEmail(rs.getString("email"))
+                           .setPhone(rs.getString("phone"))
+                           .setIcon(rs.getString("logo_url"));            
+                log.info(user.toString());
+            }
+            // Закрытие result set
+            rs.close();
+            
+        } catch (SQLException e) {
+            log.info("SQL:"+e.getMessage());
+        } catch (Exception e) {
+            log.info("Error:" + e.toString());
+        }
+        
+        return user;
     }
     
 }

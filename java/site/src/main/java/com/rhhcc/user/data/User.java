@@ -141,6 +141,12 @@ public interface User {
     public String getLastname();
     
     /**
+     * Возвращает имя и фамилию пользователя
+     * @return Имя и фамилия пользователя
+     */
+    public String getName();
+    
+    /**
      * Возвращает пол пользователя
      * @return Пол пользователя
      */

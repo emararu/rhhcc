@@ -25,6 +25,12 @@ public interface Manage {
      */
     public DBResult confirm(long user_id, String secret);
     
-    // public User get();
+    /**
+     * Возвращает данные пользователя по ID
+     * @param user_id ID пользователя
+     * @return Данные пользователя
+     */
+    public User get(long user_id);
     
+    //public arrayRole getRole(long user_id);
 }

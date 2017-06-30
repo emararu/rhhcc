@@ -1,7 +1,6 @@
 package com.rhhcc.user.auth;
 
 import java.io.IOException;
-import javax.servlet.http.HttpSession;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -96,8 +95,8 @@ public class OAuthSocialFacebook extends OAuthSocial implements OAuth {
     }
     
     @Override
-    public String data(HttpSession session, Model model, String code, String state, String error) throws IOException {
-        return response(session, model, code, state, error, userInfoUri);
+    public String data(Model model, String code, String state, String error) throws IOException {
+        return response(model, code, state, error, userInfoUri);
     }
 
     @Override

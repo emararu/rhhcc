@@ -30,8 +30,7 @@ public class UserSettingData implements Serializable, UserSetting {
     @Override public Visibility getIsBirthday() { return this.isBirthday; }
     @Override public Visibility getIsEmail()    { return this.isEmail;    }
     @Override public Visibility getIsPhone()    { return this.isPhone;    }
-           
-    
+        
     @Override
     public String toString() {
         return "{ isBirthday:" + isBirthday + 
