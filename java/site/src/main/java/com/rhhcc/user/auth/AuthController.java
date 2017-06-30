@@ -28,12 +28,12 @@ public class AuthController {
     
     @RequestMapping(value = "/tile-icon-auth", method = {RequestMethod.POST})
     public String tileIconAuth() {
-       return (auth.is() ? "page.body.header.icon.logout" : "page.body.header.icon.login");
+       return (auth.isAuth() ? "page.body.header.icon.logout" : "page.body.header.icon.login");
     }
     
     @RequestMapping(value = "/tile-menu-auth", method = {RequestMethod.POST})
     public String tileMenuAuth() { 
-       return (auth.is() ? "page.body.header.logout" : "page.body.header.login");
+       return (auth.isAuth() ? "page.body.header.logout" : "page.body.header.login");
     }
     
 }

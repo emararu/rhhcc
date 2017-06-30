@@ -1,5 +1,6 @@
 package com.rhhcc.user.data;
 
+import java.util.ArrayList;
 import com.rhhcc.common.type.DBResult;
 
 /**
@@ -32,5 +33,11 @@ public interface Manage {
      */
     public User get(long user_id);
     
-    //public arrayRole getRole(long user_id);
+    /**
+     * Возвращает привилегии пользователя по ID
+     * @param user_id ID пользователя
+     * @return Привилегии пользователя
+     */
+    public ArrayList<String> getPrivilege(long user_id);
+    
 }

@@ -21,7 +21,7 @@
                     <c:set var="page_descr" value="Запрос на регистрацию успешено выполнен. Для завершения регистрации, необходимо перейти по ссылке из письма отправленного на e-mail указанный при заполненнии формы регистрации."/>
                 </c:when>
                 <c:otherwise>
-                    <c:set var="page_descr" value="Во время обработки произошла ошибка: ${error_descr}"/>               
+                    <c:set var="page_descr" value="${error_descr}"/>               
                 </c:otherwise>
             </c:choose>
         </c:when>
@@ -34,7 +34,7 @@
                     <c:set var="page_descr" value="Ваша регистрация на сайте успешно подтверждена."/>
                 </c:when>
                 <c:otherwise>
-                    <c:set var="page_descr" value="Во время обработки произошла ошибка: ${error_descr}"/>               
+                    <c:set var="page_descr" value="${error_descr}"/>               
                 </c:otherwise>
             </c:choose>
         </c:when>

@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.dbcp.BasicDataSource;
@@ -35,16 +36,16 @@ public class ManageUser implements Serializable, Manage {
     private final Logger log = LoggerFactory.getLogger(ManageUser.class);
     
     @Autowired
-    @Qualifier("authService")
-    private Auth auth; 
-    
-    @Autowired
     @Qualifier("dataSource")
     private BasicDataSource ds;
     
     @Autowired
     @Qualifier("manageUserNotify")
     private ManageUserNotify notify;
+    
+    @Autowired
+    @Qualifier("authService")
+    private Auth auth;
     
     @Autowired
     private HttpServletRequest context;
@@ -192,13 +193,15 @@ public class ManageUser implements Serializable, Manage {
         // Подтверждение регистрации пользователя в системе
         DBResult result = confirmUser(user_id, secret);        
         log.info(result.toString());
-        
+
         // Если подтверждение данных выполнено успешно
         if (result.getId() >= 0) {
             // Данные пользователя
             User user = this.get(user_id);
+            // Привилегии пользователя
+            ArrayList<String> privilege = this.getPrivilege(user_id);                 
             // Аутентификация пользователя в spring security
-            if (user != null) { auth.process(user); }
+            if (user != null) { auth.process(user, privilege); }
         }
         
         return result;
@@ -213,7 +216,7 @@ public class ManageUser implements Serializable, Manage {
             
             // Запрос для выборки данных пользователя
             String sql = "select a.login, u.out_id, u.provider_id, u.firstname, u.lastname, u.gender, u.birthday, u.email, u.phone, u.logo_url\n" +
-                         "from usr_user u left join usr_auth a on u.sys_status = 1 and a.sys_status = 1 and u.id = a.user_id\n" +
+                         "from usr_user u left join usr_auth a on u.sys_status = 'on' and a.sys_status = 'on' and u.id = a.user_id\n" +
                          "where u.id = ?";
             log.info(sql);
             // Разбор запроса
@@ -250,5 +253,39 @@ public class ManageUser implements Serializable, Manage {
         
         return user;
     }
-    
+ 
+    @Override
+    public ArrayList<String> getPrivilege(long user_id) {
+        
+        ArrayList<String> privilege = new ArrayList<>();
+        
+        try (Connection con = ds.getConnection()) {
+            
+            // Запрос для выборки данных пользователя
+            String sql = "select role_id from usr_user_role where sys_status = 'on' and user_id = ?";
+            log.info(sql);
+            // Разбор запроса
+            PreparedStatement prep = con.prepareStatement(sql);
+            // Связывание переменных
+            prep.setLong(1, user_id);
+            // Выполнение
+            ResultSet rs = prep.executeQuery();
+            // Выборка данных 
+            while (rs.next()) {
+                // Заполнение данными
+                privilege.add(rs.getString("role_id"));  
+            }      
+            log.info(privilege.toString());            
+            // Закрытие result set
+            rs.close();
+            
+        } catch (SQLException e) {
+            log.info("SQL:"+e.getMessage());
+        } catch (Exception e) {
+            log.info("Error:" + e.toString());
+        }
+        
+        return privilege;
+    }
+        
 }

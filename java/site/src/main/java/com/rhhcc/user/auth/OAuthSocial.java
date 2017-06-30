@@ -1,6 +1,7 @@
 package com.rhhcc.user.auth;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Random;
 
 import org.springframework.web.context.request.RequestContextHolder;
@@ -18,6 +19,7 @@ import com.github.scribejava.core.model.Response;
 import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuth20Service;
 
+import com.rhhcc.user.data.Manage;
 import com.rhhcc.user.data.User;
 
 import org.slf4j.Logger;
@@ -36,7 +38,11 @@ public abstract class OAuthSocial {
     
     @Autowired
     @Qualifier("authService")
-    private Auth auth; 
+    private Auth auth;
+    
+    @Autowired
+    @Qualifier("manageUser")
+    private Manage mUser; 
     
     // Сервис предоставляющий внешнюю аутентификацию
     private OAuth20Service service;
@@ -116,8 +122,11 @@ public abstract class OAuthSocial {
                 // Поиск и обновление данных пользователя в БД
                 // to-do...
 
+                // Привилегии пользователя
+                ArrayList<String> privilege = mUser.getPrivilege(user.getId());
+                
                 // Аутентификация пользователя в spring security
-                auth.process(user);
+                auth.process(user, privilege);
 
                 model.addAttribute("message", "Добро пожаловать!");
                 urlAuth = "user.auth.success";

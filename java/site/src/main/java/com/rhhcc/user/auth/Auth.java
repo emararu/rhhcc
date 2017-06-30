@@ -1,5 +1,6 @@
 package com.rhhcc.user.auth;
 
+import java.util.ArrayList;
 import com.rhhcc.user.data.User;
 
 /**
@@ -14,12 +15,13 @@ public interface Auth {
      * Проверка аутентификации пользователя в системе
      * @return True - Пользователь аутентифицирован, False - Пользователь не аутентифицирован
      */
-    public boolean is();
+    public boolean isAuth();
     
     /**
      * Выполняет аутентификация пользователя в spring security
-     * @param user Данные пользователя
+     * @param user      Данные пользователя
+     * @param privilege Привилегии пользователя
      */
-    public void process(User user);
+    public void process(User user, ArrayList<String> privilege);
     
 }
