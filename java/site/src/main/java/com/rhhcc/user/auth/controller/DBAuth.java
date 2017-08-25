@@ -1,4 +1,4 @@
-package com.rhhcc.user.auth;
+package com.rhhcc.user.auth.controller;
 
 import com.rhhcc.common.type.DBResult;
 import com.rhhcc.user.data.UserData;
@@ -25,13 +25,13 @@ import org.slf4j.LoggerFactory;
  */
 @RequestMapping("/user")
 @Controller
-public class DBAuthController {
+public class DBAuth {
     
-    private final Logger log = LoggerFactory.getLogger(DBAuthController.class);    
+    private final Logger log = LoggerFactory.getLogger(DBAuth.class);    
     
     @Autowired
     @Qualifier("manageUser")
-    Manage mUser;
+    Manage manageUser;
     
     /**
      * Форма регистрации
@@ -42,11 +42,19 @@ public class DBAuthController {
     }
     
     /**
-     * Страница регистрации полностью
+     * Форма регистрации через ajax запрос
      */
     @RequestMapping(value = "/register", method = { RequestMethod.POST })
     public String registerTile() {
         return "page.body.content.user.register";
+    }
+
+    /**
+     * Выполнение регистрации пользователя путем передачи данных со страницы с полной перезагрузкой
+     */
+    @RequestMapping(value = { "/register/do/submit" }, method = { RequestMethod.POST } )
+    public String doSubmitRegister(final UserData user, Model model) {
+        return manageUser.create(user).doSubmit(model);
     }
         
     
@@ -56,15 +64,7 @@ public class DBAuthController {
     @RequestMapping(value = { "/register/do" }, method = { RequestMethod.POST } )
     @ResponseBody
     public DBResult doRegister(@RequestBody final UserData user) {
-        return mUser.create(user);
-    }
-
-    /**
-     * Выполнение регистрации пользователя петем передачи данных со страницы с полной перезагрузкой
-     */
-    @RequestMapping(value = { "/register/do/submit" }, method = { RequestMethod.POST } )
-    public String doSubmitRegister(final UserData user, Model model) {
-        return mUser.create(user).doReturn(model);
+        return manageUser.create(user);
     }
     
     
@@ -73,7 +73,7 @@ public class DBAuthController {
      */
     @RequestMapping(value = { "/confirm/{user_id}/{secret}/" }, method = { RequestMethod.GET } )
     public String doCоnfirm(@PathVariable final long user_id, @PathVariable final String secret, Model model) {
-        return mUser.confirm(user_id, secret).doReturn(model);
+        return manageUser.confirm(user_id, secret).doSubmit(model);
     }
     
 }

@@ -13,7 +13,7 @@
     <spring:url value="/index" var="url_index"/>
     
     <c:choose>
-        <c:when test="${complete_type=='register'}">        
+        <c:when test="${method_type=='register'}">        
             <c:set var="page_path" value="Регистрация"/>
             <c:set var="page_header" value="Регистрация"/> 
             <c:choose>
@@ -26,7 +26,7 @@
             </c:choose>
         </c:when>
         
-        <c:when test="${complete_type=='register_confirm'}">        
+        <c:when test="${method_type=='register_confirm'}">        
             <c:set var="page_path" value="Регистрация"/>
             <c:set var="page_header" value="Регистрация"/> 
             <c:choose>

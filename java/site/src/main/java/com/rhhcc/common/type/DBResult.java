@@ -23,7 +23,7 @@ public class DBResult {
      */
     public DBResult(DBComplete complete, long id, String text) {
         this.complete = complete;
-        this.path = "/complete/" + complete.name();
+        this.path = (id > 0 ? "/complete/" : "/failure/") + complete.name();
         this.id = id;
         this.text = text;
     }
@@ -77,13 +77,13 @@ public class DBResult {
      * @param model Параметры jsp-страницы
      * @return Путь к странице с результатом обработки
      */
-    public String doReturn(Model model) {    
+    public String doSubmit(Model model) {    
+        model.addAttribute("method_type", this.getComplete().name());
         if (this.getId() >= 0) {
-            return "forward:"+this.getPath();
-        } else {
-            model.addAttribute("complete_type", this.getComplete().name());
-            model.addAttribute("error_descr", this.getText());
             return "complete";
+        } else {
+            model.addAttribute("error_descr", this.getText());
+            return "failure";
         }
     }
     

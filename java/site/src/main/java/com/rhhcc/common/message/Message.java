@@ -1,4 +1,4 @@
-package com.rhhcc.common.Message;
+package com.rhhcc.common.message;
 
 import javax.mail.MessagingException;
 import org.thymeleaf.context.Context;

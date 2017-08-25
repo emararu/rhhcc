@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 
 import com.rhhcc.common.type.DBResult;
-import com.rhhcc.common.Message.Message;
+import com.rhhcc.common.message.Message;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

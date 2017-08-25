@@ -1,5 +1,6 @@
-package com.rhhcc.user.auth;
+package com.rhhcc.user.auth.controller;
 
+import com.rhhcc.user.auth.OAuth;
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,19 +15,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Класс-контроллер аутентификации пользователя в системе через Google+
+ * Класс-контроллер аутентификации пользователя в системе через Facebook
  * 
  * @author EMararu
  * @version 0.00.01
  */
-@RequestMapping("/user/auth/google")
-@Controller             
-public class OAuthGoogleController {
+@RequestMapping("/user/auth/facebook")
+@Controller
+public class OAuthFacebook {
 
-    private final Logger log = LoggerFactory.getLogger(OAuthGoogleController.class);
+    private final Logger log = LoggerFactory.getLogger(OAuthFacebook.class);
     
     @Autowired
-    @Qualifier("openAuthGoogle")
+    @Qualifier("openAuthFacebook")
     private OAuth auth;
     
     @RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -38,4 +39,5 @@ public class OAuthGoogleController {
     public String data(Model model, @RequestParam(value = "code", required = false) String code, @RequestParam(value = "state", required = false) String state, @RequestParam(value = "error", required = false) String error) throws IOException {
         return auth.data(model, code, state, error);
     }
+    
 }

@@ -37,12 +37,12 @@ public abstract class OAuthSocial {
     private final Logger log = LoggerFactory.getLogger(OAuthSocial.class);
     
     @Autowired
-    @Qualifier("authService")
-    private Auth auth;
+    @Qualifier("springAuthService")
+    private SpringAuth springAuth;
     
     @Autowired
     @Qualifier("manageUser")
-    private Manage mUser; 
+    private Manage manageUser; 
     
     // Сервис предоставляющий внешнюю аутентификацию
     private OAuth20Service service;
@@ -123,10 +123,10 @@ public abstract class OAuthSocial {
                 // to-do...
 
                 // Привилегии пользователя
-                ArrayList<String> privilege = mUser.getPrivilege(user.getId());
+                ArrayList<String> privilege = manageUser.getPrivilege(user.getId());
                 
                 // Аутентификация пользователя в spring security
-                auth.process(user, privilege);
+                springAuth.process(user, privilege);
 
                 model.addAttribute("message", "Добро пожаловать!");
                 urlAuth = "user.auth.success";

@@ -9,13 +9,19 @@ import com.rhhcc.user.data.User;
  * @author  EMararu
  * @version 0.00.01
  */
-public interface Auth {
+public interface SpringAuth {
     
     /**
      * Проверка аутентификации пользователя в системе
      * @return True - Пользователь аутентифицирован, False - Пользователь не аутентифицирован
      */
     public boolean isAuth();
+    
+    /**
+     * Проверка смены акаунта пользователя в системе
+     * @return True - Новый пользователь, False - Смены не было
+     */
+    public boolean isOther();
     
     /**
      * Выполняет аутентификация пользователя в spring security

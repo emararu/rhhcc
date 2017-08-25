@@ -53,11 +53,18 @@
         <put-attribute name="page.body.content" value="page.body.content.index" cascade="true"/>
     </definition>
     
-    <!-- Универсальная страница результата обработки запроса пользователя -->
-    <definition name="page.body.content.complete" template="/WEB-INF/view/complete.jspx"></definition>
+    <!-- Универсальная страница успешной обработки запроса пользователя -->
+    <definition name="page.body.content.complete" template="/WEB-INF/view/result.jspx"></definition>
     <definition extends="main" name="complete">
         <put-attribute name="page.head.title" value="RHHCC | Выполнено"/>
         <put-attribute name="page.body.content" value="page.body.content.complete" cascade="true"/>
+    </definition>
+    
+    <!-- Универсальная страница ошибки во время обработки запроса пользователя -->
+    <definition name="page.body.content.failure" template="/WEB-INF/view/result.jspx"></definition>
+    <definition extends="main" name="failure">
+        <put-attribute name="page.head.title" value="RHHCC | Ошибка во время выполнения"/>
+        <put-attribute name="page.body.content" value="page.body.content.failure" cascade="true"/>
     </definition>
     
     <!-- Регистрация нового пользователя -->

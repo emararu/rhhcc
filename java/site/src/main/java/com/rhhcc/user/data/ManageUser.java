@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 
 import com.rhhcc.common.type.DBComplete;
 import com.rhhcc.common.type.DBResult;
-import com.rhhcc.user.auth.Auth;
+import com.rhhcc.user.auth.SpringAuth;
 import com.rhhcc.user.type.DBResultCreate;
 
 import org.slf4j.Logger;
@@ -44,8 +44,8 @@ public class ManageUser implements Serializable, Manage {
     private ManageUserNotify notify;
     
     @Autowired
-    @Qualifier("authService")
-    private Auth auth;
+    @Qualifier("springAuthService")
+    private SpringAuth springAuth;
     
     @Autowired
     private HttpServletRequest context;
@@ -201,7 +201,7 @@ public class ManageUser implements Serializable, Manage {
             // Привилегии пользователя
             ArrayList<String> privilege = this.getPrivilege(user_id);                 
             // Аутентификация пользователя в spring security
-            if (user != null) { auth.process(user, privilege); }
+            if (user != null) { springAuth.process(user, privilege); }
         }
         
         return result;
@@ -236,7 +236,7 @@ public class ManageUser implements Serializable, Manage {
                            .setFirstname(rs.getString("firstname"))
                            .setLastname(rs.getString("lastname"))
                            .setGender(rs.getString("gender"))
-                           .setBirthday(rs.getDate("birthday").toLocalDate())
+                           .setBirthday(rs.getDate("birthday").toLocalDate()) /*TODO: сделать проверку на birthday=null*/
                            .setEmail(rs.getString("email"))
                            .setPhone(rs.getString("phone"))
                            .setIcon(rs.getString("logo_url"));            
