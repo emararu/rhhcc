@@ -3,7 +3,8 @@ package com.rhhcc.user.data;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-
+import java.sql.Date;
+        
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -57,7 +58,7 @@ public class UserData implements Serializable, User{
      */
     private String processString(String value) {
         return (value == null || value.equals("")) ? null : value;
-    }  
+    }
     
     /**
      * Обрабатывает и возвращает пароль
@@ -78,12 +79,18 @@ public class UserData implements Serializable, User{
     }   
     
     @Override 
-    public User setBirthdayF(String birthday, String format) { 
+    public User setBirthdayOf(String birthday, String format) { 
         if (!birthday.equals("")) {
             DateTimeFormatter f = DateTimeFormatter.ofPattern(format);
             this.birthday = LocalDate.parse(birthday, f); 
         }
         return this;
+    }
+    
+    @Override 
+    public User setBirthdayOf(Date birthday) { 
+        this.birthday = (birthday == null ? null : birthday.toLocalDate());
+        return this; 
     }
     
     /* Setters */

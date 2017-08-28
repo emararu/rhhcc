@@ -2,6 +2,7 @@ package com.rhhcc.user.data;
 
 import com.rhhcc.common.type.Gender;
 import java.time.LocalDate;
+import java.sql.Date;
 
 /**
  * Интерфейс описывающий пользователя в системе
@@ -74,7 +75,8 @@ public interface User {
      * @return Текущий пользователь
      */
     public User setBirthday(LocalDate birthday);
-    public User setBirthdayF(String birthday, String format);
+    public User setBirthdayOf(String birthday, String format);
+    public User setBirthdayOf(Date birthday);
         
     /**
      * Устанавливает EMail пользователя

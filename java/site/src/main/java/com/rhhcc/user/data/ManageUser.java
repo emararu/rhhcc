@@ -236,10 +236,10 @@ public class ManageUser implements Serializable, Manage {
                            .setFirstname(rs.getString("firstname"))
                            .setLastname(rs.getString("lastname"))
                            .setGender(rs.getString("gender"))
-                           .setBirthday(rs.getDate("birthday").toLocalDate()) /*TODO: сделать проверку на birthday=null*/
+                           .setBirthdayOf(rs.getDate("birthday"))
                            .setEmail(rs.getString("email"))
                            .setPhone(rs.getString("phone"))
-                           .setIcon(rs.getString("logo_url"));            
+                           .setIcon(rs.getString("logo_url"));
                 log.info(user.toString());
             }
             // Закрытие result set
