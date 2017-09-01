@@ -40,4 +40,20 @@ public interface Manage {
      */
     public ArrayList<String> getPrivilege(long user_id);
     
+    /**
+     * Аутентификация пользователя в системе
+     * @param login    Логин пользователя
+     * @param password Пароль пользователя
+     * @return Результат аутентификации пользователя в БД
+     */
+    public DBResult login(String login, String password);
+    
+    /**
+     * Старт сессии указанного пользоваетя для работы в системе
+     * После вызова методов Manage.login, Manage.confirm, OAuthSosial.response 
+     * вызывать не нужно, тк вызов выполняется внутри перечисленных методов.
+     * @param user_id ID пользователя
+     */
+    public void startSession(long user_id);
+    
 }

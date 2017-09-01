@@ -14,8 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 public class DBResultCreate extends DBResult {
         
     private final String secret;
-    
-    
+        
     /**
      * Результат ответа БД
      * @param complete Тип отображаемой страницы с результатом выполнения запроса к БД

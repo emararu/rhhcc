@@ -1,7 +1,6 @@
 package com.rhhcc.user.auth;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Random;
 
 import org.springframework.web.context.request.RequestContextHolder;
@@ -35,11 +34,7 @@ import org.slf4j.LoggerFactory;
 public abstract class OAuthSocial {    
 
     private final Logger log = LoggerFactory.getLogger(OAuthSocial.class);
-    
-    @Autowired
-    @Qualifier("springAuthService")
-    private SpringAuth springAuth;
-    
+        
     @Autowired
     @Qualifier("manageUser")
     private Manage manageUser; 
@@ -120,14 +115,12 @@ public abstract class OAuthSocial {
                 User user = parseData(response.getBody());
 
                 // Поиск и обновление данных пользователя в БД
+                user.setId(28);
                 // to-do...
 
-                // Привилегии пользователя
-                ArrayList<String> privilege = manageUser.getPrivilege(user.getId());
-                
-                // Аутентификация пользователя в spring security
-                springAuth.process(user, privilege);
-
+                // Старт сессии указанного пользоваетя для работы в системе
+                manageUser.startSession(user.getId());
+            
                 model.addAttribute("message", "Добро пожаловать!");
                 urlAuth = "user.auth.success";
                 

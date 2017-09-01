@@ -7,11 +7,11 @@
 $(function() {
 
     $("#create").click(function() {   
-        if (cjs.checkFormMandatory(["login", "password", "password_repeat", "firstname", "lastname", "gender", "email"])) {
-            if (cjs.checkEqualPair("password", "password_repeat")) {
-                if (cjs.checkFormatDate(["birthday"])) {
+        if (cjs.checkFormMandatory($("#user_register_do"), ["login", "password", "password_repeat", "firstname", "lastname", "gender", "email"])) {
+            if (cjs.checkEqualPair($("#user_register_do"), "password", "password_repeat")) {
+                if (cjs.checkFormatDate($("#user_register_do"), ["birthday"])) {
                     cjs.sendFormData(
-                        $("#register_do"),
+                        $("#user_register_do"),
                         ["login", "password", "firstname", "lastname", "gender", "birthday", "email", "phone"]
                     );
                 }

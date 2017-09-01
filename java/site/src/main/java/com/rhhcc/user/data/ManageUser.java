@@ -1,6 +1,5 @@
 package com.rhhcc.user.data;
 
-import java.io.Serializable;
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,6 +17,7 @@ import com.rhhcc.common.type.DBComplete;
 import com.rhhcc.common.type.DBResult;
 import com.rhhcc.user.auth.SpringAuth;
 import com.rhhcc.user.type.DBResultCreate;
+import com.rhhcc.user.type.DBResultLogin;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,10 +29,8 @@ import org.slf4j.LoggerFactory;
  * @version 0.00.01
  */
 @Service("manageUser")
-public class ManageUser implements Serializable, Manage {
+public class ManageUser implements Manage {
     
-    private static final long serialVersionUID = 2298579636238450702L;
-
     private final Logger log = LoggerFactory.getLogger(ManageUser.class);
     
     @Autowired
@@ -165,7 +163,53 @@ public class ManageUser implements Serializable, Manage {
         }
         
         return result;
-    }        
+    }    
+    
+    /**
+     * Отправляет в БД запрос на Аутентификацию пользователя в системе
+     * @param login    Логин пользователя
+     * @param password Пароль пользователя
+     * @return Результат аутентификации пользователя в БД
+     */
+    private DBResult loginUser(String login, String password) {
+        
+        DBResult result;
+        
+        try (Connection con = ds.getConnection()) {
+                        
+            // Выполняет проверку логина и пароля и возвращает ID найденного пользователя
+            String sql = "{ call usr_login(?, ?, ?, ?, ?) }";
+            log.info(sql);
+            CallableStatement prep = con.prepareCall(sql);
+
+            // IN
+            // * Логин пользователя
+            prep.setString(1, login);
+            // * Пароль пользователя
+            prep.setString(2, password);
+
+            // OUT
+            // * Результат работы: >0 - ID пользователя; 0 - Проверка не выполнена; <0 - Ошибка
+            prep.registerOutParameter(3, java.sql.Types.INTEGER);    
+            // * ID группировки пользователя
+            prep.registerOutParameter(4, java.sql.Types.INTEGER);    
+            // * Текстовое описание результата работы        
+            prep.registerOutParameter(5, java.sql.Types.VARCHAR);  
+
+            prep.execute();
+
+            result = new DBResultLogin(prep.getLong(3), prep.getLong(4), prep.getString(5));
+            
+        } catch (SQLException e) {
+            log.info("SQL:"+e.getMessage());
+            result = new DBResult(-600, e.getMessage());
+        } catch (Exception e) {
+            log.info("Error:" + e.toString());
+            result = new DBResult(-600, e.toString());
+        }
+        
+        return result;
+    }
     
     @Override
     public DBResult create(User user) {
@@ -196,12 +240,8 @@ public class ManageUser implements Serializable, Manage {
 
         // Если подтверждение данных выполнено успешно
         if (result.getId() >= 0) {
-            // Данные пользователя
-            User user = this.get(user_id);
-            // Привилегии пользователя
-            ArrayList<String> privilege = this.getPrivilege(user_id);                 
-            // Аутентификация пользователя в spring security
-            if (user != null) { springAuth.process(user, privilege); }
+            // Старт сессии указанного пользоваетя для работы в системе
+            this.startSession(user_id);
         }
         
         return result;
@@ -286,6 +326,42 @@ public class ManageUser implements Serializable, Manage {
         }
         
         return privilege;
+    }
+        
+    @Override
+    public DBResult login(String login, String password) {
+       
+        log.info("login="+login+", password="+password);
+        
+        // Аутентификация пользователя в БД            
+        DBResultLogin result = (DBResultLogin)loginUser(login, password);
+        // Если пользователь аутентифицирован
+        if (result.getId() >= 0) {
+            // Старт сессии указанного пользоваетя для работы в системе
+            this.startSession(result.getGroupId());
+        }
+        
+        log.info(result.toString());
+        
+        return result;
+    }
+    
+    @Override
+    public void startSession(long user_id) {
+        
+        if (user_id > 0) {
+            // Данные пользователя
+            User user = this.get(user_id);
+            log.info(user.toString());
+        
+            if (user != null) { 
+                // Привилегии пользователя
+                ArrayList<String> privilege = this.getPrivilege(user.getId());
+                // Аутентификация пользователя в spring security
+                springAuth.process(user, privilege); 
+            }
+        }
+    
     }
         
 }

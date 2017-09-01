@@ -18,12 +18,6 @@ public interface SpringAuth {
     public boolean isAuth();
     
     /**
-     * Проверка смены акаунта пользователя в системе
-     * @return True - Новый пользователь, False - Смены не было
-     */
-    public boolean isOther();
-    
-    /**
      * Выполняет аутентификация пользователя в spring security
      * @param user      Данные пользователя
      * @param privilege Привилегии пользователя

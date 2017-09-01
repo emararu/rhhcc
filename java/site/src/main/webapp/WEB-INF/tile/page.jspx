@@ -33,7 +33,7 @@
         <script src="${url_js_jquery_placeholder}" type="text/javascript"><jsp:text/></script> 
         <script src="${url_js_common}" type="text/javascript"><jsp:text/></script>
         <script src="${url_js_main}" type="text/javascript"><jsp:text/></script>
-        <script type="text/javascript">var cjs = CommonJS("${url}");</script>
+        <script type="text/javascript">var cjs = new CommonJS("${url}");</script>
         <link rel="stylesheet" href="${url_css_main}"/>
     </head>
     

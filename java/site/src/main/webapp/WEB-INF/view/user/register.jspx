@@ -22,7 +22,7 @@
         </ul>
     </div>
     
-    <form action="${url_register_do}" id="register_do" method="post">
+    <form action="${url_register_do}" id="user_register_do" method="post">
         <div class="page-form">
 
             <div class="page-header"><span>РЕГИСТРАЦИОННЫЕ ДАННЫЕ</span></div>
@@ -34,7 +34,7 @@
                     <div><jsp:text/></div>
                 </div>
                 <div>
-                    <div><input type="password" id="password" name="password" placeholder="Пароль"/></div>
+                    <div><input type="password" name="password" placeholder="Пароль"/></div>
                     <div><input type="password" name="password_repeat" placeholder="Повтор пароля"/></div>
                 </div>
                 <div>

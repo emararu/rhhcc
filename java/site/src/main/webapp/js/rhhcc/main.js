@@ -3,15 +3,15 @@ $(function() {
     if (History.enabled) {        
         History.Adapter.bind(window, "statechange", function() { 
             var State = History.getState();
-            //alert(State.data.);        
+            //alert(State.data.);             
             $.ajax({
                 dataType: "html", 
                 method: "POST",
                 url: State.url
-            }).done(function(data) { 
+            }).done(function(data) {
                 if (State.url.indexOf(cjs.url("/index")) > -1) {
                     $("#header").removeClass("header").addClass("header-tall");
-                } else {                    
+                } else {
                     $("#header").removeClass("header-tall").addClass("header");
                 }
                 $("div.main").scrollTop(0);
@@ -19,7 +19,7 @@ $(function() {
             });
         });
         
-        $(document).on("click", "a", function(event) {
+        $(document).on("click", "a", function(event) { 
             event.preventDefault();
             var h = ($(this).text() ? $(this).text() : $(this).prop("title")).toLowerCase();
             History.pushState(null, "RHHCC | " + h.charAt(0).toUpperCase() + h.substr(1), $(this).prop("href"));
@@ -59,6 +59,18 @@ $(function() {
         cjs.windowOpen(cjs.url("/user/auth/google/login"), 750, 650);
         cjs.hideMenuAuth();
     });     
+    
+    $("#menu-main-auth").on("click", "#login", function() { 
+        if (cjs.checkFormMandatory($("#user_login_do"), ["login", "password"])) {            
+            cjs.sendForm($("#user_login_do"), ["login", "password"], function(data){
+                if (data.id >= 0) {
+                    cjs.swapMenuAuth(data.text);
+                } else {
+                    cjs.showMessage("error", data.text);
+                }
+            });
+        }
+    }); 
         
     $("#menu-main-auth").on("click", "#menu-main-auth-logout", function() {     
         $.ajax({
@@ -71,7 +83,7 @@ $(function() {
             cjs.showMessage("error", jqXHR.status + ": " + errorThrown);
         });  
         cjs.hideMenuAuth();
-    });
-            
+    }); 
+    
     $("[placeholder]").placeholder();    
 });
