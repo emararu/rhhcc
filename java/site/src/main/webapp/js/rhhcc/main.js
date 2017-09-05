@@ -72,13 +72,16 @@ $(function() {
         }
     }); 
         
-    $("#menu-main-auth").on("click", "#menu-main-auth-logout", function() {     
+    $("#menu-main-auth").on("click", "#menu-main-auth-logout", function() { 
+        var _this = this;         
         $.ajax({
-            dataType: "html", 
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            mimeType: "application/json",
             method: "POST",
             url: cjs.url("/logout")
-        }).done(function() {
-            cjs.swapMenuAuth("Пока!");
+        }).done(function(data) {
+            cjs.swapMenuAuth(data.text);  
         }).fail(function(jqXHR, textStatus, errorThrown) {
             cjs.showMessage("error", jqXHR.status + ": " + errorThrown);
         });  

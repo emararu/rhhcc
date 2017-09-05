@@ -12,8 +12,8 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 
+import com.rhhcc.common.notify.Mail;
 import com.rhhcc.common.type.DBResult;
-import com.rhhcc.common.message.Message;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,8 +36,8 @@ public class ManageUserNotify implements Serializable {
     private BasicDataSource ds;
         
     @Autowired
-    @Qualifier("messageMail")
-    private Message mail;
+    @Qualifier("mailMessage")
+    private Mail mail;
         
     /**
      * Установка в БД флага подтверждения об успешной отправке уведомления на почту пользователя
@@ -105,7 +105,7 @@ public class ManageUserNotify implements Serializable {
             ctx.setVariable("urlConfirm", url);
                         
             // Отправка письма
-            mail.sendMail(email, "Пожалуйста, подтвердите регистрацию", "register", ctx); 
+            mail.send(email, "Пожалуйста, подтвердите регистрацию", "register", ctx); 
             
             // Установка в БД флага подтверждения об успешной отправке уведомления на почту пользователя
             confirmSendMail(id, email, secret);

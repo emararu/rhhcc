@@ -1,12 +1,15 @@
 package com.rhhcc.user.auth.controller;
 
-import com.rhhcc.user.auth.SpringAuth;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.rhhcc.common.cache.Cache;
+import com.rhhcc.common.type.DBResult;
+import com.rhhcc.user.auth.SpringAuth;
 
 /**
  * Класс-контроллер аутентификации пользователя в системе вне зависимости от способа аутентификации
@@ -19,12 +22,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class Auth {
     
     @Autowired
+    @Qualifier("cacheMessage")
+    private Cache cache;
+    
+    @Autowired
     @Qualifier("springAuthService")
     private SpringAuth springAuth;
     
     @RequestMapping(value = "/success-logout", method = {RequestMethod.GET})
     @ResponseBody
-    public void successLogout() {
+    public DBResult successLogout() {
+        return cache.get(3);
     }
     
     @RequestMapping(value = "/tile-icon-auth", method = {RequestMethod.POST})

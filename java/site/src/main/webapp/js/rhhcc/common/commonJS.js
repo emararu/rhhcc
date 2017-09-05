@@ -8,10 +8,10 @@ function CommonJS(path) {
     this.path = "/" + path.replace(re, "");    
 }
 
-CommonJS.prototype.init = function(path) {
+/*CommonJS.prototype.init = function(path) {
     var re = new RegExp("/", "g");
     this.path = "/" + path.replace(re, "");
-};
+};*/
     
 CommonJS.prototype.url = function(path) {
     return this.path + path;
@@ -49,6 +49,7 @@ CommonJS.prototype.swapMenuAuth = function(text) {
                 url: _this.url("/user/auth/tile-menu-auth")
             }).done(function(menu) {
                 $("#menu-main-auth").html(menu); 
+                $("#menu-main-auth").find("input").placeholder();
                 _this.showMessage("ok", text);
             }).fail(function(jqXHR, textStatus, errorThrown) {
                 _this.showMessage("error", jqXHR.status + ": " + errorThrown);

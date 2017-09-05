@@ -18,6 +18,7 @@ import com.github.scribejava.core.model.Response;
 import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuth20Service;
 
+import com.rhhcc.common.cache.Cache;
 import com.rhhcc.user.data.Manage;
 import com.rhhcc.user.data.User;
 
@@ -38,6 +39,10 @@ public abstract class OAuthSocial {
     @Autowired
     @Qualifier("manageUser")
     private Manage manageUser; 
+    
+    @Autowired
+    @Qualifier("cacheMessage")
+    private Cache cache;
     
     // Сервис предоставляющий внешнюю аутентификацию
     private OAuth20Service service;
@@ -115,24 +120,26 @@ public abstract class OAuthSocial {
                 User user = parseData(response.getBody());
 
                 // Поиск и обновление данных пользователя в БД
-                user.setId(28);
+                user.setId(6);
                 // to-do...
 
                 // Старт сессии указанного пользоваетя для работы в системе
                 manageUser.startSession(user.getId());
             
-                model.addAttribute("message", "Добро пожаловать!");
+                // Сообщение об успешном входе в систему
+                model.addAttribute("message", cache.get(2).getText());
                 urlAuth = "user.auth.success";
                 
+            } else {
+                // Сообщение об ошибке аутентификации
+                model.addAttribute("message", String.format(cache.get(-6).getText(), error));
+                urlAuth = "user.auth.failure";
             }
-            else {
-                model.addAttribute("message", "Ошибка внешней аутентификации [" + error + "].");
-                urlAuth = "user.auth.failure";                
-            }            
-        } else {            
+        } else {
             log.error("secretState=" + secretState + " <> " + state);
-            model.addAttribute("message", "Отказ в доступе: подозрение на межсайтовую атаку.");
-            urlAuth = "user.auth.failure";            
+            // Сообщение об отказе в доступе
+            model.addAttribute("message", cache.get(-7).getText());
+            urlAuth = "user.auth.failure";
         }
         
         return urlAuth;

@@ -1,4 +1,4 @@
-package com.rhhcc.common.message;
+package com.rhhcc.common.notify;
 
 import javax.mail.MessagingException;
 import org.thymeleaf.context.Context;
@@ -10,7 +10,7 @@ import org.thymeleaf.context.Context;
  * @author EMararu
  * @version 0.00.01
  */
-public interface Message {
+public interface Mail {
     
     /**
      * Отправка сообщения
@@ -19,5 +19,5 @@ public interface Message {
      * @param template Шаблон сообщения
      * @param ctx      Параметы передаваемые в шаблон сообщения
      */
-    public void sendMail(final String to, final String subject, final String template, Context ctx) throws MessagingException;
+    public void send(final String to, final String subject, final String template, Context ctx) throws MessagingException;
 }
