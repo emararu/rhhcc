@@ -21,6 +21,7 @@ import com.github.scribejava.core.oauth.OAuth20Service;
 import com.rhhcc.common.cache.Cache;
 import com.rhhcc.user.data.Manage;
 import com.rhhcc.user.data.User;
+import com.rhhcc.user.type.DBResultMerge;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -117,24 +118,34 @@ public abstract class OAuthSocial {
                 log.info("CallbackData" + response.getBody());
 
                 // Текущий пользователь
-                User user = parseData(response.getBody());
+                User user = parseData(response.getBody()); 
 
-                // Поиск и обновление данных пользователя в БД
-                user.setId(6);
-                // to-do...
-
-                // Старт сессии указанного пользоваетя для работы в системе
-                manageUser.startSession(user.getId());
-            
-                // Сообщение об успешном входе в систему
-                model.addAttribute("message", cache.get(2).getText());
-                urlAuth = "user.auth.success";
+                // Слияние и обновление данных пользователя в БД и из системы внешней аутентификации
+                DBResultMerge mergeResult = (DBResultMerge)manageUser.merge(user);
+                
+                // Проверка слияния данных
+                if (mergeResult.getId() > 0 ) {
+                    // ID пользователя
+                    user.setId(mergeResult.getId());
+                    // ID группировки пользователя
+                    user.setGroupId(mergeResult.getGroupId());
+                    // Старт сессии пользоваетя для работы в системе
+                    manageUser.startSession(user);
+                    // Сообщение об успешном входе в систему
+                    model.addAttribute("message", cache.get(2).getText());
+                    urlAuth = "user.auth.success";
+                } else {
+                    // Сообщение об ошибке слияния данных
+                    model.addAttribute("message", mergeResult.getText());
+                    urlAuth = "user.auth.failure";
+                }
                 
             } else {
                 // Сообщение об ошибке аутентификации
                 model.addAttribute("message", String.format(cache.get(-6).getText(), error));
                 urlAuth = "user.auth.failure";
             }
+            
         } else {
             log.error("secretState=" + secretState + " <> " + state);
             // Сообщение об отказе в доступе

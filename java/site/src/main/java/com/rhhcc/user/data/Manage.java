@@ -17,6 +17,14 @@ public interface Manage {
      * @return Результат создания пользователя DBResultCreate
      */
     public DBResult create(User user);
+        
+    /**
+     * Слияние и обновление данных пользователя в БД и из системы внешней 
+     * аутентификации
+     * @param user Данные пользователя
+     * @return Результат слияния и обновления данных пользователя
+     */
+    public DBResult merge(User user);
     
     /**
      * Подтверждение регистрации пользователя в системе
@@ -52,8 +60,9 @@ public interface Manage {
      * Старт сессии указанного пользоваетя для работы в системе
      * После вызова методов Manage.login, Manage.confirm, OAuthSosial.response 
      * вызывать не нужно, тк вызов выполняется внутри перечисленных методов.
-     * @param user_id ID пользователя
+     * @param user Данные пользователя
      */
+    public void startSession(User user);
     public void startSession(long user_id);
     
 }

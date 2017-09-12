@@ -26,29 +26,31 @@ public class UserData implements Serializable, User{
 
     /* 1. Уникальный идентификатор пользователя */
     private long id;  
-    /* 2. Логин пользователя */
+    /* 2. Идентификатор группировки пользователя */
+    private long groupId;
+    /* 3. Логин пользователя */
     private String login;  
-    /* 3. Пароль пользователя */
+    /* 4. Пароль пользователя */
     private String password;  
-    /* 4. Уникальный идентификатор пользователя предоставленный внешней аутентификацией */
+    /* 5. Уникальный идентификатор пользователя предоставленный внешней аутентификацией */
     private String oauth;
-    /* 5. Уникальный идентификатор провайдера внешней аутентификацией */
+    /* 6. Уникальный идентификатор провайдера внешней аутентификацией */
     private int provider;
-    /* 6. Имя пользователя */
+    /* 7. Имя пользователя */
     private String firstname;
-    /* 7. Фамилия пользователя */
+    /* 8. Фамилия пользователя */
     private String lastname;
-    /* 8. Пол */
+    /* 9. Пол */
     private Gender gender;
-    /* 9. Дата рождения пользователя */
+    /* 10. Дата рождения пользователя */
     @JsonFormat(shape = Shape.STRING, pattern = "dd.MM.yyyy")
     @DateTimeFormat(pattern = "dd.MM.yyyy") 
     private LocalDate birthday;
-    /* 10. EMail пользователя */
+    /* 11. EMail пользователя */
     private String email;
-    /* 11. Контактный телефон пользователя */
+    /* 12. Контактный телефон пользователя */
     private String phone;
-    /* 12. Путь к аватарке пользователя */
+    /* 13. Путь к аватарке пользователя */
     private String icon;
      
     /**
@@ -95,6 +97,7 @@ public class UserData implements Serializable, User{
     
     /* Setters */
     @Override public User setId(long id)                  { this.id        = id;                        return this; }
+    @Override public User setGroupId(long id)             { this.groupId   = id;                        return this; }
     @Override public User setLogin(String login)          { this.login     = processString(login);      return this; }
     @Override public User setPassword(String password)    { this.password  = processPassword(password); return this; }
     @Override public User setOauth(String id)             { this.oauth     = processString(id);         return this; }
@@ -108,6 +111,7 @@ public class UserData implements Serializable, User{
         
     /* Getters */
     @Override public long       getId()         { return this.id;                              }
+    @Override public long       getGroupId()    { return this.groupId;                         }
     @Override public String     getLogin()      { return this.login;                           }
     @Override public String     getPassword()   { return this.password;                        }
     @Override public String     getOauth()      { return this.oauth;                           }
@@ -124,10 +128,10 @@ public class UserData implements Serializable, User{
     
     @Override
     public String toString() {
-        return "{ id:"        + id        + 
-               ", login:"     + login     + ", password:"   + password   +
-               ", firstname:" + firstname + ", lastname:"   + lastname   + 
-               ", oauth:"     + oauth     + ", provider:"   + provider   + 
+        return "{ id:"        + id        + ", groupId:"    + groupId  + 
+               ", login:"     + login     + ", password:"   + password +
+               ", firstname:" + firstname + ", lastname:"   + lastname + 
+               ", oauth:"     + oauth     + ", provider:"   + provider + 
                ", gender:"    + gender    +
                ", birthday:"  + birthday  +
                ", email:"     + email     +

@@ -17,7 +17,7 @@ import com.rhhcc.common.type.DBComplete;
 import com.rhhcc.common.type.DBResult;
 import com.rhhcc.user.auth.SpringAuth;
 import com.rhhcc.user.type.DBResultCreate;
-import com.rhhcc.user.type.DBResultLogin;
+import com.rhhcc.user.type.DBResultMerge;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -112,7 +112,73 @@ public class ManageUser implements Manage {
         }
         
         return result;
-    }    
+    }
+        
+    /**
+     * Отправляет в БД запрос на слияние и обновление данных пользователя
+     * @param user Данные пользователя
+     * @return Результат слияния и обновления данных пользователя
+     */
+    private DBResult mergeUser(User user) {
+        
+        DBResult result;
+        
+        try (Connection con = ds.getConnection()) {
+            
+            // Начало транзакции
+            con.setAutoCommit(false);
+            
+            // Регистрация пользователя в системе
+            String sql = "{ call usr_update_out(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) }";
+            log.info(sql);
+            CallableStatement prep = con.prepareCall(sql);
+
+            // IN
+            // * Идентификатор источника авторизацию
+            prep.setInt(1, user.getProvider());
+            // * Идентификатор пользователя в системе источника предоставляющего авторизацию
+            prep.setString(2, user.getOauth());
+            // * Имя пользователя
+            prep.setString(3, user.getFirstname());
+            // * Фамилия пользователя
+            prep.setString(4, user.getLastname());
+            // * Аватар пользователя
+            prep.setString(5, user.getIcon());
+            // * Пол
+            prep.setString(6, user.getGender().toString());
+            // * Дата рождения
+            prep.setDate(7, (user.getBirthday() != null ? java.sql.Date.valueOf(user.getBirthday()) : null));
+            // * EMail пользователя
+            prep.setString(8, user.getEmail());
+            // * Телефон пользователя
+            prep.setString(9, user.getPhone());
+            // * Пользователь выполняющий действие
+            prep.setLong(10, 1);
+
+            // OUT
+            // * Результат работы: >0 - ID обновленной записи; <0 - Ошибка
+            prep.registerOutParameter(11, java.sql.Types.INTEGER);
+            // * ID группировки пользователя
+            prep.registerOutParameter(12, java.sql.Types.INTEGER);
+            // * Текстовое описание результата работы
+            prep.registerOutParameter(13, java.sql.Types.VARCHAR);
+
+            prep.execute();
+
+            result = new DBResultMerge(prep.getLong(11), prep.getLong(12), prep.getString(13));
+            
+            if (result.getId() >= 0) con.commit(); else con.rollback();
+            
+        } catch (SQLException e) {
+            log.info("SQL:"+e.getMessage());
+            result = new DBResult(DBComplete.register, -600, e.getMessage());
+        } catch (Exception e) {
+            log.info("Error:" + e.toString());
+            result = new DBResult(DBComplete.register, -600, e.toString());
+        }
+        
+        return result;
+    }
     
     /**
      * Отправляет в БД запрос на подтверждение регистрации пользователя
@@ -178,7 +244,7 @@ public class ManageUser implements Manage {
         try (Connection con = ds.getConnection()) {
                         
             // Выполняет проверку логина и пароля и возвращает ID найденного пользователя
-            String sql = "{ call usr_login(?, ?, ?, ?, ?) }";
+            String sql = "{ call usr_login(?, ?, ?, ?) }";
             log.info(sql);
             CallableStatement prep = con.prepareCall(sql);
 
@@ -190,15 +256,13 @@ public class ManageUser implements Manage {
 
             // OUT
             // * Результат работы: >0 - ID пользователя; 0 - Проверка не выполнена; <0 - Ошибка
-            prep.registerOutParameter(3, java.sql.Types.INTEGER);    
-            // * ID группировки пользователя
-            prep.registerOutParameter(4, java.sql.Types.INTEGER);    
+            prep.registerOutParameter(3, java.sql.Types.INTEGER);     
             // * Текстовое описание результата работы        
-            prep.registerOutParameter(5, java.sql.Types.VARCHAR);  
+            prep.registerOutParameter(4, java.sql.Types.VARCHAR);  
 
             prep.execute();
 
-            result = new DBResultLogin(prep.getLong(3), prep.getLong(4), prep.getString(5));
+            result = new DBResult(prep.getLong(3), prep.getString(4));
             
         } catch (SQLException e) {
             log.info("SQL:"+e.getMessage());
@@ -216,7 +280,7 @@ public class ManageUser implements Manage {
         
         log.info(user.toString());
         
-        // Создание пользователя в БД            
+        // Создание пользователя в БД
         DBResultCreate result = (DBResultCreate)createUser(user);
         // Если пользователь успешно создан
         if (result.getId() >= 0) {
@@ -226,6 +290,18 @@ public class ManageUser implements Manage {
         
         log.info(result.toString());
         
+        return result;
+    }
+    
+    @Override
+    public DBResult merge(User user) {        
+        
+        log.info(user.toString());
+        
+        // Слияние и обновление данных пользователя
+        DBResult result = mergeUser(user);
+        log.info(result.toString());
+
         return result;
     }
        
@@ -255,9 +331,26 @@ public class ManageUser implements Manage {
         try (Connection con = ds.getConnection()) {
             
             // Запрос для выборки данных пользователя
-            String sql = "select a.login, u.out_id, u.provider_id, u.firstname, u.lastname, u.gender, u.birthday, u.email, u.phone, u.logo_url\n" +
-                         "from usr_user u left join usr_auth a on u.sys_status = 'on' and a.sys_status = 'on' and u.id = a.user_id\n" +
-                         "where u.id = ?";
+            String sql = "select if(ug.state = 'confirm' and ugm.provider_id = 0, ugm.id, null) group_id\n"
+                       + "     , a.login\n"
+                       + "     , u.out_id\n"
+                       + "     , u.provider_id\n"
+                       + "     , u.firstname\n"
+                       + "     , u.lastname\n"
+                       + "     , u.gender\n"
+                       + "     , u.birthday\n"
+                       + "     , u.email\n"
+                       + "     , u.phone\n"
+                       + "     , u.logo_url\n"
+                       + "from usr_user u left join usr_auth a on u.sys_status = 'on' and a.sys_status = 'on' and u.id = a.user_id\n"
+                       + "   , usr_user_group ug\n"
+                       + "   , usr_user       ugm\n"
+                       + "where u.id = ?\n"
+                       + "  and u.id = ug.user_id\n"
+                       + "  and ug.sys_status = 'on'\n"
+                       + "  and ug.main_id = ugm.id\n"
+                       + "  and ugm.sys_status = 'on'";
+          
             log.info(sql);
             // Разбор запроса
             PreparedStatement prep = con.prepareStatement(sql);
@@ -270,6 +363,7 @@ public class ManageUser implements Manage {
                 // Заполнение данными пользователя
                 user = new UserData()
                            .setId(user_id)
+                           .setGroupId(rs.getLong("group_id"))
                            .setLogin(rs.getString("login"))
                            .setOauth(rs.getString("out_id"))
                            .setProvider(rs.getShort("provider_id"))
@@ -280,7 +374,6 @@ public class ManageUser implements Manage {
                            .setEmail(rs.getString("email"))
                            .setPhone(rs.getString("phone"))
                            .setIcon(rs.getString("logo_url"));
-                log.info(user.toString());
             }
             // Закрытие result set
             rs.close();
@@ -334,11 +427,11 @@ public class ManageUser implements Manage {
         log.info("login="+login+", password="+password);
         
         // Аутентификация пользователя в БД            
-        DBResultLogin result = (DBResultLogin)loginUser(login, password);
+        DBResult result = loginUser(login, password);
         // Если пользователь аутентифицирован
         if (result.getId() >= 0) {
             // Старт сессии указанного пользоваетя для работы в системе
-            this.startSession(result.getGroupId());
+            this.startSession(result.getId());
         }
         
         log.info(result.toString());
@@ -347,21 +440,23 @@ public class ManageUser implements Manage {
     }
     
     @Override
+    public void startSession(User user) {        
+        log.info(user.toString());
+        // Привилегии пользователя
+        ArrayList<String> privilege = this.getPrivilege(user.getId());
+        // Аутентификация пользователя в spring security
+        springAuth.process(user, privilege); 
+    }
+    
+    @Override
     public void startSession(long user_id) {
-        
+        // Если ID пользователя указан
         if (user_id > 0) {
             // Данные пользователя
             User user = this.get(user_id);
-            log.info(user.toString());
-        
-            if (user != null) { 
-                // Привилегии пользователя
-                ArrayList<String> privilege = this.getPrivilege(user.getId());
-                // Аутентификация пользователя в spring security
-                springAuth.process(user, privilege); 
-            }
-        }
-    
+            // Старт сессии
+            if (user != null) startSession(user);
+        }    
     }
         
 }
