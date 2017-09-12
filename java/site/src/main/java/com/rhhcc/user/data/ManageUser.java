@@ -196,7 +196,7 @@ public class ManageUser implements Manage {
             con.setAutoCommit(false);
             
             // Регистрация пользователя в системе
-            String sql = "{ call usr_confirm_accept(?, ?, ?, ?, ?) }";
+            String sql = "{ call usr_confirm_accept_auth(?, ?, ?, ?, ?) }";
             log.info(sql);
             CallableStatement prep = con.prepareCall(sql);
 
