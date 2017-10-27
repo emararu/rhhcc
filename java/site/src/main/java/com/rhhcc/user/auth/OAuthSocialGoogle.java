@@ -102,17 +102,17 @@ public class OAuthSocialGoogle extends OAuthSocial implements OAuth {
     @Override
     User parseData(String data) throws IOException {
         
-        JsonNode jn = objectMapper.readTree(data);
+        final JsonNode jn = objectMapper.readTree(data);
         
-        User user = new UserData()
-                       .setProvider  (this.provider)
-                       .setOauth     (jn.at(this.userOAuthId  ).asText())
-                       .setFirstname (jn.at(this.userFirstname).asText())
-                       .setLastname  (jn.at(this.userLastname ).asText())
-                       .setGender    (jn.at(this.userGender   ).asText())
-                       .setBirthdayOf(jn.at(this.userBirthday ).asText(), this.userFormatBirthday)
-                       .setEmail     (jn.at(this.userEMail    ).asText())
-                       .setIcon      (jn.at(this.userIcon     ).asText());
+        final User user = new UserData()
+            .setProvider  (this.provider)
+            .setOauth     (jn.at(this.userOAuthId  ).asText())
+            .setFirstname (jn.at(this.userFirstname).asText())
+            .setLastname  (jn.at(this.userLastname ).asText())
+            .setGender    (jn.at(this.userGender   ).asText())
+            .setBirthdayOf(jn.at(this.userBirthday ).asText(), this.userFormatBirthday)
+            .setEmail     (jn.at(this.userEMail    ).asText())
+            .setIcon      (jn.at(this.userIcon     ).asText());
         
         return user;
     }

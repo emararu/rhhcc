@@ -19,7 +19,7 @@ import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuth20Service;
 
 import com.rhhcc.common.cache.Cache;
-import com.rhhcc.user.data.Manage;
+import com.rhhcc.user.data.ManageUser;
 import com.rhhcc.user.data.User;
 import com.rhhcc.user.type.DBResultMerge;
 
@@ -33,13 +33,13 @@ import org.slf4j.LoggerFactory;
  * @author  EMararu
  * @version 0.00.01
  */
-public abstract class OAuthSocial {    
+abstract class OAuthSocial {    
 
     private final Logger log = LoggerFactory.getLogger(OAuthSocial.class);
         
     @Autowired
     @Qualifier("manageUser")
-    private Manage manageUser; 
+    private ManageUser manageUser; 
     
     @Autowired
     @Qualifier("cacheMessage")
@@ -60,9 +60,9 @@ public abstract class OAuthSocial {
      */
     protected String send_request(BaseApi<OAuth20Service> api, String clientId, String clientSecret, String clientScope) {
         // URL по которому выполняется запрос на внешнюю аутентификацию
-        String urlCurrent  = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest().getRequestURL().toString();
+        final String urlCurrent  = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest().getRequestURL().toString();
         // URL на который необходимо направить ответ
-        String urlCallback = urlCurrent.substring(0, urlCurrent.lastIndexOf("/")+1) + "data";
+        final String urlCallback = urlCurrent.substring(0, urlCurrent.lastIndexOf("/")+1) + "data";
         log.info("urlCallback=" + urlCallback);
                 
         // Секретный ключ для предотвращения межсайтовых атак

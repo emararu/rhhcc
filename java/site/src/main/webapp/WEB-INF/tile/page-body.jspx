@@ -11,12 +11,12 @@
 
     <jsp:directive.page contentType="text/html" pageEncoding="UTF-8"/>
     <jsp:output omit-xml-declaration="yes" />
-
+    
     <c:set var="style_header"><tiles:getAsString name="page.body.header.style" ignore="true"/></c:set>
     <c:set var="class_header" value="${style_header=='tall' ? 'header-tall': 'header'}"/>
             
     <div id="message"><jsp:text/></div>
-    <div class="main">
+    <div id="main" class="${class_main}">
         <div id="header" class="${class_header}"><tiles:insertAttribute name="page.body.header" ignore="true"/></div>
         <div id="content"><tiles:insertAttribute name="page.body.content"/></div>
         <div id="footer"><tiles:insertAttribute name="page.body.footer" ignore="true"/></div>

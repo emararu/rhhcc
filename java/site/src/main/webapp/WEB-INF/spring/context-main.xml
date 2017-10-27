@@ -24,15 +24,17 @@
     <import resource="context-db.xml"/>
     
     <!-- Включение аннотаций MVC -->
-    <mvc:annotation-driven/>
+    <mvc:annotation-driven>
+        <mvc:argument-resolvers>
+            <!-- Включение автоподстановки principal для @AuthenticationPrincipal -->
+            <bean class="org.springframework.security.web.method.annotation.AuthenticationPrincipalArgumentResolver"/>
+        </mvc:argument-resolvers>
+    </mvc:annotation-driven>
     
     <!-- Планировщик заданий -->
     <task:annotation-driven executor="taskExecutor" scheduler="taskScheduler"/>
     <task:executor id="taskExecutor" pool-size="5"/>
     <task:scheduler id="taskScheduler" pool-size="10"/>
-
-    <!-- Включение кэширования -->
-    <cache:annotation-driven />
         
     <!-- Определение шаблона соответствия пути(mapping) и физического разменения ресурса на диске(location) -->
     <mvc:resources mapping="/resources/**" location="/resources/, /МETA-INF/web-resources/"/>
@@ -75,6 +77,8 @@
     <!-- Бин предназначенный для сопоставления java-объектов json-конструктору -->
     <bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper"/>
     
+    <!-- Включение кэширования -->
+    <cache:annotation-driven />
     <!-- Менеджер для кэша -->   
     <bean id="cacheManager" class="org.springframework.cache.support.SimpleCacheManager">
         <property name="caches">
@@ -88,8 +92,7 @@
   
     <!-- Включение сканирования пакетов для поиска аннотаций -->  
     <context:component-scan base-package="com.rhhcc.common"/>  
-    <context:component-scan base-package="com.rhhcc.user.auth"/> 
-    <context:component-scan base-package="com.rhhcc.user.data"/> 
+    <context:component-scan base-package="com.rhhcc.user"/>
     <context:component-scan base-package="com.rhhcc.test"/>
     
 </beans>

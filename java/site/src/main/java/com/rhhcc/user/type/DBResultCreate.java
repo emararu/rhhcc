@@ -25,6 +25,17 @@ public class DBResultCreate extends DBResult {
     public DBResultCreate(DBComplete complete, long id, String secret, String text) {
         super(complete, id, text);
         this.secret = secret;
+    }
+        
+    /**
+     * Результат ответа БД
+     * @param id       Больше 0 идентификатор обработанной записи; Меньше 0 ошибка во время выполнения
+     * @param secret   Секретный ключ
+     * @param text     Текстовое пояснение ответа БД
+     */
+    public DBResultCreate(long id, String secret, String text) {
+        super(id, text);
+        this.secret = secret;
     }        
     
     /**

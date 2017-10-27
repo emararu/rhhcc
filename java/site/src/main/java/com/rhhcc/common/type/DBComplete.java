@@ -5,9 +5,10 @@ package com.rhhcc.common.type;
  * <ul>
  * <li><i>register</i> Регистрация нового пользователя в системе</li>
  * <li><i>register_confirm</i> Подтверждение регистрации пользователя в системе</li>
+ * <li><i>email_confirm</i> Подтверждение email пользователя в системе</li>
  * </ul>
  * 
  * @author  EMararu
  * @version 0.00.01
  */
-public enum DBComplete { register, register_confirm }
+public enum DBComplete { register, register_confirm, email_confirm }

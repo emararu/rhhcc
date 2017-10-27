@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    Document   : Часть основного шаблона используемая для пункта меню входа/выхода из системы
+    Created on : Feb 6, 2017, 12:49:07 PM
+    Author     : EMararu
+-->
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:spring="http://www.springframework.org/tags"
+          xmlns:sec="http://www.springframework.org/security/tags"
+          version="2.0">
+
+    <jsp:directive.page contentType="text/html" pageEncoding="UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+        
+    <sec:authorize access="!isAuthenticated()">
+        <li id="menu-main-auth-item">
+            <jsp:text>ВХОД</jsp:text>
+        </li>
+    </sec:authorize>
+    
+    <sec:authorize access="isAuthenticated()">
+        <jsp:include page="page-body-header-user.jspx"/>  
+        <li id="menu-main-auth-item">
+            <img src="${requestScope.user_icon}" alt="${requestScope.user_firstname} ${requestScope.user_lastname}"/>
+        </li>
+    </sec:authorize>
+        
+</jsp:root>

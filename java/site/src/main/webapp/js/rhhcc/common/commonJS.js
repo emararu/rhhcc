@@ -1,17 +1,7 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 function CommonJS(path) {
     var re = new RegExp("/", "g");
     this.path = "/" + path.replace(re, "");    
 }
-
-/*CommonJS.prototype.init = function(path) {
-    var re = new RegExp("/", "g");
-    this.path = "/" + path.replace(re, "");
-};*/
     
 CommonJS.prototype.url = function(path) {
     return this.path + path;
@@ -38,7 +28,7 @@ CommonJS.prototype.swapMenuAuth = function(text) {
         method: "POST",
         url: _this.url("/user/auth/tile-icon-auth")
     }).done(function(icon) {
-        $("#menu-main-auth-item").html(icon);
+        $("#menu-main").find("#menu-main-auth-item").replaceWith(icon);
     }).fail(function(jqXHR, textStatus, errorThrown) {
         _this.showMessage("error", jqXHR.status + ": " + errorThrown);
     }).then(
@@ -48,8 +38,8 @@ CommonJS.prototype.swapMenuAuth = function(text) {
                 method: "POST", 
                 url: _this.url("/user/auth/tile-menu-auth")
             }).done(function(menu) {
-                $("#menu-main-auth").html(menu); 
-                $("#menu-main-auth").find("input").placeholder();
+                $("#menu-box").find("#menu-main-auth").replaceWith(menu); 
+                $("#menu-box").find("input").placeholder();
                 _this.showMessage("ok", text);
             }).fail(function(jqXHR, textStatus, errorThrown) {
                 _this.showMessage("error", jqXHR.status + ": " + errorThrown);
@@ -61,8 +51,8 @@ CommonJS.prototype.swapMenuAuth = function(text) {
 };
     
 CommonJS.prototype.hideMenuAuth = function () {
-    $("#menu-main-auth-item").removeClass("selected");
-    $("#menu-main-auth").hide();
+    $("#menu-box").find("#menu-main-auth-item").removeClass("selected");
+    $("#menu-box").find("#menu-main-auth").hide();
 };
     
 CommonJS.prototype.checkResultReturn = function(check, text) {        

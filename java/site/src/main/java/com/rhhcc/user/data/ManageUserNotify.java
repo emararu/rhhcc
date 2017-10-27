@@ -1,6 +1,5 @@
 package com.rhhcc.user.data;
 
-import java.io.Serializable;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -12,7 +11,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 
-import com.rhhcc.common.notify.Mail;
+import com.rhhcc.common.notify.MailMessage;
 import com.rhhcc.common.type.DBResult;
 
 import org.slf4j.Logger;
@@ -25,9 +24,7 @@ import org.slf4j.LoggerFactory;
  * @version 0.00.01
  */
 @Service("manageUserNotify")
-public class ManageUserNotify implements Serializable {
-    
-    private static final long serialVersionUID = 2586050996179666266L;    
+class ManageUserNotify {   
 
     private final Logger log = LoggerFactory.getLogger(ManageUserNotify.class);
     
@@ -37,7 +34,7 @@ public class ManageUserNotify implements Serializable {
         
     @Autowired
     @Qualifier("mailMessage")
-    private Mail mail;
+    private MailMessage mail;
         
     /**
      * Установка в БД флага подтверждения об успешной отправке уведомления на почту пользователя
@@ -86,15 +83,17 @@ public class ManageUserNotify implements Serializable {
     }
     
     /**
-     * Отправка уведомления орегистрации пользователя на почту и установка в БД флага подтверждения
+     * Отправка пользователю на электронную почту уведомления о подтверждении и установка в БД флага отправки
      * @param id        ID пользователя
      * @param firstname Имя пользователя
      * @param email     EMail пользователя
+     * @param subject   Тема сообщения(если применимо)
+     * @param template  Шаблон сообщения
      * @param secret    Секретный ключ
      * @param url       Путь для подтверждения секретного ключа
      */
     @Async
-    public void create(long id, String firstname, String email, String secret, String url) {
+    private void sendEmail(long id, String firstname, String email, final String subject, final String template, String secret, String url) {
         
         log.info("Send email:" + email + ", " + secret);
         
@@ -105,7 +104,7 @@ public class ManageUserNotify implements Serializable {
             ctx.setVariable("urlConfirm", url);
                         
             // Отправка письма
-            mail.send(email, "Пожалуйста, подтвердите регистрацию", "register", ctx); 
+            mail.send(email, subject, template, ctx); 
             
             // Установка в БД флага подтверждения об успешной отправке уведомления на почту пользователя
             confirmSendMail(id, email, secret);
@@ -116,4 +115,29 @@ public class ManageUserNotify implements Serializable {
         
         log.info("Sent");
     }
+    
+    /**
+     * Отправка уведомления о регистрации пользователя на почту и установка в БД флага подтверждения
+     * @param id        ID пользователя
+     * @param firstname Имя пользователя
+     * @param email     EMail пользователя
+     * @param secret    Секретный ключ
+     * @param url       Путь для подтверждения секретного ключа
+     */
+    public void create(long id, String firstname, String email, String secret, String url) {
+        sendEmail(id, firstname, email, "Пожалуйста, подтвердите регистрацию", "register", secret,  url);
+    }
+    
+    /**
+     * Отправка уведомления о подтверждении электронного андреса и установка в БД флага подтверждения
+     * @param id        ID пользователя
+     * @param firstname Имя пользователя
+     * @param email     EMail пользователя
+     * @param secret    Секретный ключ
+     * @param url       Путь для подтверждения секретного ключа
+     */
+    public void confirmEmail(long id, String firstname, String email, String secret, String url) {
+        sendEmail(id, firstname, email, "Пожалуйста, подтвердите email", "confirm_email", secret,  url);
+    }
+    
 }

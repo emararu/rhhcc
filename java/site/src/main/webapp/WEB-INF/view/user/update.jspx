@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    Document   : Редактирование профиля пользователя 
+    Created on : Sep 18, 2017, 7:00:03 PM
+    Author     : EMararu
+-->
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:spring="http://www.springframework.org/tags" 
+          version="2.0">
+    
+    <spring:url value="/index" var="url_index"/>
+    <spring:url value="/user/update/do" var="url_update_do"/>
+    <spring:url value="/js/rhhcc/user/update.js" var="url_js_update"/>
+    
+    <jsp:directive.page contentType="text/html;charset=UTF-8" />
+    <jsp:output omit-xml-declaration="yes" /> 
+
+    <div id="page-path">
+        <ul>
+            <li><a href="${url_index}">ГЛАВНАЯ</a></li>
+            <li><span>Редактирование профиля</span></li>
+        </ul>
+    </div>
+        
+    <div class="page-form">
+
+        <div class="page-header"><span>РЕГИСТРАЦИОННЫЕ ДАННЫЕ</span></div>
+        <!--div class="description"><span>...</span></div-->
+
+        <div class="blocks">
+            <div class="block register">
+                <form action="${url_update_do}" id="user_update_do" method="post">
+                    <div class="image"><div>регистрация</div><div>участника</div></div>
+                    <div class="field">
+                        <div><input type="text" name="login" placeholder="Логин"/></div>
+                        <div><input type="password" name="password" placeholder="Пароль"/></div>
+                        <div><input type="password" name="password_repeat" placeholder="Повтор пароля"/></div>
+                        <div><input type="text" name="firstname" placeholder="Имя"/></div>
+                        <div><input type="text" name="lastname" placeholder="Фамилия"/></div>
+                        <div class="radio">
+                            <span>Пол</span>
+                            <label><input type="radio" name="gender" value="male"/><span>Мужской</span></label>
+                            <label><input type="radio" name="gender" value="female"/><span>Женский</span></label>
+                        </div>
+                        <div><input type="text" name="birthday" placeholder="Дата рождения(ДД.ММ.ГГГГ)"/></div>
+                        <div><input type="text" name="email" placeholder="E-Mail"/></div>
+                        <div><input type="text" name="phone" placeholder="Телефон"/></div>
+                        <div><div id="update_data" class="submit">Сохранить</div></div>
+                    </div>
+                </form>
+            </div>
+            <div class="block auth">
+                <form action="${url_update_do}" id="user_update_do" method="post">
+                    <div class="image"><div>логин</div><div>пароль</div></div>
+                    <div class="field">
+                        <div><input type="text" name="login" placeholder="Логин"/></div>
+                        <div><input type="password" name="password" placeholder="Пароль"/></div>
+                        <div><input type="password" name="password_repeat" placeholder="Повтор пароля"/></div>
+                        <div><div id="update_auth" class="submit">Сохранить</div></div>
+                    </div>
+                </form>
+            </div>
+            <div class="block data">
+                <form action="${url_update_do}" id="user_update_do" method="post">
+                    <div class="image"><div>данные</div><div>участника</div><div>чемпионата</div></div>
+                    <div class="field">
+                        <div><input type="text" name="firstname" placeholder="Имя"/></div>
+                        <div><input type="text" name="lastname" placeholder="Фамилия"/></div>
+                        <div class="radio">
+                            <span>Пол</span>
+                            <label><input type="radio" name="gender" value="male"/><span>Мужской</span></label>
+                            <label><input type="radio" name="gender" value="female"/><span>Женский</span></label>
+                        </div>
+                        <div><input type="text" name="birthday" placeholder="Дата рождения(ДД.ММ.ГГГГ)"/></div>
+                        <div><input type="text" name="email" placeholder="E-Mail"/></div>
+                        <div><input type="text" name="phone" placeholder="Телефон"/></div>
+                        <div><div id="update_data" class="submit">Сохранить</div></div>
+                    </div>
+                </form>
+            </div>
+            <div class="block oauth">
+                <div class="image"><jsp:text/></div>
+                <div class="field">
+                    <div><input type="text" name="firstname" placeholder="Имя"/></div>
+                    <div><input type="text" name="lastname" placeholder="Фамилия"/></div>
+                    <div class="radio">
+                        <span>Пол</span>
+                        <label><input type="radio" name="gender" value="male"/><span>Мужской</span></label>
+                        <label><input type="radio" name="gender" value="female"/><span>Женский</span></label>
+                    </div>
+                    <div><input type="text" name="birthday" placeholder="Дата рождения(ДД.ММ.ГГГГ)"/></div>
+                    <div><input type="text" name="email" placeholder="E-Mail"/></div>
+                    <div><input type="text" name="phone" placeholder="Телефон"/></div>
+                </div>
+            </div> 
+        </div>        
+    </div>
+                
+    <script src="${url_js_update}" type="text/javascript"><jsp:text/></script> 
+    
+</jsp:root>

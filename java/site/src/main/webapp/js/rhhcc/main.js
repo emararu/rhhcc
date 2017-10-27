@@ -14,7 +14,7 @@ $(function() {
                 } else {
                     $("#header").removeClass("header-tall").addClass("header");
                 }
-                $("div.main").scrollTop(0);
+                $(document).scrollTop(0);                
                 $("#content").html(data);        
             });
         });
@@ -41,26 +41,27 @@ $(function() {
         $(this).hide();
     });
     
-    $("#menu-main-auth-item").click(function(){ 
+    $("#menu-box").on("click", "#menu-main-auth-item", function() {
+        var m = $("#menu-box").find("#menu-main-auth");
         var top = $("#menu-box").outerHeight();
-        var left = $("#menu-box").outerWidth()-$("#menu-main-auth").outerWidth(true);//-($("#menu-box").outerWidth()-$("#menu-main").outerWidth())/2;
+        var left = $("#menu-box").outerWidth()-m.outerWidth(true);//-($("#menu-box").outerWidth()-$("#menu-main").outerWidth())/2;
         
-        $("#menu-main-auth").css({"top": top, "left": left});
-        $("#menu-main-auth").toggle();                
+        m.css({"top": top, "left": left});
+        m.toggle();
         $(this).toggleClass("selected");
     });
     
-    $("#menu-main-auth").on("click", "#menu-main-auth-fb", function() {
+    $("#menu-box").on("click", "#menu-main-auth-fb", function() {
         cjs.windowOpen(cjs.url("/user/auth/facebook/login"), 750, 650);
         cjs.hideMenuAuth();
     });
         
-    $("#menu-main-auth").on("click", "#menu-main-auth-google", function() {
+    $("#menu-box").on("click", "#menu-main-auth-google", function() {
         cjs.windowOpen(cjs.url("/user/auth/google/login"), 750, 650);
         cjs.hideMenuAuth();
     });     
     
-    $("#menu-main-auth").on("click", "#login", function() { 
+    $("#menu-box").on("click", "#login", function() { 
         if (cjs.checkFormMandatory($("#user_login_do"), ["login", "password"])) {            
             cjs.sendForm($("#user_login_do"), ["login", "password"], function(data){
                 if (data.id >= 0) {
@@ -72,7 +73,7 @@ $(function() {
         }
     }); 
         
-    $("#menu-main-auth").on("click", "#menu-main-auth-logout", function() { 
+    $("#menu-box").on("click", "#menu-main-auth-logout", function() { 
         var _this = this;         
         $.ajax({
             contentType: "application/json; charset=utf-8",

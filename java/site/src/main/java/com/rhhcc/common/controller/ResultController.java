@@ -16,9 +16,9 @@ import org.slf4j.LoggerFactory;
  * @version 0.00.01
  */
 @Controller
-public class Result {
+public class ResultController {
 
-    private final Logger log = LoggerFactory.getLogger(Result.class);
+    private final Logger log = LoggerFactory.getLogger(ResultController.class);
     
     
     @RequestMapping(value = { "/complete/{type}" }, method = { RequestMethod.GET })

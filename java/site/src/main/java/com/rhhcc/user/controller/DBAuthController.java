@@ -1,4 +1,4 @@
-package com.rhhcc.user.auth.controller;
+package com.rhhcc.user.controller;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.rhhcc.common.type.DBResult;
 import com.rhhcc.user.data.UserData;
-import com.rhhcc.user.data.Manage;
+import com.rhhcc.user.data.ManageUser;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,13 +28,13 @@ import org.slf4j.LoggerFactory;
  */
 @RequestMapping("/user")
 @Controller
-public class DBAuth {
+public class DBAuthController {
     
-    private final Logger log = LoggerFactory.getLogger(DBAuth.class);    
+    private final Logger log = LoggerFactory.getLogger(DBAuthController.class);    
     
     @Autowired
     @Qualifier("manageUser")
-    Manage manageUser;
+    ManageUser manageUser;
     
     /**
      * Форма регистрации
@@ -56,17 +56,32 @@ public class DBAuth {
      * Выполнение регистрации пользователя путем передачи данных со страницы с полной перезагрузкой
      */
     @RequestMapping(value = { "/register/do/submit" }, method = { RequestMethod.POST } )
-    public String doRegisterSubmit(final UserData user, Model model) {
+    public String doRegisterSubmit(UserData user, Model model) {
         return manageUser.create(user).doSubmit(model);
-    }        
-    
+    }
     /**
      * Выполнение регистрации пользователя через ajax запрос
      */
     @RequestMapping(value = { "/register/do" }, method = { RequestMethod.POST } )
     @ResponseBody
-    public DBResult doRegister(@RequestBody final UserData user) {
+    public DBResult doRegister(@RequestBody UserData user) {
         return manageUser.create(user);
+    }
+    
+    
+    /**
+     * Форма редактирования профиля пользователя
+     */
+    @RequestMapping(value = "/update", method = { RequestMethod.GET })
+    public String update() {
+        return "user.update";
+    }    
+    /**
+     * Форма редактирования профиля пользователя через ajax запрос
+     */
+    @RequestMapping(value = "/update", method = { RequestMethod.POST })
+    public String updateTile() {
+        return "page.body.content.user.update";
     }
     
     
@@ -75,17 +90,44 @@ public class DBAuth {
      * с полной загрузкой страницы 
      */
     @RequestMapping(value = { "/confirm/{user_id}/{secret}/" }, method = { RequestMethod.GET } )
-    public String doCоnfirmSubmit(@PathVariable final long user_id, @PathVariable final String secret, Model model) {
-        return manageUser.confirm(user_id, secret).doSubmit(model);
+    public String doCоnfirmAuthSubmit(@PathVariable long user_id, @PathVariable String secret, Model model) {
+        return manageUser.confirmAuth(user_id, secret).doSubmit(model);
     }    
-    
     /**
      * Подтверждение регистрации пользователя в случае нажатия кнопок истории 
      * перехода в браузере с загрузкой только части контента страницы 
      */
     @RequestMapping(value = { "/confirm/{user_id}/{secret}/" }, method = { RequestMethod.POST } )
-    public String doCоnfirmTile(@PathVariable final long user_id, @PathVariable final String secret, Model model) {
-        return manageUser.confirm(user_id, secret).doTile(model);
+    public String doCоnfirmAuthTile(@PathVariable long user_id, @PathVariable String secret, Model model) {
+        return manageUser.confirmAuth(user_id, secret).doTile(model);
+    }
+    
+    
+    /**
+     * Подтверждение email пользователя по ссылке из отправленного письма 
+     * с полной загрузкой страницы 
+     */
+    @RequestMapping(value = { "/confirm_email/{user_id}/{secret}/" }, method = { RequestMethod.GET } )
+    public String doCоnfirmEmailSubmit(@PathVariable long user_id, @PathVariable String secret, Model model) {
+        return manageUser.confirmEmail(user_id, secret).doSubmit(model);
+    }    
+    
+    /**
+     * Подтверждение email пользователя в случае нажатия кнопок истории 
+     * перехода в браузере с загрузкой только части контента страницы 
+     */
+    @RequestMapping(value = { "/confirm_email/{user_id}/{secret}/" }, method = { RequestMethod.POST } )
+    public String doCоnfirmEmailTile(@PathVariable long user_id, @PathVariable String secret, Model model) {
+        return manageUser.confirmEmail(user_id, secret).doTile(model);
+    }
+    
+    
+    /**
+     * Подтверждение телефонного номера пользователя
+     */
+    @RequestMapping(value = { "/confirm_phone/{user_id}/{verify}/" }, method = { RequestMethod.POST } )
+    public DBResult doCоnfirmPhone(@PathVariable long user_id, @PathVariable String verify) {
+        return manageUser.confirmPhone(user_id, verify);
     }
     
     
@@ -94,7 +136,7 @@ public class DBAuth {
      */
     @RequestMapping(value = { "/login/do" }, method = { RequestMethod.POST } )
     @ResponseBody
-    public DBResult doLogin(@RequestBody final ObjectNode json) {
+    public DBResult doLogin(@RequestBody ObjectNode json) {
         
         String login    = json.get("login").asText();
         String password = json.get("password").asText(); 

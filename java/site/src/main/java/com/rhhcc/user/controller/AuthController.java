@@ -1,4 +1,4 @@
-package com.rhhcc.user.auth.controller;
+package com.rhhcc.user.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -19,14 +19,14 @@ import com.rhhcc.user.auth.SpringAuth;
  */
 @RequestMapping("/user/auth")
 @Controller
-public class Auth {
+public class AuthController {
     
     @Autowired
     @Qualifier("cacheMessage")
     private Cache cache;
     
     @Autowired
-    @Qualifier("springAuthService")
+    @Qualifier("springAuth")
     private SpringAuth springAuth;
     
     @RequestMapping(value = "/success-logout", method = {RequestMethod.GET})
@@ -37,12 +37,12 @@ public class Auth {
     
     @RequestMapping(value = "/tile-icon-auth", method = {RequestMethod.POST})
     public String tileIconAuth() {
-       return (springAuth.isAuth() ? "page.body.header.icon.logout" : "page.body.header.icon.login");
+        return "page.body.header.auth.icon";
     }
     
     @RequestMapping(value = "/tile-menu-auth", method = {RequestMethod.POST})
     public String tileMenuAuth() { 
-       return (springAuth.isAuth() ? "page.body.header.logout" : "page.body.header.login");
+        return "page.body.header.auth";
     }
     
 }

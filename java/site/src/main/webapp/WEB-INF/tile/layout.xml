@@ -3,10 +3,8 @@
 <tiles-definitions>
  
     <!-- Части страниц зависящие от действий пользователя -->
-    <definition name="page.body.header.icon.login" template="/WEB-INF/tile/page-body-header-icon-login.jspx"></definition>
-    <definition name="page.body.header.icon.logout" template="/WEB-INF/tile/page-body-header-icon-logout.jspx"></definition>
-    <definition name="page.body.header.login" template="/WEB-INF/tile/page-body-header-login.jspx"></definition>
-    <definition name="page.body.header.logout" template="/WEB-INF/tile/page-body-header-logout.jspx"></definition>
+    <definition name="page.body.header.auth.icon" template="/WEB-INF/tile/page-body-header-auth-icon.jspx"></definition>
+    <definition name="page.body.header.auth" template="/WEB-INF/tile/page-body-header-auth.jspx"></definition>
    
     <!-- Шаблоны -->
     <definition name="simple" template="/WEB-INF/tile/page.jspx"></definition>
@@ -16,10 +14,8 @@
         <put-attribute name="page.body">
             <definition template="/WEB-INF/tile/page-body.jspx">
                 <put-attribute name="page.body.header" value="/WEB-INF/tile/page-body-header.jspx"/>
-                <put-attribute name="page.body.header.icon.login" value="page.body.header.icon.login" cascade="true"/>
-                <put-attribute name="page.body.header.icon.logout" value="page.body.header.icon.logout" cascade="true"/>
-                <put-attribute name="page.body.header.login" value="page.body.header.login" cascade="true"/>
-                <put-attribute name="page.body.header.logout" value="page.body.header.logout" cascade="true"/>
+                <put-attribute name="page.body.header.auth.icon" value="page.body.header.auth.icon" cascade="true"/>
+                <put-attribute name="page.body.header.auth" value="page.body.header.auth" cascade="true"/>
                 <put-attribute name="page.body.footer" value="/WEB-INF/tile/page-body-footer.jspx"/>
             </definition>
         </put-attribute>        
@@ -72,6 +68,13 @@
     <definition extends="main" name="user.register">
         <put-attribute name="page.head.title" value="RHHCC | Регистрация"/>
         <put-attribute name="page.body.content" value="page.body.content.user.register" cascade="true"/>
+    </definition>
+    
+    <!-- Редактирование профиля пользователя -->
+    <definition name="page.body.content.user.update" template="/WEB-INF/view/user/update.jspx"></definition>
+    <definition extends="main" name="user.update">
+        <put-attribute name="page.head.title" value="RHHCC | Редактирование профиля"/>
+        <put-attribute name="page.body.content" value="page.body.content.user.update" cascade="true"/>
     </definition>
     
 </tiles-definitions>

@@ -1,4 +1,4 @@
-package com.rhhcc.user.auth.controller;
+package com.rhhcc.user.controller;
 
 import com.rhhcc.user.auth.OAuth;
 import java.io.IOException;
@@ -22,9 +22,9 @@ import org.slf4j.LoggerFactory;
  */
 @RequestMapping("/user/auth/facebook")
 @Controller
-public class OAuthFacebook {
+public class OAuthFacebookController {
 
-    private final Logger log = LoggerFactory.getLogger(OAuthFacebook.class);
+    private final Logger log = LoggerFactory.getLogger(OAuthFacebookController.class);
     
     @Autowired
     @Qualifier("openAuthFacebook")

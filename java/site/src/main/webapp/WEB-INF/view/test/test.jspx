@@ -5,19 +5,37 @@
 -->  
 <jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" 
           xmlns:c="http://java.sun.com/jsp/jstl/core"
-          xmlns:sec="http://www.springframework.org/security/tags" version="2.0">
+          xmlns:security="http://www.springframework.org/security/tags" version="2.0">
 
     <jsp:directive.page contentType="text/html" pageEncoding="UTF-8"/>
+    <jsp:include page="../../tile/page-body-header-user.jspx"/>
     
-    <div>test1: <sec:authorize access="isAuthenticated()">isAuthenticated()</sec:authorize></div>
-    <div>test2: <sec:authorize access="isAnonymous()">isAnonymous()</sec:authorize></div>    
+    <div>test1: <security:authorize access="isAuthenticated()">isAuthenticated()</security:authorize></div>
+    <div>test2: <security:authorize access="isAnonymous()">isAnonymous()</security:authorize></div>    
     
     <div>
-        <c:out value="${sessionScope.user.firstname}"></c:out><br/>
-        <c:out value="${sessionScope.user.lastname}"></c:out><br/>
-        <c:out value="${sessionScope.user.email}"></c:out><br/>
-        <img src="${sessionScope.user.icon}"/>
+        <security:authorize access="isAuthenticated()">
+            id=<security:authentication property="principal.id"/><br/>
+            groupId=<security:authentication property="principal.groupId"/><br/>
+            login=<security:authentication property="principal.login"/><br/>
+            firstname=<security:authentication property="principal.firstname"/><br/>
+            lastname=<security:authentication property="principal.lastname"/><br/>
+            email=<security:authentication property="principal.email"/><br/>
+            <img src="${requestScope.user_icon}"/><br/>
+            
+            ROLES:<br/>
+            <security:authentication property="authorities" var="authorities"/>
+            <c:forEach items="${authorities}" var="authority" varStatus="vs">
+               ${authority.authority}<br/>
+            </c:forEach>
+               
+            Check role:<br/>
+            <security:authorize access="hasAuthority('admin')">admin<br/></security:authorize>
+            <security:authorize access="hasAuthority('user')">user<br/></security:authorize>
+            <security:authorize access="hasAuthority('comment')">comment<br/></security:authorize>
+        </security:authorize>
     </div>
+    
 
 </jsp:root>
   

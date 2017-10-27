@@ -24,16 +24,10 @@
                 <li id="menu-main-news-item">НОВОСТИ</li>
                 <li id="menu-main-champ-item">ЧЕМПИОНАТ</li>
                 <li id="menu-main-partner-item">ПАРТНЕРЫ</li>
-                <li id="menu-main-auth-item">
-                    <sec:authorize access="!isAuthenticated()"><tiles:insertAttribute name="page.body.header.icon.login"/></sec:authorize>
-                    <sec:authorize access="isAuthenticated()"><tiles:insertAttribute name="page.body.header.icon.logout"/></sec:authorize>
-                </li>
+                <tiles:insertAttribute name="page.body.header.auth.icon"/>
             </ul>
         </div>
-        <div id="menu-main-auth" class="submenu">
-            <sec:authorize access="!isAuthenticated()"><tiles:insertAttribute name="page.body.header.login"/></sec:authorize>
-            <sec:authorize access="isAuthenticated()"><tiles:insertAttribute name="page.body.header.logout"/></sec:authorize>
-        </div>
+        <tiles:insertAttribute name="page.body.header.auth"/>
     </div>
             
 </jsp:root>

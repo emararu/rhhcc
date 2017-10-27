@@ -17,7 +17,7 @@ import com.rhhcc.common.cache.Cache;
  */
 @RequestMapping("/cache/clear")
 @Controller
-public class CacheClear {
+public class CacheController {
         
     @Autowired
     @Qualifier("cacheMessage")

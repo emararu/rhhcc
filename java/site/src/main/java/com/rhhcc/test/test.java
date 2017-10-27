@@ -1,11 +1,10 @@
 package com.rhhcc.test;
 
-import javax.servlet.http.HttpSession;
-
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.rhhcc.user.data.User;
+import com.rhhcc.user.data.UserData;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,12 +19,12 @@ import org.slf4j.LoggerFactory;
 public class test {
 
     private final Logger log = LoggerFactory.getLogger(test.class);
-                
+        
     @RequestMapping("test")
-    public String test(HttpSession session) {
-        log.info("* * * TEST * * *");
-        User user = (User)session.getAttribute("user");
-        if (user != null ) { log.info("* User *" + user.toString()); }
+    public String test(@AuthenticationPrincipal UserData current) {
+        
+        log.info("* * * TEST * * *");      
+        if (current != null ) { log.info("* Current User *" + current.toString()); }
         
         return "test.test";
     }

@@ -14,9 +14,9 @@ import org.slf4j.LoggerFactory;
  * @version 0.00.01
  */
 @Controller
-public class Index {
+public class IndexController {
 
-    private final Logger log = LoggerFactory.getLogger(Index.class);
+    private final Logger log = LoggerFactory.getLogger(IndexController.class);
     
     @RequestMapping(value = "/index", method = { RequestMethod.GET })
     public String index() {

@@ -118,15 +118,14 @@ div.submit:hover {
     background-color: #cee9cd;
 }
 
-div.main {
+#main {
     position: absolute;
     top: 0;
     left: 0;
-    height: 100%;
     min-height: 150px;
+    height: 100%;
     width: 100%;
 }
-
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /* Верхняя область страницы в которой находится главное меню                 */
@@ -369,7 +368,7 @@ div.header-tall{
     min-width: 320px;
     max-width: 1020px;
     margin: auto;
-} 
+}
 
 #page-path {
     position: relative;
@@ -390,7 +389,7 @@ div.header-tall{
     font-weight: bold;
 }
 #page-path li>span {
-    color: #aaaaaa;
+    color: #9a9a9a;
 }
 
 div.page-header{ 
@@ -413,6 +412,8 @@ div.description {
     box-sizing: border-box;
 }
 
+/* Форма ввода */
+
 div.page-form>div.center {
     position: relative;
     width: 100%;
@@ -430,34 +431,155 @@ div.page-form>div.center>div {
 }
 
 div.page-form>div.center>div>div {
-    position: relative;
-    display: inline-block;
-    font-size: 12px;
     width: 100%;
     min-width: 290px;
     max-width: 310px;
+}
+
+/* Блочный вывод */
+
+div.page-form>div.blocks {
+    position: relative;
+    width: 100%;
+    min-width: 320px;
+    max-width: 945px;
+    vertical-align: top; 
+    text-align: center; 
+    right: 0;
+    left: 0;
+    margin: auto;   
+    font-size: 0px;
+    padding: 0px 0px 0px 15px;
+    box-sizing: border-box;
+}
+
+div.page-form>div.blocks>div.block {
+    position: relative;
+    display: inline-block;
+    box-sizing: border-box; 
+    font-size: 12px;
+    vertical-align: top;
+    padding: 0px 15px 15px 0px;
+    height: 449px;
+    width: 305px;
+}
+
+div.page-form>div.blocks>div.block div.image {
+    padding: 0px;
+    color: #fff;
+    background-color: #bbb;
+}
+
+div.page-form>div.blocks>div.block.register div.image {
+    height: 70px;
+    text-align: right;
+}
+div.page-form>div.blocks>div.block.register div.image>div:nth-child(1) {
+    font-size: 32px;
+    font-weight: 900;
+    line-height: 14px;
+    padding-top: 22px;
+    margin-right: -3px;
+}
+div.page-form>div.blocks>div.block.register div.image>div:nth-child(2) {
+    font-size: 26px;
+    font-weight: 900;
+    line-height: 10px;
+    color: #eee;
+}
+
+div.page-form>div.blocks>div.block.auth div.image:first-child {
+    height: 255px;
+    text-align: left;
+}
+div.page-form>div.blocks>div.block.auth div.image:first-child>div:nth-child(1) {
+    font-size: 36px;
+    font-weight: 600;
+    line-height: 18px;
+    padding-top: 110px;
+    color: #eee;
+}
+div.page-form>div.blocks>div.block.auth div.image:first-child>div:nth-child(2) {
+    font-size: 42px;
+    font-weight: 900;
+    line-height: 18px;
+    margin-left: -3px;
+}
+
+div.page-form>div.blocks>div.block.data div.image {
+    height: 163px;
+    text-align: left;
+}
+
+div.page-form>div.blocks>div.block.data div.image:first-child>div {
+    font-weight: 900;
+    line-height: 18px;
+    padding-left: 70px;
+}
+div.page-form>div.blocks>div.block.data div.image:first-child>div:nth-child(1) {
+    color: #fff;
+    line-height: 12px;
+    font-size: 32px;
+    font-weight: 600;
+}
+div.page-form>div.blocks>div.block.data div.image:first-child>div:nth-child(2) {
+    color: #eee;
+    font-weight: 900;
+    font-size: 38px;
+}
+div.page-form>div.blocks>div.block.data div.image:first-child>div:nth-child(3) {
+    color: #ddd;
+    font-weight: 600;
+    font-size: 32px;
+}
+
+div.page-form>div.blocks>div.block.oauth div.image {
+    height: 110px;
+}
+
+div.page-form>div.blocks>div.block div.field { 
+    padding: 15px 10px 0px 5px;
+    background-color: #d9d9d9; 
+}
+
+div.page-form>div.blocks>div.block div.field>div {
+    width: 275px;
+}
+
+/* Поля ввода данных */
+
+div.page-form>div.center>div>div,
+div.page-form>div.blocks>div.block div.field>div {
+    position: relative;
+    display: inline-block;
+    font-size: 12px;
     vertical-align: top;    
     padding-left: 5px;
     box-sizing: border-box;
 }
-div.page-form>div.center>div>div:not(:empty) {
+div.page-form>div.center>div>div:not(:empty),
+div.page-form>div.blocks>div.block div.field>div:not(:empty) {
     padding-bottom: 5px;
 }
 
-div.page-form>div.center>div>div>input:not([type=radio]) {
+div.page-form>div.center>div>div>input:not([type=radio]),
+div.page-form>div.blocks>div.block div.field>div>input:not([type=radio]) {
     width: 100%;
 }
 
-div.page-form>div.center>div>div.radio {
+div.page-form>div.center>div>div.radio,
+div.page-form>div.blocks>div.block div.field>div.radio {
     text-align: left;
 }
 
-div.page-form>div.center>div>div.radio>span {
+div.page-form>div.center>div>div.radio>span,
+div.page-form>div.blocks>div.block div.field>div.radio>span {
     padding-left: 5px;
     color: #666;
 }
 
-div.page-form>div.center>div>div>div.submit {
+div.page-form>div.center>div>div>div.submit,
+div.page-form>div.blocks>div.block div.field>div>div.submit {
     width: 100%;
     margin: 30px 0px 10px 0px;
 }
