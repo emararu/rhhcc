@@ -95,7 +95,8 @@ class ManageUserNotify {
     @Async
     private void sendEmail(long id, String firstname, String email, final String subject, final String template, String secret, String url) {
         
-        log.info("Send email:" + email + ", " + secret);
+        log.info("Send email:" + email);
+        log.info(url);
         
         try {           
             // Параметры передаваемые в шаблон письма

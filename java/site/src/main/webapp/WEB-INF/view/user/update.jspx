@@ -9,7 +9,8 @@
           version="2.0">
     
     <spring:url value="/index" var="url_index"/>
-    <spring:url value="/user/update/do" var="url_update_do"/>
+    <spring:url value="/user/update/do" var="url_update_data_do"/>
+    <spring:url value="/user/update/do" var="url_update_auth_do"/>
     <spring:url value="/js/rhhcc/user/update.js" var="url_js_update"/>
     
     <jsp:directive.page contentType="text/html;charset=UTF-8" />
@@ -22,10 +23,65 @@
         </ul>
     </div>
         
+    
     <div class="page-form">
 
         <div class="page-header"><span>РЕГИСТРАЦИОННЫЕ ДАННЫЕ</span></div>
-        <!--div class="description"><span>...</span></div-->
+        <!--div class="description"><span>Регистрация позволит отправлять заявки на участие в этапах чемпионата, участвовать в обсуждении новостей и событий, быть своевременно информированным о непредвиденных изменениях в чемпионате.</span></div-->
+
+        <form action="${url_update_data_do}" id="url_update_data_do">
+            <div class="description"><span>Регистрация позволит отправлять заявки на участие в этапах чемпионата, участвовать в обсуждении новостей и событий, быть своевременно информированным о непредвиденных изменениях в чемпионате.</span></div>
+            <div class="center">
+                <div>
+                    <div><input type="text" name="firstname" placeholder="Имя"/></div>
+                    <div><input type="text" name="lastname" placeholder="Фамилия"/></div>
+                </div>
+                <div>
+                    <div class="radio">
+                        <span>Пол</span>
+                        <label><input type="radio" name="gender" value="male"/><span>Мужской</span></label>
+                        <label><input type="radio" name="gender" value="female"/><span>Женский</span></label>
+                    </div>
+                    <div><jsp:text/></div>
+                </div>
+                <div>
+                    <div><input type="text" name="birthday" placeholder="Дата рождения(ДД.ММ.ГГГГ)"/></div>
+                    <div><jsp:text/></div>
+                </div>
+                <div>
+                    <div><input type="text" name="email" placeholder="E-Mail"/></div>
+                    <div><input type="text" name="phone" placeholder="Телефон"/></div>
+                </div>         
+
+                <div>
+                    <div><div id="update_data" class="submit">Сохранить</div></div>
+                    <div><jsp:text/></div>
+                </div>          
+            </div>  
+        </form> 
+                
+        <form action="${url_update_auth_do}" id="url_update_auth_do">
+            <div class="description"><span>Регистрация позволит отправлять заявки на участие в этапах чемпионата, участвовать в обсуждении новостей и событий, быть своевременно информированным о непредвиденных изменениях в чемпионате.</span></div>
+            <div class="center">
+                <div>
+                    <div><input type="text" name="login" placeholder="Логин"/></div>
+                    <div><jsp:text/></div>
+                </div>
+                <div>
+                    <div><input type="password" name="password" placeholder="Пароль"/></div>
+                    <div><input type="password" name="password_repeat" placeholder="Повтор пароля"/></div>
+                </div>
+                <div>
+                    <div><div id="update_auth" class="submit">Сохранить</div></div>
+                    <div><jsp:text/></div>
+                </div>          
+            </div>  
+        </form>      
+    </div>
+    <!--div class="page-form">
+
+        <div class="page-header"><span>РЕГИСТРАЦИОННЫЕ ДАННЫЕ</span></div>
+        <div class="description"><span>...</span></div>
 
         <div class="blocks">
             <div class="block register">
@@ -94,7 +150,7 @@
                 </div>
             </div> 
         </div>        
-    </div>
+    </div-->
                 
     <script src="${url_js_update}" type="text/javascript"><jsp:text/></script> 
     
